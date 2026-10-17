@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+:root {
+  --parchment: #d8c39a;
+  --parchment-light: #eadbb8;
+  --ink: #2a2118;
+  --brown: #5b412d;
+  --dark-brown: #35271e;
+  --olive: #6f7146;
+  --burgundy: #713c3d;
+  --muted-blue: #4e6270;
+  --gold: #a4864d;
+  --charcoal: #25231f;
+
+  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  color: var(--ink);
+  background-color: var(--charcoal);
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #25231f;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(91, 65, 45, 0.15) 0%, rgba(37, 35, 31, 0.95) 100%),
+    repeating-linear-gradient(45deg, rgba(42, 33, 24, 0.05) 0px, rgba(42, 33, 24, 0.05) 2px, transparent 2px, transparent 8px);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Medieval Typography classes */
+.font-cinzel {
+  font-family: 'Cinzel Decorative', serif;
+}
+
+.font-medieval {
+  font-family: 'MedievalSharp', cursive, serif;
+}
+
+/* Medieval Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #35271e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5b412d;
+  border-radius: 5px;
+  border: 2px solid #35271e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #713c3d;
+}
+
+/* Smooth subtle fadeIn animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.35s ease-out forwards;
+}
+
+/* Illuminated Drop-caps styling */
+.drop-cap {
+  float: left;
+  font-size: 3.5rem;
+  line-height: 0.82;
+  margin-right: 0.65rem;
+  margin-top: 0.15rem;
+  padding: 0.35rem 0.6rem 0.2rem 0.5rem;
+  font-family: 'Cinzel Decorative', 'MedievalSharp', serif;
+  font-weight: 900;
+  color: #713c3d;
+  background-color: #fff9ea;
+  border-right: 2px solid #ab8841;
+  border-bottom: 2px solid #ab8841;
+  border-radius: 0 0 8px 0;
+  box-shadow: 2px 2px 5px rgba(42, 33, 24, 0.15);
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+  user-select: none;
+}
+
+/* Projector High-Contrast Mode for classroom projection */
+body.projector-contrast {
+  --ink: #000000;
+  --dark-brown: #100b07;
+  filter: contrast(1.12) brightness(0.98);
+}
+body.projector-contrast p,
+body.projector-contrast h1,
+body.projector-contrast h2,
+body.projector-contrast h3,
+body.projector-contrast h4 {
+  color: #100b07 !important;
+  font-weight: 600;
+}
+body.projector-contrast .border-3,
+body.projector-contrast .border-2,
+body.projector-contrast .border-4 {
+  border-color: #2b1c10 !important;
+}
+
+/* Font Scale for deep classrooms */
+body.font-scale-large {
+  font-size: 1.12rem;
+}
+body.font-scale-large p {
+  font-size: 1.25rem !important;
+  line-height: 1.7 !important;
+}
+body.font-scale-large h2 {
+  font-size: 2.6rem !important;
+}
+body.font-scale-large h3 {
+  font-size: 1.75rem !important;
+}
+
+body.font-scale-huge {
+  font-size: 1.25rem;
+}
+body.font-scale-huge p {
+  font-size: 1.45rem !important;
+  line-height: 1.8 !important;
+}
+body.font-scale-huge h2 {
+  font-size: 3rem !important;
+}
+body.font-scale-huge h3 {
+  font-size: 2rem !important;
+}
+
