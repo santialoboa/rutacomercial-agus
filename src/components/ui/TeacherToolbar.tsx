@@ -214,9 +214,10 @@ export const TeacherToolbar: React.FC<TeacherToolbarProps> = ({
                       onJumpToPhase('map-view');
                       setIsOpen(false);
                     }}
-                    className="rounded border border-[#5b412d]/60 bg-[#eadbb8] hover:bg-[#d5c298] p-2 text-xs font-serif font-bold text-[#35271e] cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded border border-[#5b412d]/60 bg-[#eadbb8] hover:bg-[#d5c298] p-2 text-xs font-serif font-bold text-[#35271e] cursor-pointer"
                   >
-                    🗺️ Ver Mapa Completo
+                    <img src="/images/icon_map.jpg" alt="" className="w-4 h-4 rounded-xs object-cover" />
+                    <span>Ver Mapa Completo</span>
                   </button>
                   <button
                     onClick={() => {

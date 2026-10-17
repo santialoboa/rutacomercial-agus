@@ -55,9 +55,13 @@ export const ProgressRibbon: React.FC<ProgressRibbonProps> = ({
           sounds.playParchment();
           onOpenMap();
         }}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-[#5b412d] bg-[#eadbb8] hover:bg-[#d8c39a] px-3 py-1 font-serif text-xs sm:text-sm font-bold text-[#35271e] transition-all shadow-sm cursor-pointer"
+        className="inline-flex items-center gap-2 rounded-lg border border-[#5b412d] bg-[#eadbb8] hover:bg-[#d8c39a] hover:border-[#713c3d] px-3 py-1 font-serif text-xs sm:text-sm font-bold text-[#35271e] transition-all shadow-sm cursor-pointer group"
       >
-        <span>🗺️</span>
+        <img
+          src="/images/icon_map.jpg"
+          alt="Mapa"
+          className="w-5 h-5 rounded-xs object-cover border border-[#5b412d]/40 group-hover:rotate-6 transition-transform"
+        />
         <span>Ver Mapa de Rutas</span>
       </button>
     </div>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { MAP_NODES, MAP_ROUTES, CARD_LOCATIONS } from '../../data/mapData';
+import React, { useState, useRef } from 'react';
+import { MAP_NODES, CARD_LOCATIONS } from '../../data/mapData';
 import { HISTORICAL_GOODS } from '../../data/goods';
 import type { MapNode } from '../../types/game';
 import { sounds } from '../../utils/audio';
+import { PotionCraftIcon } from '../illustrations/PotionCraftIcon';
 
 interface JourneyMapProps {
   currentCardNumber: number;
@@ -11,86 +12,121 @@ interface JourneyMapProps {
   isModal?: boolean;
 }
 
+// Ordered stages representing the caravan's chronological adventure
+const CARAVAN_STAGES = [
+  { cardNum: 0, nodeId: 'china', label: 'Partida', title: "Chang'an (China Imperial)" },
+  { cardNum: 1, nodeId: 'samarkand', label: 'Carta 1', title: 'Samarcanda (Gran Bazar)' },
+  { cardNum: 2, nodeId: 'samarkand', label: 'Carta 2', title: 'Samarcanda (Molinos de Papel)' },
+  { cardNum: 3, nodeId: 'india', label: 'Carta 3', title: 'India (Cifras y Especias)' },
+  { cardNum: 4, nodeId: 'baghdad', label: 'Carta 4', title: 'Bagdad (Sabiduría y Medicina)' },
+  { cardNum: 5, nodeId: 'alexandria', label: 'Carta 5', title: 'Alejandría (Dársena de Galeras)' },
+  { cardNum: 6, nodeId: 'caffa_constantinople', label: 'Carta 6', title: 'Caffa y Bósforo (Alerta de Peste)' },
+  { cardNum: 7, nodeId: 'venice_genoa', label: 'Destino', title: 'Venecia y Puertos de Europa' }
+];
+
 export const JourneyMap: React.FC<JourneyMapProps> = ({
   currentCardNumber,
   className = '',
   onClose,
   isModal = false
 }) => {
-  const [mapMode, setMapMode] = useState<'historical' | 'interactive' | 'goods'>('historical');
+  const [mapMode, setMapMode] = useState<'map' | 'goods'>('map');
   const [selectedNode, setSelectedNode] = useState<MapNode | null>(null);
   const [selectedGoodId, setSelectedGoodId] = useState<string>('silk');
+  const [zoomLevel, setZoomLevel] = useState<number>(1);
+  const [showAllNodes, setShowAllNodes] = useState<boolean>(true);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   const currentLocationInfo = CARD_LOCATIONS[currentCardNumber] || CARD_LOCATIONS[1];
   const currentNodeId = currentLocationInfo.nodeId;
+  const currentNode = MAP_NODES.find((n) => n.id === currentNodeId) || MAP_NODES[3];
 
   // Determine visited nodes up to current card
-  const visitedNodeIds = new Set<string>();
+  const visitedNodeIds = new Set<string>(['china']);
   for (let i = 1; i <= currentCardNumber; i++) {
     if (CARD_LOCATIONS[i]) {
       visitedNodeIds.add(CARD_LOCATIONS[i].nodeId);
     }
   }
 
+  // Caravan route line segments connecting visited stops
+  const journeyTrailPoints = [
+    { id: 'china', x: 89.5, y: 47.5, passed: true },
+    { id: 'dunhuang', x: 79.0, y: 39.2, passed: true },
+    { id: 'kashgar', x: 64.0, y: 39.2, passed: true },
+    { id: 'samarkand', x: 57.2, y: 41.0, passed: currentCardNumber >= 1 },
+    { id: 'india', x: 61.5, y: 69.5, passed: currentCardNumber >= 3 },
+    { id: 'baghdad', x: 39.5, y: 51.5, passed: currentCardNumber >= 4 },
+    { id: 'alexandria', x: 30.5, y: 54.5, passed: currentCardNumber >= 5 },
+    { id: 'caffa_constantinople', x: 29.5, y: 37.5, passed: currentCardNumber >= 6 },
+    { id: 'venice_genoa', x: 17.2, y: 30.5, passed: currentCardNumber >= 7 }
+  ];
+
   const handleNodeClick = (node: MapNode) => {
     sounds.playWoodClick();
     setSelectedNode(node);
   };
 
+  const handleStageClick = (stage: typeof CARAVAN_STAGES[0]) => {
+    sounds.playParchment();
+    const node = MAP_NODES.find((n) => n.id === stage.nodeId);
+    if (node) {
+      setSelectedNode(node);
+    }
+  };
+
+  const centerOnCaravan = () => {
+    sounds.playBell(587.33, 0.3);
+    setSelectedNode(currentNode);
+    setZoomLevel(1.2);
+  };
+
   return (
-    <div className={`relative flex flex-col rounded-xl border-4 border-[#5b412d] bg-[#dfceaa] shadow-2xl p-4 sm:p-6 text-[#2a2118] ${className}`}>
-      {/* Medieval Header Ribbon & View Toggle */}
-      <div className="flex flex-wrap items-center justify-between border-b-2 border-[#5b412d]/40 pb-3 mb-4 gap-3">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-bold font-serif text-[#35271e] tracking-wide flex items-center gap-2">
-            <span>🗺️</span> Gran Mapa y Redes Medievales
-          </h2>
-          <p className="text-xs sm:text-sm text-[#5b412d] italic font-serif">
-            Circulación terrestre, marítima y caravanas transcontinentales (Siglo XIV)
-          </p>
+    <div className={`relative flex flex-col rounded-2xl border-4 border-[#5b412d] bg-[#dfceaa] shadow-2xl p-3 sm:p-5 text-[#2a2118] ${className}`}>
+      {/* Header Bar */}
+      <div className="flex flex-wrap items-center justify-between border-b-2 border-[#5b412d]/40 pb-3 mb-3 gap-2">
+        <div className="flex items-center gap-2.5">
+          <PotionCraftIcon name="map" size={36} className="shadow-sm" />
+          <div>
+            <h2 className="text-lg sm:text-2xl font-bold font-serif text-[#35271e] tracking-wide leading-tight flex items-center gap-2">
+              Gran Mapa de la Ruta de la Seda
+            </h2>
+            <p className="text-xs text-[#5b412d] italic font-serif">
+              Seguimiento interactivo de la caravana transcontinental (Siglo XIV)
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Mode Switcher */}
+          {/* View Switcher */}
           <div className="flex rounded-lg border border-[#5b412d] bg-[#eadbb8] p-0.5">
             <button
               onClick={() => {
                 sounds.playParchment();
-                setMapMode('historical');
+                setMapMode('map');
               }}
-              className={`rounded-md px-2.5 py-1 font-serif text-xs font-bold transition-all cursor-pointer ${
-                mapMode === 'historical'
+              className={`flex items-center gap-1.5 rounded-md px-3 py-1 font-serif text-xs font-bold transition-all cursor-pointer ${
+                mapMode === 'map'
                   ? 'bg-[#713c3d] text-[#fff6df] shadow'
                   : 'text-[#35271e] hover:bg-[#d8c39a]'
               }`}
             >
-              🗺️ Mapa Ilustrado
-            </button>
-            <button
-              onClick={() => {
-                sounds.playParchment();
-                setMapMode('interactive');
-              }}
-              className={`rounded-md px-2.5 py-1 font-serif text-xs font-bold transition-all cursor-pointer ${
-                mapMode === 'interactive'
-                  ? 'bg-[#713c3d] text-[#fff6df] shadow'
-                  : 'text-[#35271e] hover:bg-[#d8c39a]'
-              }`}
-            >
-              🧭 Red Interactiva
+              <span>🧭</span>
+              <span>Mapa Interactivo</span>
             </button>
             <button
               onClick={() => {
                 sounds.playParchment();
                 setMapMode('goods');
               }}
-              className={`rounded-md px-2.5 py-1 font-serif text-xs font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 rounded-md px-3 py-1 font-serif text-xs font-bold transition-all cursor-pointer ${
                 mapMode === 'goods'
                   ? 'bg-[#713c3d] text-[#fff6df] shadow'
                   : 'text-[#35271e] hover:bg-[#d8c39a]'
               }`}
             >
-              ⚖️ 5 Grandes Mercancías
+              <span>⚖️</span>
+              <span>5 Grandes Mercancías</span>
             </button>
           </div>
 
@@ -100,7 +136,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                 sounds.playParchment();
                 onClose();
               }}
-              className="rounded-lg border-2 border-[#5b412d] bg-[#eadbb8] hover:bg-[#d8c39a] px-3 py-1 font-serif font-bold text-sm text-[#35271e] transition-all shadow cursor-pointer"
+              className="rounded-lg border-2 border-[#5b412d] bg-[#eadbb8] hover:bg-[#d8c39a] hover:border-[#713c3d] px-3 py-1 font-serif font-bold text-xs sm:text-sm text-[#35271e] transition-all shadow cursor-pointer"
             >
               ✕ Cerrar
             </button>
@@ -108,188 +144,289 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
         </div>
       </div>
 
-      {/* VIEW 1: AUTHENTIC HISTORICAL SILK ROAD MAP */}
-      {mapMode === 'historical' ? (
-        <div className="relative w-full aspect-[16/9] max-h-[560px] rounded-lg border-2 border-[#5b412d] bg-[#25231f] overflow-hidden select-none shadow-inner">
-          <img
-            src="/images/silk_road_map.jpg"
-            alt="Mapa histórico de la Ruta de la Seda y redes comerciales"
-            className="w-full h-full object-contain bg-[#f9eed9]"
-          />
-
-          {/* Current position banner badge on the historical map */}
-          <div className="absolute top-3 right-3 bg-[#713c3d]/95 border border-[#501213] text-[#fff3cf] px-3.5 py-1.5 rounded-full text-xs font-serif font-bold tracking-wide shadow-lg flex items-center gap-2 backdrop-blur-xs">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#ab8841] animate-ping" />
-            <span>Escala actual de la Caravana: <strong>{currentLocationInfo.title}</strong></span>
-          </div>
-
-          <div className="absolute bottom-2 left-2 bg-[#eadbb8]/95 border border-[#5b412d]/70 rounded p-2 text-xs font-serif text-[#35271e] shadow pointer-events-none max-w-xs">
-            <div className="font-bold border-b border-[#5b412d]/30 pb-0.5 mb-1 text-[11px] text-[#713c3d]">
-              RUTAS DEL MAPA
+      {/* MODE 1: GORGEOUS POTION CRAFT INTERACTIVE MAP */}
+      {mapMode === 'map' ? (
+        <div className="flex flex-col space-y-3">
+          {/* Top Control Bar with Quick Actions */}
+          <div className="flex flex-wrap items-center justify-between gap-2 bg-[#eadbb8]/80 rounded-xl px-3 py-2 border border-[#5b412d]/30 text-xs font-serif">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-[#713c3d] flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#ab8841] animate-ping" />
+                Escala actual:
+              </span>
+              <strong className="text-[#35271e]">{currentLocationInfo.title}</strong>
             </div>
-            <p className="text-[11px] leading-tight text-[#443224]">
-              Muestra el camino principal terrestre por Asia Central (Samarcanda, Bujará), ramales y rutas marítimas por el Océano Índico y Mediterráneo.
-            </p>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={centerOnCaravan}
+                title="Centrar mapa en la escala actual de la caravana"
+                className="px-2.5 py-1 rounded-md border border-[#5b412d] bg-[#fbf5e7] hover:bg-[#dfceaa] font-bold text-[#713c3d] transition-all shadow-xs cursor-pointer flex items-center gap-1"
+              >
+                <span>📍</span>
+                <span>Centrar en Caravana</span>
+              </button>
+
+              <button
+                onClick={() => setShowAllNodes(!showAllNodes)}
+                className="px-2 py-1 rounded-md border border-[#5b412d]/50 bg-[#dfceaa] hover:bg-[#fbf5e7] text-[#35271e] transition cursor-pointer"
+              >
+                {showAllNodes ? '👁️ Todas las Ciudades' : '🎯 Solo Recorrido'}
+              </button>
+
+              {/* Zoom controls */}
+              <div className="flex items-center border border-[#5b412d] rounded-md bg-[#dfceaa] overflow-hidden">
+                <button
+                  onClick={() => setZoomLevel((z) => Math.max(1, z - 0.2))}
+                  title="Alejar mapa"
+                  className="px-2 py-0.5 hover:bg-[#eadbb8] font-bold cursor-pointer text-[#35271e]"
+                >
+                  −
+                </button>
+                <span className="px-1.5 text-[11px] font-bold text-[#5b412d]">
+                  {Math.round(zoomLevel * 100)}%
+                </span>
+                <button
+                  onClick={() => setZoomLevel((z) => Math.min(2, z + 0.2))}
+                  title="Acercar mapa"
+                  className="px-2 py-0.5 hover:bg-[#eadbb8] font-bold cursor-pointer text-[#35271e]"
+                >
+                  +
+                </button>
+                {zoomLevel !== 1 && (
+                  <button
+                    onClick={() => setZoomLevel(1)}
+                    title="Restablecer tamaño normal"
+                    className="px-1.5 py-0.5 hover:bg-[#eadbb8] text-[10px] text-[#713c3d] font-bold border-l border-[#5b412d]/30 cursor-pointer"
+                  >
+                    100%
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
+
+          {/* Map Canvas Frame */}
+          <div
+            ref={mapContainerRef}
+            className="relative w-full aspect-[16/9] max-h-[580px] rounded-xl border-3 border-[#5b412d] bg-[#221a14] overflow-hidden select-none shadow-inner"
+          >
+            {/* The base Potion Craft cartography image with smooth zoom transition */}
+            <div
+              className="w-full h-full relative transition-transform duration-300 ease-out origin-center"
+              style={{ transform: `scale(${zoomLevel})` }}
+            >
+              <img
+                src="/images/potion_silk_road_map.jpg"
+                alt="Mapa interactivo de la Ruta de la Seda en estilo Potion Craft"
+                className="w-full h-full object-cover pointer-events-none select-none"
+                draggable={false}
+              />
+
+              {/* Dotted Golden Journey Trail connecting visited stops */}
+              <svg
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                className="absolute inset-0 w-full h-full pointer-events-none z-10"
+              >
+                {journeyTrailPoints.map((pt, idx) => {
+                  if (idx === 0) return null;
+                  const prev = journeyTrailPoints[idx - 1];
+                  const isTraversed = pt.passed;
+
+                  return (
+                    <g key={`trail-${idx}`}>
+                      <line
+                        x1={prev.x}
+                        y1={prev.y}
+                        x2={pt.x}
+                        y2={pt.y}
+                        stroke={isTraversed ? '#ffd573' : '#a4864d'}
+                        strokeWidth={isTraversed ? '0.7' : '0.35'}
+                        strokeDasharray={isTraversed ? '0.8 0.6' : '0.4 0.4'}
+                        strokeOpacity={isTraversed ? '0.9' : '0.4'}
+                        strokeLinecap="round"
+                      />
+                    </g>
+                  );
+                })}
+              </svg>
+
+              {/* Interactive City Pins / Hotspots */}
+              {MAP_NODES.map((node) => {
+                const isCurrent = node.id === currentNodeId;
+                const isVisited = visitedNodeIds.has(node.id);
+                const isSelected = selectedNode?.id === node.id;
+
+                if (!showAllNodes && !isVisited && !isCurrent) {
+                  return null;
+                }
+
+                return (
+                  <div
+                    key={node.id}
+                    onClick={() => handleNodeClick(node)}
+                    style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                    className="absolute -translate-x-1/2 -translate-y-1/2 z-20 cursor-pointer group transition-transform hover:scale-125"
+                    title={`${node.name} (${node.region})`}
+                  >
+                    {/* Glowing Ping for the Current Caravan Node */}
+                    {isCurrent && (
+                      <div className="absolute inset-0 -m-3">
+                        <span className="absolute inset-0 rounded-full bg-[#ffdd80] opacity-75 animate-ping" />
+                        <span className="absolute inset-1 rounded-full bg-[#713c3d] opacity-40 animate-pulse" />
+                      </div>
+                    )}
+
+                    {/* Node Token */}
+                    <div
+                      className={`relative flex items-center justify-center rounded-full transition-all shadow-md ${
+                        isCurrent
+                          ? 'w-8 h-8 sm:w-9 sm:h-9 bg-[#713c3d] border-2 border-[#fff3cf] ring-2 ring-[#ab8841]'
+                          : isSelected
+                          ? 'w-6 h-6 sm:w-7 sm:h-7 bg-[#ab8841] border-2 border-[#fff6df] ring-2 ring-[#713c3d]'
+                          : isVisited
+                          ? 'w-5 h-5 sm:w-6 sm:h-6 bg-[#8c6527] border-1.5 border-[#fbebc4]'
+                          : 'w-4 h-4 sm:w-5 sm:h-5 bg-[#eadbb8] border border-[#5b412d] opacity-85 hover:opacity-100'
+                      }`}
+                    >
+                      {isCurrent ? (
+                        <span className="text-sm select-none animate-bounce" role="img" aria-label="Caravana">
+                          🐪
+                        </span>
+                      ) : isVisited ? (
+                        <span className="text-[10px] font-bold text-[#fffcf2]">✓</span>
+                      ) : (
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#35271e]" />
+                      )}
+                    </div>
+
+                    {/* City Name Label Banner */}
+                    <div
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 px-1.5 py-0.5 rounded text-[10px] sm:text-[11px] font-serif font-bold whitespace-nowrap shadow-sm pointer-events-none transition-all ${
+                        isCurrent
+                          ? 'bg-[#713c3d] text-[#fff3cf] border border-[#ab8841] scale-105 z-30'
+                          : isSelected
+                          ? 'bg-[#ab8841] text-[#fffcf2] border border-[#35271e] z-30'
+                          : 'bg-[#eadbb8]/95 text-[#2a2118] border border-[#5b412d]/50 group-hover:bg-[#fbf5e7]'
+                      }`}
+                    >
+                      {node.name.split(' (')[0].split(' y ')[0]}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Current Position Badge pinned in corner */}
+            <div className="absolute top-2.5 left-2.5 z-30 bg-[#713c3d]/95 border-2 border-[#ab8841] text-[#fff3cf] px-3 py-1.5 rounded-xl text-xs font-serif shadow-xl flex items-center gap-2 backdrop-blur-xs">
+              <span className="text-base">🐪</span>
+              <div>
+                <span className="text-[10px] uppercase tracking-wider block text-[#ffd573] font-bold">
+                  Posición de la Caravana:
+                </span>
+                <strong className="text-xs sm:text-sm font-serif">
+                  {currentLocationInfo.title}
+                </strong>
+              </div>
+            </div>
+          </div>
+
+          {/* Caravan Journey Steps Timeline (How we are moving!) */}
+          <div className="rounded-xl border-2 border-[#5b412d]/40 bg-[#eadbb8] p-2.5 shadow-sm">
+            <div className="flex items-center justify-between mb-1.5 px-1">
+              <span className="text-xs font-serif uppercase tracking-wider font-bold text-[#713c3d] flex items-center gap-1.5">
+                <span>📜</span> Recorrido Cronológico de la Caravana:
+              </span>
+              <span className="text-[11px] font-serif text-[#5b412d] italic hidden sm:inline">
+                Click en cualquier etapa para inspeccionar el lugar
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-1.5">
+              {CARAVAN_STAGES.map((stage) => {
+                const isPassed = stage.cardNum <= currentCardNumber;
+                const isCurrentStage =
+                  stage.cardNum === currentCardNumber ||
+                  (stage.cardNum === 0 && currentCardNumber === 0);
+                const isSelected = selectedNode?.id === stage.nodeId;
+
+                return (
+                  <button
+                    key={`${stage.cardNum}-${stage.nodeId}`}
+                    onClick={() => handleStageClick(stage)}
+                    className={`flex flex-col items-center justify-center p-1.5 rounded-lg border text-center transition-all cursor-pointer ${
+                      isCurrentStage
+                        ? 'border-[#713c3d] bg-[#713c3d] text-[#fff6df] shadow-md ring-2 ring-[#ab8841]'
+                        : isSelected
+                        ? 'border-[#ab8841] bg-[#fbf5e7] text-[#713c3d] shadow-sm font-bold'
+                        : isPassed
+                        ? 'border-[#5b412d]/40 bg-[#dfceaa] text-[#35271e] hover:bg-[#fbf5e7]'
+                        : 'border-[#5b412d]/20 bg-[#eadbb8]/50 text-[#5b412d]/60'
+                    }`}
+                  >
+                    <span className="text-[10px] uppercase tracking-widest font-bold">
+                      {stage.label}
+                    </span>
+                    <span className="text-[11px] font-serif font-semibold truncate w-full">
+                      {stage.title.split(' (')[0]}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Inspection Card Drawer when a node is selected */}
+          {selectedNode && (
+            <div className="rounded-xl border-2 border-[#713c3d] bg-[#fbf5e7] p-4 shadow-lg animate-fadeIn text-[#2a2118]">
+              <div className="flex justify-between items-start border-b border-[#5b412d]/30 pb-2 mb-2">
+                <div>
+                  <span className="text-[11px] font-serif uppercase tracking-widest font-bold text-[#713c3d]">
+                    📍 {selectedNode.region}
+                  </span>
+                  <h3 className="font-serif font-black text-lg sm:text-xl text-[#35271e] leading-snug">
+                    {selectedNode.name}
+                  </h3>
+                </div>
+
+                <button
+                  onClick={() => setSelectedNode(null)}
+                  className="rounded-md border border-[#5b412d]/40 bg-[#dfceaa] hover:bg-[#eadbb8] px-2 py-0.5 text-xs font-bold text-[#35271e] cursor-pointer"
+                >
+                  ✕ Cerrar
+                </button>
+              </div>
+
+              <p className="font-serif text-xs sm:text-sm text-[#443224] leading-relaxed mb-3">
+                {selectedNode.description}
+              </p>
+
+              {/* Goods and treasures traded */}
+              <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#5b412d]/20">
+                <span className="text-xs font-serif font-bold text-[#713c3d]">
+                  Mercancías y saberes que confluían aquí:
+                </span>
+                {selectedNode.goods.map((good, i) => (
+                  <span
+                    key={i}
+                    className="inline-flex items-center gap-1 rounded-md border border-[#ab8841]/50 bg-[#dfceaa] px-2 py-0.5 text-xs font-serif text-[#35271e] shadow-xs"
+                  >
+                    <span>✦</span>
+                    <span>{good}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
-        /* VIEW 2: INTERACTIVE SVG EXPLORATION */
-        <div className="relative w-full aspect-[16/9] max-h-[520px] rounded-lg border-2 border-[#5b412d]/60 bg-[#eadbb8] overflow-hidden select-none shadow-inner">
-          <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#5b412d_1px,transparent_1px)] [background-size:16px_16px]" />
-
-          <svg viewBox="0 0 1000 560" className="w-full h-full">
-            {/* Compass Rose in corner */}
-            <g transform="translate(110, 100) scale(0.65)" opacity="0.6">
-              <circle cx="0" cy="0" r="50" stroke="#5b412d" strokeWidth="2" fill="none" strokeDasharray="3 3" />
-              <polygon points="0,-60 12,-15 60,0 15,12 0,60 -12,15 -60,0 -15,-12" fill="#713c3d" fillOpacity="0.7" stroke="#35271e" strokeWidth="1.5" />
-              <polygon points="0,-60 -12,-15 -60,0 -15,-12" fill="#a4864d" fillOpacity="0.8" />
-              <text x="0" y="-68" textAnchor="middle" fill="#35271e" fontSize="18" fontWeight="bold" fontFamily="serif">SEPTENTRIO</text>
-              <text x="0" y="82" textAnchor="middle" fill="#35271e" fontSize="14" fontFamily="serif">MERIDIES</text>
-              <text x="80" y="5" textAnchor="start" fill="#35271e" fontSize="14" fontFamily="serif">ORIENS</text>
-              <text x="-80" y="5" textAnchor="end" fill="#35271e" fontSize="14" fontFamily="serif">OCCIDENS</text>
-            </g>
-
-            {/* Sea waves */}
-            <g opacity="0.35" stroke="#4e6270" strokeWidth="1.5" fill="none">
-              <path d="M280 250 Q310 245 340 250 T400 250" />
-              <path d="M300 270 Q330 265 360 270" />
-              <path d="M480 340 Q510 335 540 340 T600 340" />
-              <path d="M650 420 Q680 415 710 420 T770 420" />
-              <path d="M720 450 Q750 445 780 450 T840 450" />
-            </g>
-
-            {/* Mountain chains */}
-            <g opacity="0.4" stroke="#5b412d" strokeWidth="1.5" fill="#dfceaa">
-              <polygon points="610,210 625,185 640,210" />
-              <polygon points="630,210 650,175 670,210" />
-              <polygon points="660,210 680,180 700,210" />
-              <polygon points="690,210 715,170 740,210" />
-              <polygon points="730,210 755,185 780,210" />
-            </g>
-
-            {/* Routes */}
-            {MAP_ROUTES.map((route, idx) => {
-              const fromNode = MAP_NODES.find((n) => n.id === route.from);
-              const toNode = MAP_NODES.find((n) => n.id === route.to);
-              if (!fromNode || !toNode) return null;
-
-              const x1 = (fromNode.x / 100) * 1000;
-              const y1 = (fromNode.y / 100) * 560;
-              const x2 = (toNode.x / 100) * 1000;
-              const y2 = (toNode.y / 100) * 560;
-
-              const isPassedRoute = (route.activeUntilCard || 99) <= currentCardNumber;
-              const strokeColor = {
-                terrestrial: isPassedRoute ? '#713c3d' : '#8c6e54',
-                maritime: isPassedRoute ? '#2b526b' : '#5b788c',
-                transsaharan: isPassedRoute ? '#a46f25' : '#c4964e'
-              }[route.type];
-
-              const strokeDash = {
-                terrestrial: 'none',
-                maritime: '6 4',
-                transsaharan: '3 3'
-              }[route.type];
-
-              return (
-                <g key={`route-${idx}`}>
-                  <line
-                    x1={x1}
-                    y1={y1}
-                    x2={x2}
-                    y2={y2}
-                    stroke={strokeColor}
-                    strokeWidth={isPassedRoute ? 3.5 : 2}
-                    strokeDasharray={strokeDash}
-                    strokeLinecap="round"
-                    opacity={isPassedRoute ? 0.95 : 0.55}
-                  />
-                </g>
-              );
-            })}
-
-            {/* Nodes */}
-            {MAP_NODES.map((node) => {
-              const cx = (node.x / 100) * 1000;
-              const cy = (node.y / 100) * 560;
-              const isCurrent = node.id === currentNodeId;
-              const isVisited = visitedNodeIds.has(node.id);
-              const isSelected = selectedNode?.id === node.id;
-
-              return (
-                <g
-                  key={node.id}
-                  transform={`translate(${cx}, ${cy})`}
-                  className="cursor-pointer transition-transform hover:scale-125"
-                  onClick={() => handleNodeClick(node)}
-                >
-                  {isCurrent && (
-                    <>
-                      <circle cx="0" cy="0" r="26" fill="#713c3d" fillOpacity="0.2">
-                        <animate attributeName="r" values="18;32;18" dur="2.4s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.7;0.1;0.7" dur="2.4s" repeatCount="indefinite" />
-                      </circle>
-                      <circle cx="0" cy="0" r="16" fill="#ab8841" fillOpacity="0.4" />
-                    </>
-                  )}
-
-                  <circle
-                    cx="0"
-                    cy="0"
-                    r={isCurrent ? 12 : isVisited ? 9 : 7}
-                    fill={isCurrent ? '#713c3d' : isVisited ? '#a4864d' : '#dfceaa'}
-                    stroke="#35271e"
-                    strokeWidth={isSelected ? 3 : 2}
-                  />
-
-                  <circle cx="0" cy="0" r={isCurrent ? 5 : 3} fill={isCurrent ? '#fff3cf' : '#35271e'} />
-
-                  {isCurrent && (
-                    <g transform="translate(0, -22)">
-                      <line x1="0" y1="0" x2="0" y2="14" stroke="#35271e" strokeWidth="2" />
-                      <polygon points="0,0 16,5 0,10" fill="#713c3d" stroke="#35271e" strokeWidth="1" />
-                    </g>
-                  )}
-
-                  <text
-                    x="0"
-                    y={isCurrent ? 26 : 20}
-                    textAnchor="middle"
-                    fill="#2a2118"
-                    fontSize={isCurrent ? 14 : 11}
-                    fontWeight={isCurrent ? 'bold' : 'normal'}
-                    fontFamily="'EB Garamond', serif"
-                    className="pointer-events-none drop-shadow-sm select-none"
-                    style={{ textShadow: '0 1px 3px rgba(255,255,255,0.8)' }}
-                  >
-                    {node.name.split(' y ')[0]}
-                  </text>
-                </g>
-              );
-            })}
-          </svg>
-
-          <div className="absolute top-2 right-2 bg-[#713c3d] text-[#fff3cf] px-3 py-1 rounded-full text-xs font-serif font-bold tracking-wide shadow flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#ab8841] animate-ping" />
-            <span>Posición de la Caravana: <strong>{currentLocationInfo.title}</strong></span>
-          </div>
-        </div>
-      )}
-
-      {/* VIEW 3: CÓDICE DE LAS 5 GRANDES MERCANCÍAS HISTÓRICAS */}
-      {mapMode === 'goods' && (
+        /* MODE 2: CÓDICE DE LAS 5 GRANDES MERCANCÍAS HISTÓRICAS WITH POTION CRAFT ICONS */
         <div className="rounded-xl border-2 border-[#5b412d] bg-[#fbf5e7] p-4 sm:p-5 shadow-inner animate-fadeIn">
           {/* Top Goods Navigation Pills */}
           <div className="flex flex-wrap gap-2 justify-center mb-5 border-b border-[#5b412d]/30 pb-3">
             {HISTORICAL_GOODS.map((good) => {
               const isSelected = selectedGoodId === good.id;
-              const icons: Record<string, string> = {
-                silk: '🧵',
-                spices: '🌿',
-                porcelain: '🏺',
-                paper: '📜',
-                gold: '👑'
-              };
 
               return (
                 <button
@@ -298,13 +435,13 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                     sounds.playWoodClick();
                     setSelectedGoodId(good.id);
                   }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-serif text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-serif text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                     isSelected
                       ? 'border-2 border-[#713c3d] bg-[#713c3d] text-[#fff6df] shadow-md scale-105'
                       : 'border border-[#5b412d]/40 bg-[#eadbb8] text-[#35271e] hover:bg-[#dcc9a1]'
                   }`}
                 >
-                  <span>{icons[good.id] || '✦'}</span>
+                  <PotionCraftIcon name={good.id} size={22} />
                   <span>{good.name.split(' (')[0]}</span>
                 </button>
               );
@@ -313,7 +450,8 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
 
           {/* Detailed Good Showcase */}
           {(() => {
-            const currentGood = HISTORICAL_GOODS.find((g) => g.id === selectedGoodId) || HISTORICAL_GOODS[0];
+            const currentGood =
+              HISTORICAL_GOODS.find((g) => g.id === selectedGoodId) || HISTORICAL_GOODS[0];
             const goodsGuideQuestions: Record<string, string> = {
               silk: '¿Por qué la seda viajaba miles de leguas si pesaba tan poco? ¿Quiénes podían comprarla al final del recorrido?',
               spices: '¿Por qué decimos que las especias impulsaron las rutas marítimas en el Océano Índico más que cualquier otro producto?',
@@ -325,12 +463,8 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
             return (
               <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
                 <div className="md:col-span-4 rounded-xl border-2 border-[#5b412d]/60 bg-[#dfceaa]/60 p-4 text-center">
-                  <div className="text-4xl mb-2">
-                    {selectedGoodId === 'silk' && '🧵'}
-                    {selectedGoodId === 'spices' && '🌿'}
-                    {selectedGoodId === 'porcelain' && '🏺'}
-                    {selectedGoodId === 'paper' && '📜'}
-                    {selectedGoodId === 'gold' && '👑'}
+                  <div className="flex justify-center mb-3">
+                    <PotionCraftIcon name={selectedGoodId} size={72} className="shadow-md" />
                   </div>
                   <h3 className="font-serif font-black text-xl text-[#35271e] mb-1">
                     {currentGood.name}
@@ -366,40 +500,6 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
               </div>
             );
           })()}
-        </div>
-      )}
-
-      {/* Selected Node Details */}
-      {selectedNode && mapMode === 'interactive' && (
-        <div className="mt-4 rounded-lg border-2 border-[#5b412d] bg-[#eadbb8] p-3 text-sm animate-fadeIn">
-          <div className="flex justify-between items-start">
-            <div>
-              <span className="text-xs uppercase tracking-wider font-bold text-[#713c3d]">
-                {selectedNode.region}
-              </span>
-              <h3 className="font-serif font-bold text-base text-[#35271e]">
-                {selectedNode.name}
-              </h3>
-            </div>
-            <button
-              onClick={() => setSelectedNode(null)}
-              className="text-xs font-bold text-[#713c3d] hover:underline px-2 py-0.5 cursor-pointer"
-            >
-              Cerrar detalle
-            </button>
-          </div>
-          <p className="mt-1 text-xs text-[#443224]">{selectedNode.description}</p>
-          <div className="mt-2 flex flex-wrap gap-1">
-            <span className="text-[11px] font-bold text-[#5b412d]">Mercancías y saberes:</span>
-            {selectedNode.goods.map((good, i) => (
-              <span
-                key={i}
-                className="rounded border border-[#5b412d]/40 bg-[#dfceaa] px-1.5 py-0.5 text-[10px] text-[#2a2118]"
-              >
-                {good}
-              </span>
-            ))}
-          </div>
         </div>
       )}
     </div>

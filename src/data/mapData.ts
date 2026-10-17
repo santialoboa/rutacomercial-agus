@@ -3,101 +3,115 @@ import type { MapNode, MapRoute } from '../types/game';
 export const MAP_NODES: MapNode[] = [
   {
     id: 'china',
-    name: "Chang'an y Quanzhou",
+    name: "Chang'an (Xi'an)",
     region: 'China Imperial',
-    x: 88,
-    y: 52,
-    description: 'Punto de partida de la seda, el papel primigenio y la fina porcelana que partía hacia el oeste.',
-    goods: ['Seda', 'Porcelana', 'Papel'],
+    x: 89.5,
+    y: 47.5,
+    description: 'Punto de partida oriental de la Ruta de la Seda. De aquí partían caravanas con fardos de seda cruda, papel y fina porcelana imperial hacia Occidente.',
+    goods: ['Seda Imperial', 'Porcelana Fina', 'Papel y Saberes'],
     cardAssociated: 0
   },
   {
+    id: 'dunhuang',
+    name: 'Dunhuang (Cuevas de Mogao)',
+    region: 'Frontera del Desierto de Taklamakan',
+    x: 79.0,
+    y: 39.2,
+    description: 'Oasis místico donde la ruta se bifurca alrededor del temible desierto del Taklamakan. Punto de descanso para caravanas de camellos.',
+    goods: ['Seda', 'Jade', 'Manuscritos budistas'],
+    cardAssociated: 0
+  },
+  {
+    id: 'kashgar',
+    name: 'Kashgar (Cruce de Oasis)',
+    region: 'Cuenca del Tarim',
+    x: 64.0,
+    y: 39.2,
+    description: 'El gran punto de encuentro al pie de las montañas del Pamir, donde se reunían mercaderes chinos, persas y sogdianos.',
+    goods: ['Alfombras', 'Frutas secas', 'Caballos ferghana'],
+    cardAssociated: 1
+  },
+  {
     id: 'samarkand',
-    name: 'Samarcanda y Oasis',
-    region: 'Asia Central',
-    x: 65,
-    y: 44,
-    description: 'Cruce de caminos donde confluían mercaderes sogdianos, molinos de papel y caravanas de camellos bactrianos.',
-    goods: ['Papel artesanal', 'Telas finas', 'Caballos'],
+    name: 'Samarcanda y Oasis de Sogdiana',
+    region: 'Asia Central (Uzbekistán actual)',
+    x: 57.2,
+    y: 41.0,
+    description: 'Corazón palpitante de la ruta terrestre. Célebre por sus bazares monumentales, molinos de papel junto al río y mercaderes políglotas.',
+    goods: ['Papel artesanal', 'Seda', 'Vidrio y Cerámica'],
     cardAssociated: 1
   },
   {
     id: 'india',
-    name: 'Calicut y Valle del Ganges',
-    region: 'Subcontinente Indio',
-    x: 72,
-    y: 68,
-    description: 'Cuna de las ricas especias, del álgebra y de los números posicionales con el concepto del cero.',
-    goods: ['Pimienta', 'Canela', 'Numeración indoarábiga'],
+    name: 'Mumbai y Rutas de la India',
+    region: 'Costa de Malabar y Valle del Indo',
+    x: 61.5,
+    y: 69.5,
+    description: 'Cuna de las más codiciadas especias (pimienta negra, canela, clavo) y de la matemática posicional con las cifras indoarábigas y el cero.',
+    goods: ['Pimienta Negra', 'Canela', 'Cifras Indoarábigas'],
     cardAssociated: 3
   },
   {
     id: 'baghdad',
-    name: 'Bagdad y Damasco',
-    region: 'Mundo Islámico',
-    x: 48,
-    y: 46,
-    description: 'Grandes centros de estudio, bibliotecas, hospitales (Bimaristán) y debate científico intercultural.',
-    goods: ['Tratados de medicina', 'Astronomía', 'Traducciones'],
+    name: 'Bagdad (Casa de la Sabiduría)',
+    region: 'Mesopotamia y Mundo Islámico',
+    x: 39.5,
+    y: 51.5,
+    description: 'Metrópolis cultural donde confluían la ciencia griega, persa e india. Famosa por sus grandes hospitales (Bimaristán), bibliotecas y observatorios.',
+    goods: ['Tratados de Medicina', 'Astrolabios', 'Textiles de Damasco'],
     cardAssociated: 4
   },
   {
     id: 'alexandria',
     name: 'Alejandría y El Cairo',
     region: 'Egipto y Mediterráneo Oriental',
-    x: 40,
-    y: 54,
-    description: 'El puerto bisagra entre las rutas marítimas del Mar Rojo y las flotas mercantes del Mediterráneo.',
+    x: 30.5,
+    y: 54.5,
+    description: 'Puerto estratégico que conecta el comercio marítimo del Mar Rojo e Índico con las galeras mercantes europeas que navegaban hacia Italia.',
     goods: ['Especias de ultramar', 'Lino', 'Noticias marítimas'],
     cardAssociated: 5
   },
   {
     id: 'caffa_constantinople',
     name: 'Constantinopla y Caffa',
-    region: 'Mar Negro y Estrechos',
-    x: 41,
-    y: 36,
-    description: 'Puertos estratégicos de conexión con las estepas; en 1347, naves genovesas zarpan portando la peste.',
-    goods: ['Trigo', 'Pieles', 'Rumores de epidemia'],
+    region: 'Mar Negro y Estrechos del Bósforo',
+    x: 29.5,
+    y: 37.5,
+    description: 'Puerta entre Europa y Asia. En 1347, desde el puerto de Caffa en Crimea, naves genovesas parten portando el germen de la peste hacia el Mediterráneo.',
+    goods: ['Trigo', 'Pieles de estepa', 'Rumores de epidemia'],
     cardAssociated: 6
   },
   {
     id: 'venice_genoa',
     name: 'Venecia y Génova',
     region: 'Europa Mediterránea',
-    x: 28,
-    y: 35,
-    description: 'Repúblicas marítimas cuyos navíos dominaban el comercio de lujo y redistribuían mercancías hacia el interior europeo.',
-    goods: ['Paños de lana', 'Plata', 'Vidrio veneciano']
-  },
-  {
-    id: 'timbuktu',
-    name: 'Tombuctú y Reinos del Níger',
-    region: 'África Occidental',
-    x: 20,
-    y: 66,
-    description: 'Grandes emporios del oro y la sal que cruzaban el desierto del Sáhara en caravanas transaharianas.',
-    goods: ['Oro de Mali', 'Sal del Sáhara', 'Manuscritos']
+    x: 17.2,
+    y: 30.5,
+    description: 'Poderosas repúblicas marítimas que controlaban el comercio de lujo en Europa occidental y redistribuían la seda y las especias hacia el norte.',
+    goods: ['Vidrio veneciano', 'Paños de lana', 'Moneda de plata']
   },
   {
     id: 'fez',
-    name: 'Fez y El Magreb',
-    region: 'Norte de África',
-    x: 18,
-    y: 46,
-    description: 'Punto de llegada de las caravanas saharianas y salida hacia el Mediterráneo andalusí e italiano.',
-    goods: ['Cuero', 'Oro procesado', 'Aceite']
+    name: 'Valencia y Puertos del Oeste',
+    region: 'Península Ibérica y Magreb',
+    x: 8.2,
+    y: 41.2,
+    description: 'Extremo occidental del circuito comercial euroasiático. Enclave de intercambio entre el mundo islámico andalusí y los reinos cristianos.',
+    goods: ['Cuero', 'Cerámica mudéjar', 'Aceite']
   }
 ];
 
 export const MAP_ROUTES: MapRoute[] = [
-  // Ruta de la Seda Terrestre
-  { from: 'china', to: 'samarkand', type: 'terrestrial', label: 'Ruta de la Seda (Desierto de Gobi y Taklamakan)' },
-  { from: 'samarkand', to: 'baghdad', type: 'terrestrial', label: 'Ruta de Persia a Mesopotamia', activeUntilCard: 2 },
+  // Ruta de la Seda Terrestre Principal
+  { from: 'china', to: 'dunhuang', type: 'terrestrial', label: 'Ruta de la Seda (Desierto de Gobi y Taklamakan)' },
+  { from: 'dunhuang', to: 'kashgar', type: 'terrestrial', label: 'Bifurcación de la Cuenca del Tarim' },
+  { from: 'kashgar', to: 'samarkand', type: 'terrestrial', label: 'Paso del Pamir hacia Samarcanda', activeUntilCard: 1 },
+  { from: 'samarkand', to: 'baghdad', type: 'terrestrial', label: 'Meseta Iraní y Ruta a Mesopotamia', activeUntilCard: 2 },
   { from: 'baghdad', to: 'caffa_constantinople', type: 'terrestrial', label: 'Ruta a los Estrechos y Mar Negro', activeUntilCard: 4 },
-  { from: 'baghdad', to: 'alexandria', type: 'terrestrial', label: 'Caravanas de Siria y Palestina', activeUntilCard: 4 },
+  { from: 'baghdad', to: 'alexandria', type: 'terrestrial', label: 'Caravanas de Siria y Levante', activeUntilCard: 4 },
 
-  // Rutas Marítimas del Océano Índico
+  // Ramal hacia India y Rutas Marítimas del Océano Índico
+  { from: 'samarkand', to: 'india', type: 'terrestrial', label: 'Paso del Hindu Kush hacia la India', activeUntilCard: 3 },
   { from: 'china', to: 'india', type: 'maritime', label: 'Ruta de los Juncos y Vientos Monzónicos' },
   { from: 'india', to: 'baghdad', type: 'maritime', label: 'Navegación por el Golfo Pérsico' },
   { from: 'india', to: 'alexandria', type: 'maritime', label: 'Navegación por el Mar Rojo', activeUntilCard: 5 },
@@ -106,11 +120,7 @@ export const MAP_ROUTES: MapRoute[] = [
   { from: 'alexandria', to: 'venice_genoa', type: 'maritime', label: 'Flotas comerciales del Mediterráneo', activeUntilCard: 5 },
   { from: 'caffa_constantinople', to: 'venice_genoa', type: 'maritime', label: 'Ruta marítima de galeras genovesas', activeUntilCard: 6 },
   { from: 'caffa_constantinople', to: 'alexandria', type: 'maritime', label: 'Circuito del Mediterráneo Oriental' },
-
-  // Rutas Transaharianas
-  { from: 'timbuktu', to: 'fez', type: 'transsaharan', label: 'Caravanas del Oro y la Sal a través del Sáhara' },
-  { from: 'fez', to: 'alexandria', type: 'terrestrial', label: 'Vía del Litoral Norteafricano' },
-  { from: 'fez', to: 'venice_genoa', type: 'maritime', label: 'Navegación al Estrecho de Gibraltar' }
+  { from: 'venice_genoa', to: 'fez', type: 'maritime', label: 'Navegación hacia el Mediterráneo Occidental' }
 ];
 
 export const CARD_LOCATIONS: Record<number, { nodeId: string; title: string }> = {

@@ -12,7 +12,6 @@ export const MedievalMusicPlayer: React.FC<MedievalMusicPlayerProps> = ({ classN
     const saved = localStorage.getItem('caravan_music_volume');
     return saved !== null ? parseInt(saved, 10) : 60;
   });
-  const [showVideoPreview, setShowVideoPreview] = useState<boolean>(false);
   const videoId = 'y_6yOVqZif8'; // 1 hora de música medieval para concentración
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -137,36 +136,18 @@ export const MedievalMusicPlayer: React.FC<MedievalMusicPlayerProps> = ({ classN
             </p>
           </div>
 
-          {/* Play / Pause & YouTube link */}
+          {/* Play / Pause button */}
           <div className="flex items-center justify-between gap-2 bg-[#eadbb8]/70 rounded-xl p-2.5 border border-[#5b412d]/20 mb-3">
             <button
               onClick={togglePlay}
-              className={`flex-1 py-1.5 px-3 rounded-lg font-serif font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              className={`w-full py-2 px-3 rounded-lg font-serif font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${
                 isPlaying
                   ? 'border border-[#713c3d] bg-[#713c3d] text-[#fff6df] shadow'
                   : 'border border-[#5b412d] bg-[#dfceaa] text-[#35271e] hover:bg-[#d5c298]'
               }`}
             >
-              <span>{isPlaying ? '⏸ Pausar Música' : '▶ Reproducir'}</span>
+              <span>{isPlaying ? '⏸ Pausar Música Medieval' : '▶ Reproducir Música Medieval'}</span>
             </button>
-
-            <button
-              onClick={() => setShowVideoPreview(!showVideoPreview)}
-              title={showVideoPreview ? 'Ocultar video' : 'Mostrar ventana del video'}
-              className="rounded-lg border border-[#5b412d]/40 bg-[#dfceaa] hover:bg-[#d5c298] px-2.5 py-1.5 text-xs font-serif font-semibold text-[#35271e] cursor-pointer"
-            >
-              {showVideoPreview ? '🗖 Ocultar' : '🗖 Ver Video'}
-            </button>
-
-            <a
-              href={`https://www.youtube.com/watch?v=${videoId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Abrir en YouTube en pestaña aparte"
-              className="rounded-lg border border-[#5b412d]/40 bg-[#dfceaa] hover:bg-[#d5c298] p-1.5 text-xs font-serif text-[#35271e] cursor-pointer"
-            >
-              ↗
-            </a>
           </div>
 
           {/* VOLUME SLIDER SECTION */}
@@ -241,19 +222,6 @@ export const MedievalMusicPlayer: React.FC<MedievalMusicPlayerProps> = ({ classN
             </div>
           </div>
 
-          {/* Optional Embedded Video View directly in popover */}
-          {showVideoPreview && (
-            <div className="mt-2 rounded-xl overflow-hidden border-2 border-[#5b412d] aspect-[16/9] shadow-md bg-black">
-              <iframe
-                width="100%"
-                height="100%"
-                src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=${isPlaying ? 1 : 0}&enablejsapi=1&controls=1`}
-                title="Reproductor de Música Medieval"
-                allow="autoplay"
-              />
-            </div>
-          )}
-
           {/* Helper hint */}
           <p className="text-[10px] font-serif text-[#5b412d]/80 text-center italic mt-1">
             Música instrumental de fondo continua sin anuncios intermedios.
@@ -262,7 +230,7 @@ export const MedievalMusicPlayer: React.FC<MedievalMusicPlayerProps> = ({ classN
       )}
 
       {/* Persistent Background YouTube Audio Iframe */}
-      {isPlaying && !showVideoPreview && (
+      {isPlaying && (
         <div className="hidden pointer-events-none opacity-0">
           <iframe
             ref={iframeRef}

@@ -132,9 +132,14 @@ export const ChronicleSummary: React.FC<ChronicleSummaryProps> = ({
               sounds.playParchment();
               onOpenMap();
             }}
-            className="rounded-xl border-2 border-[#5b412d] bg-[#eadbb8] hover:bg-[#d8c39a] px-5 py-3 font-serif font-bold text-base text-[#35271e] shadow cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-xl border-2 border-[#5b412d] bg-[#eadbb8] hover:bg-[#d8c39a] hover:border-[#713c3d] px-5 py-3 font-serif font-bold text-base text-[#35271e] shadow transition-all hover:scale-105 cursor-pointer group"
           >
-            🗺️ Revisar Mapa del Recorrido
+            <img
+              src="/images/icon_map.jpg"
+              alt="Mapa"
+              className="w-6 h-6 rounded object-cover border border-[#5b412d]/50 group-hover:rotate-6 transition-transform"
+            />
+            <span>Revisar Mapa del Recorrido</span>
           </button>
 
           <MedievalButton

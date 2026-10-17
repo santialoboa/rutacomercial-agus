@@ -93,9 +93,28 @@ export const StoryCardView: React.FC<StoryCardViewProps> = ({
             </div>
           </div>
 
-          <h2 className="font-serif font-black text-2xl sm:text-4xl text-[#35271e] mt-2 leading-tight">
-            {card.title}
-          </h2>
+          <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 mt-2">
+            <h2 className="font-serif font-black text-2xl sm:text-4xl text-[#35271e] leading-tight">
+              {card.title}
+            </h2>
+
+            {/* Shortcut button to open map */}
+            <button
+              onClick={() => {
+                sounds.playParchment();
+                onOpenMap();
+              }}
+              title="Abrir el Mapa interactivo de la Ruta de la Seda"
+              className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl border-2 border-[#5b412d] bg-[#dfceaa] hover:bg-[#eadbb8] hover:border-[#713c3d] text-[#35271e] hover:text-[#713c3d] font-serif font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 group select-none"
+            >
+              <img
+                src="/images/icon_map.jpg"
+                alt="Mapa"
+                className="w-6 h-6 sm:w-7 sm:h-7 rounded-md object-cover border border-[#5b412d]/50 shadow-xs group-hover:rotate-6 transition-transform"
+              />
+              <span>Ver Mapa</span>
+            </button>
+          </div>
         </div>
 
         {/* Two Columns: Visual & Narrative */}
