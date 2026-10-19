@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { sounds } from '../../utils/audio';
 
 interface MedievalMusicPlayerProps {
@@ -14,25 +14,72 @@ export const MedievalMusicPlayer: React.FC<MedievalMusicPlayerProps> = ({ classN
   });
   const videoId = 'y_6yOVqZif8'; // 1 hora de música medieval para concentración
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const isPlayingRef = useRef<boolean>(isPlaying);
+  const volumeRef = useRef<number>(volume);
+
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
+
+  useEffect(() => {
+    volumeRef.current = volume;
+  }, [volume]);
 
   // Send command to YouTube iframe via postMessage API
   const sendYouTubeCommand = (func: string, args: (string | number | boolean)[] = []) => {
     if (iframeRef.current && iframeRef.current.contentWindow) {
-      iframeRef.current.contentWindow.postMessage(
-        JSON.stringify({
-          event: 'command',
-          func: func,
-          args: args
-        }),
-        '*'
-      );
+      try {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({
+            event: 'command',
+            func: func,
+            args: args
+          }),
+          '*'
+        );
+      } catch {
+        // Silently catch cross-origin postMessage restrictions
+      }
     }
+  };
+
+  // Start playing music with staggered retries for iframe readiness
+  const startPlaying = () => {
+    setIsPlaying(true);
+    isPlayingRef.current = true;
+    localStorage.setItem('caravan_music_user_paused', 'false');
+    localStorage.setItem('caravan_music_active', 'true');
+
+    sendYouTubeCommand('unMute');
+    sendYouTubeCommand('setVolume', [volumeRef.current]);
+    sendYouTubeCommand('playVideo');
+
+    setTimeout(() => {
+      sendYouTubeCommand('unMute');
+      sendYouTubeCommand('setVolume', [volumeRef.current]);
+      sendYouTubeCommand('playVideo');
+    }, 400);
+
+    setTimeout(() => {
+      sendYouTubeCommand('setVolume', [volumeRef.current]);
+      sendYouTubeCommand('playVideo');
+    }, 1000);
+  };
+
+  // Pause playing music
+  const pausePlaying = () => {
+    setIsPlaying(false);
+    isPlayingRef.current = false;
+    localStorage.setItem('caravan_music_user_paused', 'true');
+    localStorage.setItem('caravan_music_active', 'false');
+    sendYouTubeCommand('pauseVideo');
   };
 
   // Synchronize volume on change
   const handleVolumeChange = (newVol: number) => {
     const clamped = Math.max(0, Math.min(100, newVol));
     setVolume(clamped);
+    volumeRef.current = clamped;
     localStorage.setItem('caravan_music_volume', String(clamped));
 
     if (clamped === 0) {
@@ -46,31 +93,69 @@ export const MedievalMusicPlayer: React.FC<MedievalMusicPlayerProps> = ({ classN
   // Toggle Play / Pause
   const togglePlay = () => {
     sounds.playWoodClick();
-    const nextState = !isPlaying;
-    setIsPlaying(nextState);
-    localStorage.setItem('caravan_music_active', String(nextState));
-
-    if (nextState) {
-      sendYouTubeCommand('playVideo');
-      setTimeout(() => {
-        sendYouTubeCommand('setVolume', [volume]);
-      }, 500);
+    if (isPlaying) {
+      pausePlaying();
     } else {
-      sendYouTubeCommand('pauseVideo');
+      startPlaying();
     }
   };
 
-  // Configure volume when iframe finishes loading
-  const handleIframeLoad = () => {
-    setTimeout(() => {
-      sendYouTubeCommand('setVolume', [volume]);
-      if (volume === 0) {
-        sendYouTubeCommand('mute');
+  // Auto-play as soon as entering or on first user interaction (mobile & browser policy compliant)
+  useEffect(() => {
+    const userPaused = localStorage.getItem('caravan_music_user_paused') === 'true';
+    if (userPaused) return;
+
+    const triggerAutoPlay = () => {
+      if (!isPlayingRef.current) {
+        startPlaying();
       }
-    }, 600);
+      cleanup();
+    };
+
+    const cleanup = () => {
+      window.removeEventListener('start-medieval-music', triggerAutoPlay);
+      window.removeEventListener('click', triggerAutoPlay);
+      window.removeEventListener('touchstart', triggerAutoPlay);
+      window.removeEventListener('pointerdown', triggerAutoPlay);
+    };
+
+    window.addEventListener('start-medieval-music', triggerAutoPlay);
+    window.addEventListener('click', triggerAutoPlay, { once: true });
+    window.addEventListener('touchstart', triggerAutoPlay, { once: true });
+    window.addEventListener('pointerdown', triggerAutoPlay, { once: true });
+
+    return cleanup;
+  }, []);
+
+  // Configure player when iframe finishes loading
+  const handleIframeLoad = () => {
+    // Handshake to YouTube iframe API
+    if (iframeRef.current && iframeRef.current.contentWindow) {
+      try {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: 'listening' }),
+          '*'
+        );
+      } catch {
+        // Silently catch
+      }
+    }
+
+    // If active, ensure video plays and volume is applied
     setTimeout(() => {
-      sendYouTubeCommand('setVolume', [volume]);
-    }, 1600);
+      if (isPlayingRef.current) {
+        sendYouTubeCommand('unMute');
+        sendYouTubeCommand('setVolume', [volumeRef.current]);
+        sendYouTubeCommand('playVideo');
+      }
+    }, 500);
+
+    setTimeout(() => {
+      if (isPlayingRef.current) {
+        sendYouTubeCommand('setVolume', [volumeRef.current]);
+        sendYouTubeCommand('playVideo');
+      }
+    }, 1500);
   };
 
   return (
@@ -226,24 +311,30 @@ export const MedievalMusicPlayer: React.FC<MedievalMusicPlayerProps> = ({ classN
           <p className="text-[10px] font-serif text-[#5b412d]/80 text-center italic mt-1">
             Música instrumental de fondo continua sin anuncios intermedios.
           </p>
+          <p className="text-[9px] font-serif text-[#713c3d]/90 text-center italic mt-0.5 sm:hidden">
+            💡 En dispositivos móviles el volumen principal se controla con los botones físicos del teléfono.
+          </p>
         </div>
       )}
 
       {/* Persistent Background YouTube Audio Iframe */}
-      {isPlaying && (
-        <div className="hidden pointer-events-none opacity-0">
-          <iframe
-            ref={iframeRef}
-            id="medieval-music-iframe"
-            width="200"
-            height="200"
-            src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&enablejsapi=1`}
-            title="Música Medieval de Fondo"
-            allow="autoplay"
-            onLoad={handleIframeLoad}
-          />
-        </div>
-      )}
+      {/* Off-screen but mounted in layout so mobile WebKit/Blink does not suspend background media playback */}
+      <div
+        className="fixed -bottom-40 -right-40 w-4 h-4 opacity-0 pointer-events-none overflow-hidden"
+        style={{ zIndex: -9999 }}
+        aria-hidden="true"
+      >
+        <iframe
+          ref={iframeRef}
+          id="medieval-music-iframe"
+          width="16"
+          height="16"
+          src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&playsinline=1&controls=0&disablekb=1&rel=0&loop=1&playlist=${videoId}&origin=${typeof window !== 'undefined' && window.location.origin ? encodeURIComponent(window.location.origin) : ''}`}
+          title="Música Medieval de Fondo"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          onLoad={handleIframeLoad}
+        />
+      </div>
     </div>
   );
 };

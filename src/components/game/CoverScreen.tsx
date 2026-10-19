@@ -89,6 +89,7 @@ export const CoverScreen: React.FC<CoverScreenProps> = ({ onStart }) => {
             size="huge"
             onClick={() => {
               sounds.playBell(523.25, 0.4);
+              window.dispatchEvent(new CustomEvent('start-medieval-music'));
               onStart();
             }}
           >
