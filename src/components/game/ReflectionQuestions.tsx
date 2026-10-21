@@ -3,16 +3,21 @@ import { ParchmentFrame } from '../ui/ParchmentFrame';
 import { MedievalButton } from '../ui/MedievalButton';
 import { sounds } from '../../utils/audio';
 
+import type { StoryId } from '../../types/game';
+
 interface ReflectionQuestionsProps {
   onContinueToEpilogue: () => void;
+  storyId?: StoryId;
 }
 
 export const ReflectionQuestions: React.FC<ReflectionQuestionsProps> = ({
-  onContinueToEpilogue
+  onContinueToEpilogue,
+  storyId = 'silk-road'
 }) => {
   const [activeQuestion, setActiveQuestion] = useState<number | 'all'>('all');
+  const isGoldRoad = storyId === 'gold-road';
 
-  const questions = [
+  const questionsSilkRoad = [
     {
       num: 1,
       title: 'Lo Inesperado del Camino',
@@ -32,6 +37,29 @@ export const ReflectionQuestions: React.FC<ReflectionQuestionsProps> = ({
       guidance: 'Debatan cómo la misma conectividad que enriqueció bibliotecas y mercados también permitió que una epidemia letal se extendiera por todo el mundo conocido.'
     }
   ];
+
+  const questionsGoldRoad = [
+    {
+      num: 1,
+      title: 'El Valor Real: Oro frente a la Sal',
+      question: '¿Por qué en mitad del desierto del Sahara una barra de sal gema podía valer lo mismo o más que un saco de oro puro?',
+      guidance: 'Debatan sobre la diferencia entre el valor de prestigio o moneda (el oro no se come ni se bebe) y el valor biológico de supervivencia (sin sal el cuerpo humano colapsa bajo el sol saheliano).'
+    },
+    {
+      num: 2,
+      title: 'Las Sombras del Comercio: Personas como Mercancía',
+      question: '¿Cómo convivían en una misma metrópolis como Tombuctú la alta erudición científica y las bibliotecas con la crueldad del comercio de seres humanos?',
+      guidance: 'Reflexionen sobre la dolorosa realidad histórica del tráfico transahariano de cautivos. ¿Puede una sociedad producir grandes saberes y al mismo tiempo sostener prácticas inhumanas?'
+    },
+    {
+      num: 3,
+      title: 'La Huella Africana en Europa y Oriente',
+      question: 'Si los ducados de Venecia y los tesoros de Bizancio se fabricaban con oro del África Occidental, ¿por qué la historia tradicional invisibilizó este protagonismo africano?',
+      guidance: 'Analicen cómo la riqueza del Renacimiento italiano y los imperios mediterráneos dependía de las minas de Bambuk y las caravanas del Sahel, reconociendo el papel central de África en la economía medieval.'
+    }
+  ];
+
+  const questions = isGoldRoad ? questionsGoldRoad : questionsSilkRoad;
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 flex items-center justify-center">

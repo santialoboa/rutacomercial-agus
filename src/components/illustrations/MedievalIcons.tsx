@@ -159,46 +159,108 @@ const SCENE_META = {
     alt: 'Galeras mercantes en cuarentena fondeadas frente a las murallas con guardias y teas',
     title: 'El puerto en cuarentena (Quarantena): Alerta sanitaria de 1347',
     source: 'Leyes marítimas y bandos sanitarios de los puertos de Occidente (Siglo XIV)'
+  },
+  'ghana-gold': {
+    src: '/images/card_ghana_gold.jpg',
+    alt: 'Corte del Kaya Maghan en Koumbi Saleh con perros con collares de oro, balanzas de polvo de oro y trueque de sal gema',
+    title: 'El Reino de Ghana: Monopolio del Oro y Balanza de Koumbi Saleh',
+    source: 'Crónicas de Al-Bakri — Libro de los Caminos y de los Reinos (1068)'
+  },
+  'mali-timbuktu': {
+    src: '/images/card_mali_timbuktu.jpg',
+    alt: 'Tombuctú y la mezquita de Djinguereber con sabios de Sankore, caravana del Níger y zoco con tráfico de cautivos y oro',
+    title: 'Tombuctú: Saberes de Barro, Tráfico de Cautivos y la Gran Encrucijada',
+    source: 'Códice histórico de las caravanas sahelianas y manuscritos de Tombuctú'
+  },
+  'transsahara-tunis': {
+    src: '/images/card_transsahara_tunis.jpg',
+    alt: 'Travesía del desierto del Sahara con guía Tuareg y astrolabio, llegando a las murallas y galeras del puerto de Túnez y Cartago',
+    title: 'La Travesía del Tanezrouft y el Zoco de Cartago / Túnez',
+    source: 'Itinerario de caravanas transaharianas y puertos del Magreb (Siglo XIV)'
+  },
+  'transsahara-cairo': {
+    src: '/images/card_cairo_mamluk.jpg',
+    alt: 'Llegada de la caravana de Mansa Musa a El Cairo de los mamelucos, distribuyendo oro junto al Bimaristán Mansuri',
+    title: 'El Gran Río Nilo y el Terremoto del Oro en El Cairo (1324)',
+    source: 'Crónicas de Al-Umari e Ibn Battuta — La Peregrinación Imperial de Mali'
+  },
+  'venice-ducat': {
+    src: '/images/card_venice_ducat.jpg',
+    alt: 'La Zecca de Venecia acuñando ducados de oro africano y la Plaza de San Marcos con mosaicos dorados',
+    title: 'Venecia: La Ceca de San Marcos y el Nacimiento del Ducado de Oro',
+    source: 'Archivos de la República de Venecia y gremios de orfebres (Siglo XIV)'
+  },
+  'byzantium-hyperpyron': {
+    src: '/images/card_byzantium_hyperpyron.jpg',
+    alt: 'El Basileus en Constantinopla sosteniendo el hiperpíron de oro frente a Santa Sofía y el Cuerno de Oro',
+    title: 'Constantinopla: El Hiperpíron y la Diplomacia del Oro Imperial',
+    source: 'Códices de la Corte Imperial Bizantina y Santa Sofía (Siglo XIV)'
   }
 };
 
 export const CardSceneIllustration: React.FC<{
-  type: 'market' | 'paper' | 'math' | 'medicine' | 'port' | 'plague' | 'monsoon' | 'ship-customs' | 'quarantine';
+  type:
+    | 'market'
+    | 'paper'
+    | 'math'
+    | 'medicine'
+    | 'port'
+    | 'plague'
+    | 'monsoon'
+    | 'ship-customs'
+    | 'quarantine'
+    | 'ghana-gold'
+    | 'mali-timbuktu'
+    | 'transsahara-tunis'
+    | 'transsahara-cairo'
+    | 'venice-ducat'
+    | 'byzantium-hyperpyron';
   className?: string;
 }> = ({ type, className = '' }) => {
   const meta = SCENE_META[type];
   const [isZoomed, setIsZoomed] = useState(false);
 
+  // For scenes that had outer faux borders, scale up slightly to crop borders and focus on the artwork
+  const needsCropScale = [
+    'mali-timbuktu',
+    'transsahara-tunis',
+    'transsahara-cairo',
+    'venice-ducat',
+    'byzantium-hyperpyron'
+  ].includes(type);
+
   return (
     <>
       <div
         onClick={() => setIsZoomed(true)}
-        className={`group relative overflow-hidden rounded-xl border-3 border-[#5b412d] bg-[#dfceaa] p-2.5 shadow-lg transition-transform hover:scale-[1.01] cursor-pointer ${className}`}
+        className={`group relative overflow-hidden rounded-xl border-2 sm:border-3 border-[#5b412d] bg-[#dfceaa] p-2 shadow-md transition-transform hover:scale-[1.01] cursor-pointer ${className}`}
       >
-        {/* Antique manuscript image frame */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border-2 border-[#5b412d]/60 bg-[#25231f]">
+        {/* Compact antique manuscript image frame */}
+        <div className="relative aspect-[16/10] max-h-44 sm:max-h-48 w-full overflow-hidden rounded-lg border border-[#5b412d]/70 bg-[#25231f]">
           <img
             src={meta.src}
             alt={meta.alt}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+              needsCropScale ? 'scale-[1.12]' : ''
+            }`}
             loading="lazy"
           />
 
           {/* Decorative parchment overlay vignette */}
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_30px_rgba(42,33,24,0.4)]" />
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_20px_rgba(42,33,24,0.35)]" />
 
           {/* Zoom hint badge */}
-          <div className="absolute bottom-2 right-2 rounded bg-black/60 px-2 py-0.5 text-[10px] font-serif font-bold text-[#fff6df] opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-xs">
-            🔍 Click para ampliar miniatura
+          <div className="absolute bottom-1.5 right-1.5 rounded bg-black/70 px-1.5 py-0.5 text-[9px] font-serif font-bold text-[#fff6df] opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-xs">
+            🔍 Ampliar
           </div>
         </div>
 
-        {/* Caption */}
-        <div className="mt-2 text-center">
-          <div className="font-serif font-bold text-xs sm:text-sm text-[#35271e] leading-snug">
+        {/* Compact Caption */}
+        <div className="mt-1.5 text-center px-1">
+          <div className="font-serif font-bold text-xs text-[#35271e] leading-tight line-clamp-1">
             {meta.title}
           </div>
-          <div className="font-serif text-[11px] text-[#713c3d] italic">
+          <div className="font-serif text-[10px] text-[#713c3d] italic truncate mt-0.5">
             {meta.source}
           </div>
         </div>
@@ -245,7 +307,8 @@ const CHAR_PORTRAIT_MAP: Record<string, { src: string; alt: string }> = {
   medic: { src: '/images/char_medic.jpg', alt: 'El Aprendiz de Médico' },
   flask: { src: '/images/char_medic.jpg', alt: 'El Aprendiz de Médico' },
   scholar: { src: '/images/char_scholar.jpg', alt: 'El Estudioso' },
-  scroll: { src: '/images/char_scholar.jpg', alt: 'El Estudioso' }
+  scroll: { src: '/images/char_scholar.jpg', alt: 'El Estudioso' },
+  wangara: { src: '/images/char_wangara.jpg', alt: 'El Maestro Wangara' }
 };
 
 // Character portrait with Potion Craft & Illuminated Manuscript aesthetic

@@ -30,11 +30,17 @@ export const StoryCardView: React.FC<StoryCardViewProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [card.id]);
 
-  const characterFlavorText = card.characterFlavor[character.id];
+  const characterFlavorText =
+    card.characterFlavor[character.id] ||
+    Object.values(card.characterFlavor)[0] ||
+    '';
 
-  // The 3 choices (A, B, C) are adapted to the chosen character's lens
+  // The 3 choices (A, B, C) are adapted to the chosen character's lens, with safe fallbacks
   const choicesToDisplay: GameChoice[] =
-    card.characterChoices?.[character.id] || card.choices || [];
+    card.characterChoices?.[character.id] ||
+    card.choices ||
+    Object.values(card.characterChoices || {})[0] ||
+    [];
 
   const handleSelectOption = (choice: GameChoice) => {
     sounds.playWoodClick();
@@ -66,11 +72,14 @@ export const StoryCardView: React.FC<StoryCardViewProps> = ({
     onChoiceDecided(decisionRecord);
   };
 
+  const maxCards = card.storyId === 'gold-road' ? 4 : 6;
+
   return (
     <div className="min-h-screen py-6 px-4 sm:px-6">
       {/* Top Progress Ribbon */}
       <ProgressRibbon
         currentCardNumber={card.number}
+        totalCards={maxCards}
         onOpenMap={onOpenMap}
         characterName={`${character.name} (${character.role})`}
       />
@@ -81,11 +90,21 @@ export const StoryCardView: React.FC<StoryCardViewProps> = ({
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center justify-center rounded-md border border-[#713c3d] bg-[#713c3d] px-2.5 py-0.5 text-xs font-serif font-bold text-[#fff6df]">
-                Carta {card.number}{card.branch === 'sea' ? 'M' : ''} de 6
+                Carta {card.number}{card.branch === 'sea' ? 'M' : ''} de {maxCards}
               </span>
               {card.branch === 'sea' && (
                 <span className="inline-flex items-center gap-1 rounded-md border border-[#2d6a8f] bg-[#1e5879] px-2.5 py-0.5 text-xs font-serif font-bold text-[#d4f0fc] shadow-xs">
                   <span>⛵</span> Ruta Marítima
+                </span>
+              )}
+              {card.branch === 'carthage-venice' && (
+                <span className="inline-flex items-center gap-1 rounded-md border border-[#8f6f32] bg-[#ab8841] px-2.5 py-0.5 text-xs font-serif font-bold text-[#fffdf2] shadow-xs">
+                  <span>🏛️</span> Senda de Cartago y Venecia
+                </span>
+              )}
+              {card.branch === 'egypt-byzantium' && (
+                <span className="inline-flex items-center gap-1 rounded-md border border-[#446633] bg-[#3a582c] px-2.5 py-0.5 text-xs font-serif font-bold text-[#f2ffe8] shadow-xs">
+                  <span>🕌</span> Senda de Egipto y Bizancio
                 </span>
               )}
               <span className="font-serif text-xs uppercase tracking-wider text-[#713c3d] font-bold">
@@ -123,17 +142,17 @@ export const StoryCardView: React.FC<StoryCardViewProps> = ({
         </div>
 
         {/* Two Columns: Visual & Narrative */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-6">
-          {/* Scene Illustration */}
-          <div className="md:col-span-5 flex flex-col justify-center">
-            <CardSceneIllustration type={card.illustrationType} />
-            <div className="mt-2 text-center text-xs font-serif text-[#5b412d] italic">
-              Grabado de la época — {card.location.split('—')[0]}
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 mb-5 items-start">
+          {/* Scene Illustration — Compact Miniature */}
+          <div className="md:col-span-4 flex flex-col items-center">
+            <CardSceneIllustration
+              type={card.illustrationType}
+              className="w-full max-w-[280px] mx-auto"
+            />
           </div>
 
           {/* Narrative Text */}
-          <div className="md:col-span-7 flex flex-col justify-between">
+          <div className="md:col-span-8 flex flex-col justify-between">
             <div>
               <p className="font-serif text-base sm:text-lg text-[#2a2118] leading-relaxed mb-4">
                 <span className="drop-cap">{card.intro.charAt(0)}</span>

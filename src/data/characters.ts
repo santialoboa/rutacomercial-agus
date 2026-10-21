@@ -40,5 +40,15 @@ export const CHARACTERS: Character[] = [
     avatarIcon: 'scholar',
     avatarImage: '/images/char_scholar.jpg',
     motifs: ['Pluma de oca y tintero', 'Manuscrito astronómico', 'Cifras y astrolabios', 'Papel de trapo']
+  },
+  {
+    id: 'wangara',
+    name: 'El Maestro Wangara',
+    role: 'Comercio del Oro y Caravanas del Sahara',
+    description: 'Miembro del linaje mercantil Soninke-Mandinga (los Wangara o Dyula), custodios legendarios del secreto del oro aluvial de Bambuk y maestros del comercio transahariano.',
+    perspectiveText: 'Tus dedos palpan la pureza de cada mithqal con la balanza de precisión. Conocés los oasis secretos, las leyes del monopolio real y el valor vital de la sal en el desierto.',
+    avatarIcon: 'wangara',
+    avatarImage: '/images/char_wangara.jpg',
+    motifs: ['Balanza de polvo de oro (mithqal)', 'Barra de sal de roca de Taghaza', 'Letras de crédito (suftaja)', 'Astrolabio caravanero']
   }
 ];

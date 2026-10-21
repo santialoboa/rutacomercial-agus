@@ -4,18 +4,23 @@ import { MedievalButton } from '../ui/MedievalButton';
 import { HISTORICAL_GOODS } from '../../data/goods';
 import { sounds } from '../../utils/audio';
 
+import type { StoryId } from '../../types/game';
+
 interface HistoricalEpilogueProps {
   onRestartAdventure: () => void;
   onViewChronicle: () => void;
+  storyId?: StoryId;
 }
 
 export const HistoricalEpilogue: React.FC<HistoricalEpilogueProps> = ({
   onRestartAdventure,
-  onViewChronicle
+  onViewChronicle,
+  storyId = 'silk-road'
 }) => {
   const [selectedTab, setSelectedTab] = useState<'axes' | 'goods'>('axes');
+  const isGoldRoad = storyId === 'gold-road';
 
-  const historicalAxes = [
+  const historicalAxesSilkRoad = [
     {
       num: 1,
       title: 'Las rutas como espacios de intercambio cultural',
@@ -49,6 +54,43 @@ export const HistoricalEpilogue: React.FC<HistoricalEpilogueProps> = ({
       keyQuestion: '¿Por qué la conectividad global genera enormes riquezas pero también vulnerabilidades compartidas?'
     }
   ];
+
+  const historicalAxesGoldRoad = [
+    {
+      num: 1,
+      title: 'El Monopolio del Oro y la Regulación Estatal (Ghana y Mali)',
+      summary: 'Control temprano de la masa monetaria y prevención de la inflación.',
+      details:
+        'La ley del Kaya Maghan de Ghana que confiscaba todas las pepitas de oro macizo (tibr) y permitía circular solo el polvo medido (mithqal) demostró una comprensión estatal temprana de la oferta y la demanda. Al limitar el oro en el mercado interno, los reyes africanos evitaban que el metal perdiera su valor y garantizaban el prestigio internacional de su imperio.',
+      keyQuestion: '¿Qué ocurre en una economía cuando un bien que era escaso y valioso de pronto se produce en exceso sin control?'
+    },
+    {
+      num: 2,
+      title: 'La Sal de Taghaza y la Biología Humana en el Sahara',
+      summary: 'El valor biológico de supervivencia frente al valor monetario.',
+      details:
+        'En el Sahel y el Sahara, la sal de roca no era un condimento culinario: era una medicina biológica indispensable. Sin reponer sodio, los seres humanos colapsan rápidamente por hiponatremia y golpe de calor. Por ello, las losas de sal de Taghaza se cambiaban a la par por polvo de oro. Asimismo, la presencia de la mosca tsetsé en los bosques húmedos del sur impedía la supervivencia de caballos, fijando la frontera ecológica de los imperios.',
+      keyQuestion: '¿Cómo las necesidades biológicas del cuerpo humano y el medio ambiente determinan lo que una sociedad considera valioso?'
+    },
+    {
+      num: 3,
+      title: 'El Tráfico Transahariano de Cautivos',
+      summary: 'La dimensión humana y las dolorosas fracturas del comercio a larga distancia.',
+      details:
+        'Las caravanas transaharianas no transportaban únicamente oro, sal y manuscritos: también movilizaron a miles de personas esclavizadas capturadas en razias bélicas del sur. Esta dolorosa realidad histórica exige una mirada crítica en el aula para comprender cómo las redes de riqueza medieval coexistieron con el sufrimiento humano y la desarticulación de comunidades enteras.',
+      keyQuestion: '¿Por qué es fundamental estudiar tanto los logros culturales como las violencias que atravesaron las rutas del pasado?'
+    },
+    {
+      num: 4,
+      title: 'La Devaluación de 1324 y la Huella Africana en el Mundo',
+      summary: 'Mansa Musa y la inserción de África en el corazón de la economía global.',
+      details:
+        'La famosa peregrinación de Mansa Musa a La Meca en 1324 inyectó tal cantidad de oro en El Cairo que el dinar se devaluó un 20% y causó una inflación de más de una década. Meses después, ese mismo oro abasteció la Zecca de Venecia para acuñar los célebres ducados de 24 quilates y las arcas de Bizancio, demostrando que la prosperidad del Mediterráneo y el Renacimiento dependía de las rutas de África Occidental.',
+      keyQuestion: '¿Por qué la historia mundial no puede explicarse sin reconocer el papel decisivo de los imperios africanos en el comercio global?'
+    }
+  ];
+
+  const historicalAxes = isGoldRoad ? historicalAxesGoldRoad : historicalAxesSilkRoad;
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 flex items-center justify-center">

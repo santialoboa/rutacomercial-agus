@@ -1,13 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { MAP_NODES, getCardLocation } from '../../data/mapData';
 import { HISTORICAL_GOODS } from '../../data/goods';
-import type { MapNode, StoryBranch } from '../../types/game';
+import type { MapNode, StoryBranch, StoryId } from '../../types/game';
 import { sounds } from '../../utils/audio';
 import { PotionCraftIcon } from '../illustrations/PotionCraftIcon';
 
 interface JourneyMapProps {
   currentCardNumber: number;
   branch?: StoryBranch;
+  storyId?: StoryId;
   className?: string;
   onClose?: () => void;
   isModal?: boolean;
@@ -36,9 +37,24 @@ const CARAVAN_STAGES_SEA = [
   { cardNum: 7, nodeId: 'venice_genoa', label: 'Destino', title: 'Venecia y Puertos de Europa' }
 ];
 
+const CARAVAN_STAGES_GOLD_WEST = [
+  { cardNum: 1, nodeId: 'ghana', label: 'Carta 1', title: 'Koumbi Saleh (Monopolio del Oro)' },
+  { cardNum: 2, nodeId: 'mali_timbuktu', label: 'Carta 2', title: 'Tombuctú (Saberes y Tráfico de Cautivos)' },
+  { cardNum: 3, nodeId: 'tunis_carthage', label: 'Carta 3', title: 'Túnez y Cartago (Dinares y Galeras)' },
+  { cardNum: 4, nodeId: 'venice_gold', label: 'Carta 4', title: 'Venecia (La Zecca y Ducado de Oro)' }
+];
+
+const CARAVAN_STAGES_GOLD_EAST = [
+  { cardNum: 1, nodeId: 'ghana', label: 'Carta 1', title: 'Koumbi Saleh (Monopolio del Oro)' },
+  { cardNum: 2, nodeId: 'mali_timbuktu', label: 'Carta 2', title: 'Tombuctú (Saberes y Tráfico de Cautivos)' },
+  { cardNum: 3, nodeId: 'cairo_gold', label: 'Carta 3', title: 'El Cairo (Devaluación y Bimaristán)' },
+  { cardNum: 4, nodeId: 'constantinople_gold', label: 'Carta 4', title: 'Constantinopla (Hiperpíron y Santa Sofía)' }
+];
+
 export const JourneyMap: React.FC<JourneyMapProps> = ({
   currentCardNumber,
   branch = 'land',
+  storyId = 'silk-road',
   className = '',
   onClose,
   isModal = false
@@ -50,41 +66,65 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
   const [showAllNodes, setShowAllNodes] = useState<boolean>(true);
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
-  const stages = branch === 'sea' ? CARAVAN_STAGES_SEA : CARAVAN_STAGES_LAND;
-  const currentLocationInfo = getCardLocation(currentCardNumber, branch);
+  const isGoldRoad = storyId === 'gold-road';
+  const isGoldEast = branch === 'egypt-byzantium';
+
+  const stages = isGoldRoad
+    ? (isGoldEast ? CARAVAN_STAGES_GOLD_EAST : CARAVAN_STAGES_GOLD_WEST)
+    : (branch === 'sea' ? CARAVAN_STAGES_SEA : CARAVAN_STAGES_LAND);
+
+  const currentLocationInfo = getCardLocation(currentCardNumber, branch, storyId);
   const currentNodeId = currentLocationInfo.nodeId;
-  const currentNode = MAP_NODES.find((n) => n.id === currentNodeId) || MAP_NODES[3];
+  const currentNode = MAP_NODES.find((n) => n.id === currentNodeId) || MAP_NODES[0];
 
   // Determine visited nodes up to current card
-  const visitedNodeIds = new Set<string>(['china']);
+  const visitedNodeIds = new Set<string>(isGoldRoad ? ['ghana'] : ['china']);
   for (let i = 1; i <= currentCardNumber; i++) {
-    const loc = getCardLocation(i, branch);
+    const loc = getCardLocation(i, branch, storyId);
     if (loc) {
       visitedNodeIds.add(loc.nodeId);
     }
   }
 
   // Caravan route line segments connecting visited stops
-  const journeyTrailPoints = branch === 'sea' ? [
-    { id: 'china', x: 89.5, y: 47.5, passed: true },
-    { id: 'dunhuang', x: 79.0, y: 39.2, passed: true },
-    { id: 'kashgar', x: 64.0, y: 39.2, passed: true },
-    { id: 'samarkand', x: 57.2, y: 41.0, passed: currentCardNumber >= 1 },
-    { id: 'india', x: 61.5, y: 69.5, passed: currentCardNumber >= 3 },
-    { id: 'ormuz', x: 48.0, y: 58.5, passed: currentCardNumber >= 5 },
-    { id: 'alexandria', x: 30.5, y: 54.5, passed: currentCardNumber >= 5 },
-    { id: 'venice_genoa', x: 17.2, y: 30.5, passed: currentCardNumber >= 6 }
-  ] : [
-    { id: 'china', x: 89.5, y: 47.5, passed: true },
-    { id: 'dunhuang', x: 79.0, y: 39.2, passed: true },
-    { id: 'kashgar', x: 64.0, y: 39.2, passed: true },
-    { id: 'samarkand', x: 57.2, y: 41.0, passed: currentCardNumber >= 1 },
-    { id: 'india', x: 61.5, y: 69.5, passed: currentCardNumber >= 3 },
-    { id: 'baghdad', x: 39.5, y: 51.5, passed: currentCardNumber >= 4 },
-    { id: 'alexandria', x: 30.5, y: 54.5, passed: currentCardNumber >= 5 },
-    { id: 'caffa_constantinople', x: 29.5, y: 37.5, passed: currentCardNumber >= 6 },
-    { id: 'venice_genoa', x: 17.2, y: 30.5, passed: currentCardNumber >= 7 }
-  ];
+  const journeyTrailPoints = isGoldRoad
+    ? (isGoldEast
+        ? [
+            { id: 'ghana', x: 10.5, y: 78.5, passed: currentCardNumber >= 1 },
+            { id: 'mali_timbuktu', x: 18.0, y: 74.0, passed: currentCardNumber >= 2 },
+            { id: 'fezzan', x: 26.5, y: 65.0, passed: currentCardNumber >= 3 },
+            { id: 'cairo_gold', x: 32.5, y: 53.0, passed: currentCardNumber >= 3 },
+            { id: 'constantinople_gold', x: 30.5, y: 36.5, passed: currentCardNumber >= 4 }
+          ]
+        : [
+            { id: 'ghana', x: 10.5, y: 78.5, passed: currentCardNumber >= 1 },
+            { id: 'mali_timbuktu', x: 18.0, y: 74.0, passed: currentCardNumber >= 2 },
+            { id: 'taghaza', x: 15.5, y: 59.0, passed: currentCardNumber >= 3 },
+            { id: 'tunis_carthage', x: 21.0, y: 44.0, passed: currentCardNumber >= 3 },
+            { id: 'venice_gold', x: 18.0, y: 29.5, passed: currentCardNumber >= 4 }
+          ])
+    : (branch === 'sea'
+        ? [
+            { id: 'china', x: 89.5, y: 47.5, passed: true },
+            { id: 'dunhuang', x: 79.0, y: 39.2, passed: true },
+            { id: 'kashgar', x: 64.0, y: 39.2, passed: true },
+            { id: 'samarkand', x: 57.2, y: 41.0, passed: currentCardNumber >= 1 },
+            { id: 'india', x: 61.5, y: 69.5, passed: currentCardNumber >= 3 },
+            { id: 'ormuz', x: 48.0, y: 58.5, passed: currentCardNumber >= 5 },
+            { id: 'alexandria', x: 30.5, y: 54.5, passed: currentCardNumber >= 5 },
+            { id: 'venice_genoa', x: 17.2, y: 30.5, passed: currentCardNumber >= 6 }
+          ]
+        : [
+            { id: 'china', x: 89.5, y: 47.5, passed: true },
+            { id: 'dunhuang', x: 79.0, y: 39.2, passed: true },
+            { id: 'kashgar', x: 64.0, y: 39.2, passed: true },
+            { id: 'samarkand', x: 57.2, y: 41.0, passed: currentCardNumber >= 1 },
+            { id: 'india', x: 61.5, y: 69.5, passed: currentCardNumber >= 3 },
+            { id: 'baghdad', x: 39.5, y: 51.5, passed: currentCardNumber >= 4 },
+            { id: 'alexandria', x: 30.5, y: 54.5, passed: currentCardNumber >= 5 },
+            { id: 'caffa_constantinople', x: 29.5, y: 37.5, passed: currentCardNumber >= 6 },
+            { id: 'venice_genoa', x: 17.2, y: 30.5, passed: currentCardNumber >= 7 }
+          ]);
 
   const handleNodeClick = (node: MapNode) => {
     sounds.playWoodClick();

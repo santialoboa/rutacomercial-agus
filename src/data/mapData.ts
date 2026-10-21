@@ -1,4 +1,4 @@
-import type { MapNode, MapRoute } from '../types/game';
+import type { MapNode, MapRoute, StoryBranch, StoryId } from '../types/game';
 
 export const MAP_NODES: MapNode[] = [
   {
@@ -108,6 +108,85 @@ export const MAP_NODES: MapNode[] = [
     y: 41.2,
     description: 'Extremo occidental del circuito comercial euroasiático. Enclave de intercambio entre el mundo islámico andalusí y los reinos cristianos.',
     goods: ['Cuero', 'Cerámica mudéjar', 'Aceite']
+  },
+  // Nodos de la historia especial: El Camino del Oro (África Occidental y el Sahara)
+  {
+    id: 'ghana',
+    name: 'Koumbi Saleh y Aluviones de Bambuk',
+    region: 'Imperio de Ghana (Wagadou)',
+    x: 10.5,
+    y: 78.5,
+    description: 'Capital del Señor del Oro (Kaya Maghan). Punto donde el oro fino de los aluviones fluviales de Bambuk se intercambia por barras de sal del Sahara.',
+    goods: ['Polvo de oro (mithqal)', 'Pepitas reales (tibr)', 'Sal gema'],
+    cardAssociated: 1
+  },
+  {
+    id: 'mali_timbuktu',
+    name: 'Tombuctú y el Meandro del Níger',
+    region: 'Imperio de Mali',
+    x: 18.0,
+    y: 74.0,
+    description: 'Corazón intelectual del Sahel. Destacan la mezquita de Djinguereber, la Universidad de Sankore y la gran encrucijada caravanera del Sahara.',
+    goods: ['Manuscritos de Sankore', 'Letras de crédito (suftaja)', 'Sal y Marfil'],
+    cardAssociated: 2
+  },
+  {
+    id: 'taghaza',
+    name: 'Minas de Sal de Taghaza y Tanezrouft',
+    region: 'Desierto Central del Sahara',
+    x: 15.5,
+    y: 59.0,
+    description: 'La legendaria "ciudad de sal" en el Tanezrouft (Tierra de la Sed). Donde las casas se construían con losas de sal y los guías tuareg leen los astros.',
+    goods: ['Sal de roca', 'Kohl para los ojos', 'Agua de pozo profundo']
+  },
+  {
+    id: 'tunis_carthage',
+    name: 'Túnez y Ruinas de Cartago',
+    region: 'Ifriqiya (Magreb)',
+    x: 21.0,
+    y: 44.0,
+    description: 'Gran puerto mediterráneo de los emires hafsíes. Aquí el oro africano se acuña en dinares y se embarca en galeras de mercaderes venecianos y catalanes.',
+    goods: ['Dinares de oro hafsíes', 'Paños europeos', 'Aceite y Cuero'],
+    cardAssociated: 3
+  },
+  {
+    id: 'fezzan',
+    name: 'Oasis de Bilma y Fezzan',
+    region: 'Ruta Transahariana Oriental',
+    x: 26.5,
+    y: 65.0,
+    description: 'Cadena de oasis y canales subterráneos (foggaras) que permitían a las inmensas caravanas reales de peregrinación de Mali cruzar hacia el Nilo.',
+    goods: ['Sal de Bilma', 'Dátiles frescos', 'Agua de foggara']
+  },
+  {
+    id: 'cairo_gold',
+    name: 'El Cairo y Riberas del Nilo',
+    region: 'Egipto Mameluco',
+    x: 32.5,
+    y: 53.0,
+    description: 'Mayor metrópolis de Oriente Próximo. Sede del Sultán Mameluco y el Bimaristán Mansuri. En 1324, la visita de Mansa Musa devaluó el oro durante 12 años.',
+    goods: ['Especias del Mar Rojo', 'Tratados médicos', 'Sedas de Damasco'],
+    cardAssociated: 3
+  },
+  {
+    id: 'venice_gold',
+    name: 'Venecia (La Zecca y San Marcos)',
+    region: 'Europa Mediterránea',
+    x: 18.0,
+    y: 29.5,
+    description: 'Destino final de la ruta occidental. En la Casa de la Moneda (La Zecca), el oro africano se transforma en los legendarios Ducados de oro puro de 24 quilates.',
+    goods: ['Ducados venecianos', 'Mosaicos de pan de oro', 'Letras bancarias'],
+    cardAssociated: 4
+  },
+  {
+    id: 'constantinople_gold',
+    name: 'Constantinopla (Santa Sofía y Cuerno de Oro)',
+    region: 'Imperio Bizantino',
+    x: 30.5,
+    y: 36.5,
+    description: 'Destino final de la ruta oriental. El Basileus acuña el Hiperpíron y utiliza el oro como escudo diplomático para pagar tributos y asegurar la paz del Imperio.',
+    goods: ['Hiperpíron bizantino', 'Mosaicos sacros', 'Códices de ciencia clásica'],
+    cardAssociated: 4
   }
 ];
 
@@ -132,7 +211,16 @@ export const MAP_ROUTES: MapRoute[] = [
   { from: 'alexandria', to: 'venice_genoa', type: 'maritime', label: 'Flotas comerciales del Mediterráneo', activeUntilCard: 5 },
   { from: 'caffa_constantinople', to: 'venice_genoa', type: 'maritime', label: 'Ruta marítima de galeras genovesas', activeUntilCard: 6 },
   { from: 'caffa_constantinople', to: 'alexandria', type: 'maritime', label: 'Circuito del Mediterráneo Oriental' },
-  { from: 'venice_genoa', to: 'fez', type: 'maritime', label: 'Navegación hacia el Mediterráneo Occidental' }
+  { from: 'venice_genoa', to: 'fez', type: 'maritime', label: 'Navegación hacia el Mediterráneo Occidental' },
+
+  // Rutas Transaharianas de El Camino del Oro
+  { from: 'ghana', to: 'mali_timbuktu', type: 'transsaharan', label: 'Ruta del Sahel y el río Níger' },
+  { from: 'mali_timbuktu', to: 'taghaza', type: 'transsaharan', label: 'Paso del Tanezrouft (Tierra de la Sed)' },
+  { from: 'taghaza', to: 'tunis_carthage', type: 'transsaharan', label: 'Ruta a los zocos del Magreb' },
+  { from: 'tunis_carthage', to: 'venice_gold', type: 'maritime', label: 'Galeras de San Marcos por el Adriático' },
+  { from: 'mali_timbuktu', to: 'fezzan', type: 'transsaharan', label: 'Ruta de los Oasis de Bilma' },
+  { from: 'fezzan', to: 'cairo_gold', type: 'transsaharan', label: 'Caravana Imperial de Mansa Musa al Nilo' },
+  { from: 'cairo_gold', to: 'constantinople_gold', type: 'maritime', label: 'Ruta del Mar Egeo y el Bósforo' }
 ];
 
 export const CARD_LOCATIONS_LAND: Record<number, { nodeId: string; title: string }> = {
@@ -153,7 +241,32 @@ export const CARD_LOCATIONS_SEA: Record<number, { nodeId: string; title: string 
   6: { nodeId: 'venice_genoa', title: 'Puerto Mediterráneo — Navío en Cuarentena' }
 };
 
-export function getCardLocation(cardNumber: number, branch: 'land' | 'sea' = 'land') {
+export const CARD_LOCATIONS_GOLD_WEST: Record<number, { nodeId: string; title: string }> = {
+  1: { nodeId: 'ghana', title: 'Koumbi Saleh — Corte del Señor del Oro' },
+  2: { nodeId: 'mali_timbuktu', title: 'Tombuctú — Encrucijada del Níger y Sankore' },
+  3: { nodeId: 'tunis_carthage', title: 'Túnez y Cartago — Galeras y Dinares de Oro' },
+  4: { nodeId: 'venice_gold', title: 'Venecia — La Zecca y los Ducados de Oro' }
+};
+
+export const CARD_LOCATIONS_GOLD_EAST: Record<number, { nodeId: string; title: string }> = {
+  1: { nodeId: 'ghana', title: 'Koumbi Saleh — Corte del Señor del Oro' },
+  2: { nodeId: 'mali_timbuktu', title: 'Tombuctú — Encrucijada del Níger y Sankore' },
+  3: { nodeId: 'cairo_gold', title: 'El Cairo — Riberas del Nilo y Bimaristán' },
+  4: { nodeId: 'constantinople_gold', title: 'Constantinopla — Santa Sofía y el Hiperpíron' }
+};
+
+export function getCardLocation(
+  cardNumber: number,
+  branch: StoryBranch = 'land',
+  storyId: StoryId = 'silk-road'
+) {
+  if (storyId === 'gold-road') {
+    if (branch === 'egypt-byzantium' && CARD_LOCATIONS_GOLD_EAST[cardNumber]) {
+      return CARD_LOCATIONS_GOLD_EAST[cardNumber];
+    }
+    return CARD_LOCATIONS_GOLD_WEST[cardNumber] || CARD_LOCATIONS_GOLD_WEST[1];
+  }
+
   if (branch === 'sea' && CARD_LOCATIONS_SEA[cardNumber]) {
     return CARD_LOCATIONS_SEA[cardNumber];
   }

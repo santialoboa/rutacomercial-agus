@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import type { GamePhase, Character, DecisionRecord, StoryBranch } from './types/game';
+import type { GamePhase, Character, DecisionRecord, StoryBranch, StoryId } from './types/game';
 import { CHARACTERS } from './data/characters';
 import { GAME_CARDS } from './data/cards';
+import { GOLD_ROAD_CARDS } from './data/goldRoadCards';
 import { CoverScreen } from './components/game/CoverScreen';
 import { IntroScreen } from './components/game/IntroScreen';
 import { CharacterSelection } from './components/game/CharacterSelection';
@@ -13,9 +14,10 @@ import { HistoricalEpilogue } from './components/game/HistoricalEpilogue';
 import { TeacherToolbar } from './components/ui/TeacherToolbar';
 import { sounds } from './utils/audio';
 
-const STORAGE_KEY = 'caravan_adventure_save_v1';
+const STORAGE_KEY = 'caravan_adventure_save_v2';
 
 export function App() {
+  const [activeStory, setActiveStory] = useState<StoryId>('silk-road');
   const [phase, setPhase] = useState<GamePhase>('cover');
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [currentCardNumber, setCurrentCardNumber] = useState<number>(1);
@@ -23,12 +25,16 @@ export function App() {
   const [forcedBranch, setForcedBranch] = useState<StoryBranch | null>(null);
   const [showMapModal, setShowMapModal] = useState<boolean>(false);
 
+  const isGoldRoad = activeStory === 'gold-road';
+  const maxCards = isGoldRoad ? 4 : 6;
+
   // Restore game state from localStorage on initial load
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
+        if (parsed.activeStory) setActiveStory(parsed.activeStory);
         if (parsed.phase) setPhase(parsed.phase);
         if (parsed.characterId) {
           const char = CHARACTERS.find((c) => c.id === parsed.characterId) || null;
@@ -47,6 +53,7 @@ export function App() {
   useEffect(() => {
     try {
       const stateToSave = {
+        activeStory,
         phase,
         characterId: selectedCharacter?.id || null,
         currentCardNumber,
@@ -57,12 +64,24 @@ export function App() {
     } catch {
       // Silently catch quota or privacy mode errors
     }
-  }, [phase, selectedCharacter, currentCardNumber, decisions, forcedBranch]);
+  }, [activeStory, phase, selectedCharacter, currentCardNumber, decisions, forcedBranch]);
 
-  // Determine active branch: from teacher jump (forcedBranch) or from card 3 decision (choice C = sea)
-  const card3Decision = decisions.find((d) => d.cardNumber === 3);
+  // Determine active branch:
+  // For Silk Road: decision on Card 3 (choice C = sea)
+  // For Gold Road: decision on Card 2 (choice B = egypt-byzantium, others = carthage-venice)
+  const branchDecision = isGoldRoad
+    ? decisions.find((d) => d.cardNumber === 2)
+    : decisions.find((d) => d.cardNumber === 3);
+
   const activeBranch: StoryBranch =
-    forcedBranch || (card3Decision?.choiceId === 'C' ? 'sea' : 'land');
+    forcedBranch ||
+    (isGoldRoad
+      ? branchDecision?.choiceId === 'B'
+        ? 'egypt-byzantium'
+        : 'carthage-venice'
+      : branchDecision?.choiceId === 'C'
+      ? 'sea'
+      : 'land');
 
   // Handle character choice
   const handleSelectCharacter = (char: Character) => {
@@ -70,22 +89,74 @@ export function App() {
     setPhase('map-view');
   };
 
+  // Switch between Silk Road and Gold Road stories
+  const handleSwitchStory = (story: StoryId) => {
+    setActiveStory(story);
+    setCurrentCardNumber(1);
+    setDecisions([]);
+    setForcedBranch(null);
+    if (story === 'gold-road') {
+      const wangaraChar = CHARACTERS.find((c) => c.id === 'wangara') || CHARACTERS[0];
+      setSelectedCharacter(wangaraChar);
+    } else {
+      setSelectedCharacter(CHARACTERS[0]);
+    }
+  };
+
+  const handleStartSilkRoad = () => {
+    setActiveStory('silk-road');
+    setSelectedCharacter(CHARACTERS.find((c) => c.id === 'merchant') || CHARACTERS[0]);
+    setCurrentCardNumber(1);
+    setDecisions([]);
+    setForcedBranch(null);
+    setPhase('intro');
+  };
+
+  const handleStartGoldRoad = () => {
+    setActiveStory('gold-road');
+    const wangaraChar = CHARACTERS.find((c) => c.id === 'wangara') || CHARACTERS[0];
+    setSelectedCharacter(wangaraChar);
+    setCurrentCardNumber(1);
+    setDecisions([]);
+    setForcedBranch(null);
+    setPhase('intro');
+  };
+
   // Handle decision made on a story card
   const handleChoiceDecided = (decision: DecisionRecord) => {
-    // If deciding card 3, sync forcedBranch
-    if (decision.cardNumber === 3) {
-      setForcedBranch(decision.choiceId === 'C' ? 'sea' : 'land');
+    if (isGoldRoad) {
+      if (decision.cardNumber === 2) {
+        setForcedBranch(decision.choiceId === 'B' ? 'egypt-byzantium' : 'carthage-venice');
+      }
+    } else {
+      if (decision.cardNumber === 3) {
+        setForcedBranch(decision.choiceId === 'C' ? 'sea' : 'land');
+      }
     }
 
     const updatedDecisions = decisions.filter((d) => d.cardNumber !== decision.cardNumber);
+    const branchForDecision: StoryBranch | undefined = isGoldRoad
+      ? decision.cardNumber >= 3
+        ? activeBranch
+        : decision.cardNumber === 2
+        ? decision.choiceId === 'B'
+          ? 'egypt-byzantium'
+          : 'carthage-venice'
+        : undefined
+      : decision.cardNumber >= 4
+      ? activeBranch
+      : decision.cardNumber === 3 && decision.choiceId === 'C'
+      ? 'sea'
+      : undefined;
+
     updatedDecisions.push({
       ...decision,
-      branch: decision.cardNumber >= 4 ? activeBranch : (decision.cardNumber === 3 && decision.choiceId === 'C' ? 'sea' : undefined)
+      branch: branchForDecision
     });
     updatedDecisions.sort((a, b) => a.cardNumber - b.cardNumber);
     setDecisions(updatedDecisions);
 
-    if (currentCardNumber < 6) {
+    if (currentCardNumber < maxCards) {
       setCurrentCardNumber(currentCardNumber + 1);
       setPhase('card-situation');
     } else {
@@ -109,27 +180,34 @@ export function App() {
     setCurrentCardNumber(cardNum);
     if (branch) {
       setForcedBranch(branch);
-    } else if (cardNum <= 3) {
+    } else if (isGoldRoad ? cardNum <= 2 : cardNum <= 3) {
       setForcedBranch(null);
     }
     if (!selectedCharacter) {
-      setSelectedCharacter(CHARACTERS[0]);
+      const defaultChar = isGoldRoad
+        ? CHARACTERS.find((c) => c.id === 'wangara') || CHARACTERS[0]
+        : CHARACTERS[0];
+      setSelectedCharacter(defaultChar);
     }
     setPhase('card-situation');
   };
 
   const handleJumpToPhase = (targetPhase: GamePhase) => {
     if (!selectedCharacter && targetPhase !== 'cover' && targetPhase !== 'intro') {
-      setSelectedCharacter(CHARACTERS[0]);
+      const defaultChar = isGoldRoad
+        ? CHARACTERS.find((c) => c.id === 'wangara') || CHARACTERS[0]
+        : CHARACTERS[0];
+      setSelectedCharacter(defaultChar);
     }
     setPhase(targetPhase);
   };
 
   // Current active card based on number and active branch
+  const activeCards = isGoldRoad ? GOLD_ROAD_CARDS : GAME_CARDS;
   const currentCard =
-    GAME_CARDS.find((c) => c.number === currentCardNumber && (!c.branch || c.branch === activeBranch)) ||
-    GAME_CARDS.find((c) => c.number === currentCardNumber) ||
-    GAME_CARDS[0];
+    activeCards.find((c) => c.number === currentCardNumber && (!c.branch || c.branch === activeBranch)) ||
+    activeCards.find((c) => c.number === currentCardNumber) ||
+    activeCards[0];
 
   return (
     <div className="min-h-screen bg-[#25231f] text-[#2a2118] relative overflow-x-hidden selection:bg-[#713c3d] selection:text-[#fff6df]">
@@ -138,6 +216,8 @@ export function App() {
         currentPhase={phase}
         currentCardNumber={currentCardNumber}
         currentBranch={activeBranch}
+        currentStory={activeStory}
+        onSwitchStory={handleSwitchStory}
         onJumpToCard={handleJumpToCard}
         onJumpToPhase={handleJumpToPhase}
         onResetAdventure={handleResetGame}
@@ -146,15 +226,24 @@ export function App() {
       {/* Main Screens based on active phase */}
       <main className="relative z-10">
         {phase === 'cover' && (
-          <CoverScreen onStart={() => setPhase('intro')} />
+          <CoverScreen
+            onStartSilkRoad={handleStartSilkRoad}
+            onStartGoldRoad={handleStartGoldRoad}
+          />
         )}
 
         {phase === 'intro' && (
-          <IntroScreen onContinue={() => setPhase('character-select')} />
+          <IntroScreen
+            storyId={activeStory}
+            onContinue={() => setPhase('character-select')}
+          />
         )}
 
         {phase === 'character-select' && (
-          <CharacterSelection onSelectCharacter={handleSelectCharacter} />
+          <CharacterSelection
+            storyId={activeStory}
+            onSelectCharacter={handleSelectCharacter}
+          />
         )}
 
         {phase === 'map-view' && (
@@ -163,6 +252,7 @@ export function App() {
               <JourneyMap
                 currentCardNumber={currentCardNumber}
                 branch={activeBranch}
+                storyId={activeStory}
                 className="mb-6"
               />
               <div className="flex justify-center">
@@ -184,7 +274,7 @@ export function App() {
           <StoryCardView
             key={currentCard.id}
             card={currentCard}
-            character={selectedCharacter || CHARACTERS[0]}
+            character={selectedCharacter || (isGoldRoad ? CHARACTERS.find((c) => c.id === 'wangara') || CHARACTERS[0] : CHARACTERS[0])}
             onChoiceDecided={handleChoiceDecided}
             onOpenMap={() => setShowMapModal(true)}
           />
@@ -192,7 +282,7 @@ export function App() {
 
         {phase === 'summary' && (
           <ChronicleSummary
-            character={selectedCharacter || CHARACTERS[0]}
+            character={selectedCharacter || (isGoldRoad ? CHARACTERS.find((c) => c.id === 'wangara') || CHARACTERS[0] : CHARACTERS[0])}
             decisions={decisions}
             onOpenMap={() => setShowMapModal(true)}
             onProceedToReflection={() => setPhase('reflection')}
@@ -201,12 +291,14 @@ export function App() {
 
         {phase === 'reflection' && (
           <ReflectionQuestions
+            storyId={activeStory}
             onContinueToEpilogue={() => setPhase('epilogue')}
           />
         )}
 
         {phase === 'epilogue' && (
           <HistoricalEpilogue
+            storyId={activeStory}
             onRestartAdventure={handleResetGame}
             onViewChronicle={() => setPhase('summary')}
           />
@@ -220,6 +312,7 @@ export function App() {
             <JourneyMap
               currentCardNumber={currentCardNumber}
               branch={activeBranch}
+              storyId={activeStory}
               isModal={true}
               onClose={() => setShowMapModal(false)}
             />

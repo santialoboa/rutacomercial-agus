@@ -4,15 +4,19 @@ import { sounds } from '../../utils/audio';
 
 interface ProgressRibbonProps {
   currentCardNumber: number;
+  totalCards?: number;
   onOpenMap: () => void;
   characterName?: string;
 }
 
 export const ProgressRibbon: React.FC<ProgressRibbonProps> = ({
   currentCardNumber,
+  totalCards = 6,
   onOpenMap,
   characterName
 }) => {
+  const steps = Array.from({ length: totalCards }, (_, i) => i + 1);
+
   return (
     <div className="w-full max-w-5xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border-2 border-[#5b412d]/50 bg-[#dfceaa]/80 px-4 py-2.5 shadow-md">
       {/* Character indicator */}
@@ -25,16 +29,16 @@ export const ProgressRibbon: React.FC<ProgressRibbonProps> = ({
         </span>
       </div>
 
-      {/* 6 Step Cards Indicators */}
+      {/* Step Cards Indicators */}
       <div className="flex items-center gap-1.5 sm:gap-2.5">
-        {GAME_CARDS.map((card) => {
-          const isCurrent = card.number === currentCardNumber;
-          const isCompleted = card.number < currentCardNumber;
+        {steps.map((num) => {
+          const isCurrent = num === currentCardNumber;
+          const isCompleted = num < currentCardNumber;
 
           return (
             <div
-              key={card.number}
-              title={`Carta ${card.number}: ${card.title}`}
+              key={num}
+              title={`Carta ${num}`}
               className={`flex items-center justify-center rounded-full font-serif font-bold transition-all text-xs sm:text-sm ${
                 isCurrent
                   ? 'w-7 h-7 sm:w-8 sm:h-8 border-2 border-[#501213] bg-[#713c3d] text-[#fff6df] shadow-md scale-110 ring-2 ring-[#a4864d]/60'
@@ -43,7 +47,7 @@ export const ProgressRibbon: React.FC<ProgressRibbonProps> = ({
                   : 'w-6 h-6 sm:w-7 sm:h-7 border border-[#5b412d]/40 bg-[#eadbb8]/60 text-[#5b412d]/60'
               }`}
             >
-              {isCompleted ? '✓' : card.number}
+              {isCompleted ? '✓' : num}
             </div>
           );
         })}

@@ -1,4 +1,6 @@
-export type CharacterId = 'merchant' | 'traveler' | 'medic' | 'scholar';
+export type CharacterId = 'merchant' | 'traveler' | 'medic' | 'scholar' | 'wangara';
+
+export type StoryId = 'silk-road' | 'gold-road';
 
 export interface Character {
   id: CharacterId;
@@ -11,7 +13,7 @@ export interface Character {
   motifs: string[];
 }
 
-export type StoryBranch = 'land' | 'sea';
+export type StoryBranch = 'land' | 'sea' | 'carthage-venice' | 'egypt-byzantium';
 
 export interface GameChoice {
   id: 'A' | 'B' | 'C' | 'D' | string;
@@ -27,6 +29,7 @@ export interface GameChoice {
 export interface GameCard {
   id: string;
   number: number;
+  storyId?: StoryId;
   branch?: StoryBranch;
   title: string;
   theme: string;
@@ -34,9 +37,24 @@ export interface GameCard {
   intro: string;
   prompt: string;
   teacherPrompt: string;
-  illustrationType: 'market' | 'paper' | 'math' | 'medicine' | 'port' | 'plague' | 'monsoon' | 'ship-customs' | 'quarantine';
-  characterFlavor: Record<CharacterId, string>;
-  characterChoices: Record<CharacterId, GameChoice[]>;
+  illustrationType:
+    | 'market'
+    | 'paper'
+    | 'math'
+    | 'medicine'
+    | 'port'
+    | 'plague'
+    | 'monsoon'
+    | 'ship-customs'
+    | 'quarantine'
+    | 'ghana-gold'
+    | 'mali-timbuktu'
+    | 'transsahara-tunis'
+    | 'transsahara-cairo'
+    | 'venice-ducat'
+    | 'byzantium-hyperpyron';
+  characterFlavor: Partial<Record<CharacterId, string>> & Record<string, string>;
+  characterChoices: Partial<Record<CharacterId, GameChoice[]>> & Record<string, GameChoice[]>;
   choices?: GameChoice[];
 }
 
