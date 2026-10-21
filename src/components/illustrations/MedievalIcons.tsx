@@ -141,11 +141,29 @@ const SCENE_META = {
     alt: 'El puerto en cuarentena con naves selladas, teas humeantes y el aviso de la peste',
     title: 'El heraldo de la Gran Peste Negra (1347-1348)',
     source: 'Códice histórico de las grandes epidemias y cuarentenas (Siglo XIV)'
+  },
+  monsoon: {
+    src: '/images/card_monsoon.jpg',
+    alt: 'Naves árabes e indias con velas latinas navegando el Océano Índico con astrolabio',
+    title: 'Navegación oceánica: Los Vientos del Monzón y los Dhows',
+    source: 'Tratado de navegación astronómica y mareas del Océano Índico (Siglo XIV)'
+  },
+  'ship-customs': {
+    src: '/images/card_customs.jpg',
+    alt: 'Gran aduana marítima de Ormuz con pesaje de especias, fardos y navíos fondeados',
+    title: 'El emporio marítimo de Ormuz y las leyes aduaneras del mar',
+    source: 'Crónicas del comercio de ultramar y aduanas de Oriente (Siglo XIV)'
+  },
+  quarantine: {
+    src: '/images/card_quarantine.jpg',
+    alt: 'Galeras mercantes en cuarentena fondeadas frente a las murallas con guardias y teas',
+    title: 'El puerto en cuarentena (Quarantena): Alerta sanitaria de 1347',
+    source: 'Leyes marítimas y bandos sanitarios de los puertos de Occidente (Siglo XIV)'
   }
 };
 
 export const CardSceneIllustration: React.FC<{
-  type: 'market' | 'paper' | 'math' | 'medicine' | 'port' | 'plague';
+  type: 'market' | 'paper' | 'math' | 'medicine' | 'port' | 'plague' | 'monsoon' | 'ship-customs' | 'quarantine';
   className?: string;
 }> = ({ type, className = '' }) => {
   const meta = SCENE_META[type];

@@ -11,6 +11,8 @@ export interface Character {
   motifs: string[];
 }
 
+export type StoryBranch = 'land' | 'sea';
+
 export interface GameChoice {
   id: 'A' | 'B' | 'C' | 'D' | string;
   label: string;
@@ -25,13 +27,14 @@ export interface GameChoice {
 export interface GameCard {
   id: string;
   number: number;
+  branch?: StoryBranch;
   title: string;
   theme: string;
   location: string;
   intro: string;
   prompt: string;
   teacherPrompt: string;
-  illustrationType: 'market' | 'paper' | 'math' | 'medicine' | 'port' | 'plague';
+  illustrationType: 'market' | 'paper' | 'math' | 'medicine' | 'port' | 'plague' | 'monsoon' | 'ship-customs' | 'quarantine';
   characterFlavor: Record<CharacterId, string>;
   characterChoices: Record<CharacterId, GameChoice[]>;
   choices?: GameChoice[];
@@ -40,6 +43,7 @@ export interface GameCard {
 export interface DecisionRecord {
   cardId: string;
   cardNumber: number;
+  branch?: StoryBranch;
   cardTitle: string;
   choiceId: 'A' | 'B' | 'C' | 'D' | string;
   choiceTitle: string;

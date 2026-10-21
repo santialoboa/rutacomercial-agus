@@ -52,6 +52,16 @@ export const MAP_NODES: MapNode[] = [
     cardAssociated: 3
   },
   {
+    id: 'ormuz',
+    name: 'Ormuz (Estrecho del Golfo)',
+    region: 'Golfo Pérsico y Rutas de Ultramar',
+    x: 48.0,
+    y: 58.5,
+    description: 'Enclave insular fortificado y aduana marítima clave donde convergían las flotas de perlas del Golfo, especias de la India y galeras mercantes hacia el Mar Rojo.',
+    goods: ['Perlas de Baréin', 'Incienso y Mirra', 'Especias de Ceilán'],
+    cardAssociated: 5
+  },
+  {
     id: 'baghdad',
     name: 'Bagdad (Casa de la Sabiduría)',
     region: 'Mesopotamia y Mundo Islámico',
@@ -113,7 +123,9 @@ export const MAP_ROUTES: MapRoute[] = [
   // Ramal hacia India y Rutas Marítimas del Océano Índico
   { from: 'samarkand', to: 'india', type: 'terrestrial', label: 'Paso del Hindu Kush hacia la India', activeUntilCard: 3 },
   { from: 'china', to: 'india', type: 'maritime', label: 'Ruta de los Juncos y Vientos Monzónicos' },
-  { from: 'india', to: 'baghdad', type: 'maritime', label: 'Navegación por el Golfo Pérsico' },
+  { from: 'india', to: 'ormuz', type: 'maritime', label: 'Ruta del Monzón por el Mar de Arabia', activeUntilCard: 4 },
+  { from: 'ormuz', to: 'baghdad', type: 'maritime', label: 'Navegación por el Golfo Pérsico' },
+  { from: 'ormuz', to: 'alexandria', type: 'maritime', label: 'Ruta marítima del Mar Rojo hacia Alejandría', activeUntilCard: 5 },
   { from: 'india', to: 'alexandria', type: 'maritime', label: 'Navegación por el Mar Rojo', activeUntilCard: 5 },
 
   // Rutas Marítimas del Mediterráneo
@@ -123,7 +135,7 @@ export const MAP_ROUTES: MapRoute[] = [
   { from: 'venice_genoa', to: 'fez', type: 'maritime', label: 'Navegación hacia el Mediterráneo Occidental' }
 ];
 
-export const CARD_LOCATIONS: Record<number, { nodeId: string; title: string }> = {
+export const CARD_LOCATIONS_LAND: Record<number, { nodeId: string; title: string }> = {
   1: { nodeId: 'samarkand', title: 'Samarcanda — Gran Bazar' },
   2: { nodeId: 'samarkand', title: 'Taller de Papeleros junto al Río' },
   3: { nodeId: 'india', title: 'Plaza de Cambistas y Sabios de Oriente' },
@@ -131,3 +143,21 @@ export const CARD_LOCATIONS: Record<number, { nodeId: string; title: string }> =
   5: { nodeId: 'alexandria', title: 'Alejandría — Dársena de Galeras' },
   6: { nodeId: 'caffa_constantinople', title: 'Constantinopla y Caffa — Puerto en Alarma' }
 };
+
+export const CARD_LOCATIONS_SEA: Record<number, { nodeId: string; title: string }> = {
+  1: { nodeId: 'samarkand', title: 'Samarcanda — Gran Bazar' },
+  2: { nodeId: 'samarkand', title: 'Taller de Papeleros junto al Río' },
+  3: { nodeId: 'india', title: 'Plaza de Cambistas y Sabios de Oriente' },
+  4: { nodeId: 'india', title: 'Océano Índico y Malabar — Vientos del Monzón' },
+  5: { nodeId: 'ormuz', title: 'Estrecho de Ormuz — Aduana Marítima del Golfo' },
+  6: { nodeId: 'venice_genoa', title: 'Puerto Mediterráneo — Navío en Cuarentena' }
+};
+
+export function getCardLocation(cardNumber: number, branch: 'land' | 'sea' = 'land') {
+  if (branch === 'sea' && CARD_LOCATIONS_SEA[cardNumber]) {
+    return CARD_LOCATIONS_SEA[cardNumber];
+  }
+  return CARD_LOCATIONS_LAND[cardNumber] || CARD_LOCATIONS_LAND[1];
+}
+
+export const CARD_LOCATIONS = CARD_LOCATIONS_LAND;

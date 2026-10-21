@@ -81,8 +81,13 @@ export const StoryCardView: React.FC<StoryCardViewProps> = ({
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center justify-center rounded-md border border-[#713c3d] bg-[#713c3d] px-2.5 py-0.5 text-xs font-serif font-bold text-[#fff6df]">
-                Carta {card.number} de 6
+                Carta {card.number}{card.branch === 'sea' ? 'M' : ''} de 6
               </span>
+              {card.branch === 'sea' && (
+                <span className="inline-flex items-center gap-1 rounded-md border border-[#2d6a8f] bg-[#1e5879] px-2.5 py-0.5 text-xs font-serif font-bold text-[#d4f0fc] shadow-xs">
+                  <span>⛵</span> Ruta Marítima
+                </span>
+              )}
               <span className="font-serif text-xs uppercase tracking-wider text-[#713c3d] font-bold">
                 {card.theme}
               </span>

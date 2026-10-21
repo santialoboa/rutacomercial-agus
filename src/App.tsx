@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { GamePhase, Character, DecisionRecord } from './types/game';
+import type { GamePhase, Character, DecisionRecord, StoryBranch } from './types/game';
 import { CHARACTERS } from './data/characters';
 import { GAME_CARDS } from './data/cards';
 import { CoverScreen } from './components/game/CoverScreen';
@@ -20,6 +20,7 @@ export function App() {
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [currentCardNumber, setCurrentCardNumber] = useState<number>(1);
   const [decisions, setDecisions] = useState<DecisionRecord[]>([]);
+  const [forcedBranch, setForcedBranch] = useState<StoryBranch | null>(null);
   const [showMapModal, setShowMapModal] = useState<boolean>(false);
 
   // Restore game state from localStorage on initial load
@@ -35,6 +36,7 @@ export function App() {
         }
         if (parsed.currentCardNumber) setCurrentCardNumber(parsed.currentCardNumber);
         if (parsed.decisions) setDecisions(parsed.decisions);
+        if (parsed.forcedBranch) setForcedBranch(parsed.forcedBranch);
       }
     } catch {
       // Gracefully start fresh if stored data is corrupted
@@ -48,13 +50,19 @@ export function App() {
         phase,
         characterId: selectedCharacter?.id || null,
         currentCardNumber,
-        decisions
+        decisions,
+        forcedBranch
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
     } catch {
       // Silently catch quota or privacy mode errors
     }
-  }, [phase, selectedCharacter, currentCardNumber, decisions]);
+  }, [phase, selectedCharacter, currentCardNumber, decisions, forcedBranch]);
+
+  // Determine active branch: from teacher jump (forcedBranch) or from card 3 decision (choice C = sea)
+  const card3Decision = decisions.find((d) => d.cardNumber === 3);
+  const activeBranch: StoryBranch =
+    forcedBranch || (card3Decision?.choiceId === 'C' ? 'sea' : 'land');
 
   // Handle character choice
   const handleSelectCharacter = (char: Character) => {
@@ -64,8 +72,16 @@ export function App() {
 
   // Handle decision made on a story card
   const handleChoiceDecided = (decision: DecisionRecord) => {
+    // If deciding card 3, sync forcedBranch
+    if (decision.cardNumber === 3) {
+      setForcedBranch(decision.choiceId === 'C' ? 'sea' : 'land');
+    }
+
     const updatedDecisions = decisions.filter((d) => d.cardNumber !== decision.cardNumber);
-    updatedDecisions.push(decision);
+    updatedDecisions.push({
+      ...decision,
+      branch: decision.cardNumber >= 4 ? activeBranch : (decision.cardNumber === 3 && decision.choiceId === 'C' ? 'sea' : undefined)
+    });
     updatedDecisions.sort((a, b) => a.cardNumber - b.cardNumber);
     setDecisions(updatedDecisions);
 
@@ -84,12 +100,18 @@ export function App() {
     setSelectedCharacter(null);
     setCurrentCardNumber(1);
     setDecisions([]);
+    setForcedBranch(null);
     setShowMapModal(false);
   };
 
   // Teacher manual jumps
-  const handleJumpToCard = (cardNum: number) => {
+  const handleJumpToCard = (cardNum: number, branch?: StoryBranch) => {
     setCurrentCardNumber(cardNum);
+    if (branch) {
+      setForcedBranch(branch);
+    } else if (cardNum <= 3) {
+      setForcedBranch(null);
+    }
     if (!selectedCharacter) {
       setSelectedCharacter(CHARACTERS[0]);
     }
@@ -103,8 +125,11 @@ export function App() {
     setPhase(targetPhase);
   };
 
-  // Current active card
-  const currentCard = GAME_CARDS.find((c) => c.number === currentCardNumber) || GAME_CARDS[0];
+  // Current active card based on number and active branch
+  const currentCard =
+    GAME_CARDS.find((c) => c.number === currentCardNumber && (!c.branch || c.branch === activeBranch)) ||
+    GAME_CARDS.find((c) => c.number === currentCardNumber) ||
+    GAME_CARDS[0];
 
   return (
     <div className="min-h-screen bg-[#25231f] text-[#2a2118] relative overflow-x-hidden selection:bg-[#713c3d] selection:text-[#fff6df]">
@@ -112,6 +137,7 @@ export function App() {
       <TeacherToolbar
         currentPhase={phase}
         currentCardNumber={currentCardNumber}
+        currentBranch={activeBranch}
         onJumpToCard={handleJumpToCard}
         onJumpToPhase={handleJumpToPhase}
         onResetAdventure={handleResetGame}
@@ -136,6 +162,7 @@ export function App() {
             <div className="w-full max-w-5xl">
               <JourneyMap
                 currentCardNumber={currentCardNumber}
+                branch={activeBranch}
                 className="mb-6"
               />
               <div className="flex justify-center">
@@ -192,6 +219,7 @@ export function App() {
           <div className="w-full max-w-5xl my-auto animate-fadeIn">
             <JourneyMap
               currentCardNumber={currentCardNumber}
+              branch={activeBranch}
               isModal={true}
               onClose={() => setShowMapModal(false)}
             />

@@ -1,19 +1,20 @@
 import React, { useState, useRef } from 'react';
-import { MAP_NODES, CARD_LOCATIONS } from '../../data/mapData';
+import { MAP_NODES, getCardLocation } from '../../data/mapData';
 import { HISTORICAL_GOODS } from '../../data/goods';
-import type { MapNode } from '../../types/game';
+import type { MapNode, StoryBranch } from '../../types/game';
 import { sounds } from '../../utils/audio';
 import { PotionCraftIcon } from '../illustrations/PotionCraftIcon';
 
 interface JourneyMapProps {
   currentCardNumber: number;
+  branch?: StoryBranch;
   className?: string;
   onClose?: () => void;
   isModal?: boolean;
 }
 
 // Ordered stages representing the caravan's chronological adventure
-const CARAVAN_STAGES = [
+const CARAVAN_STAGES_LAND = [
   { cardNum: 0, nodeId: 'china', label: 'Partida', title: "Chang'an (China Imperial)" },
   { cardNum: 1, nodeId: 'samarkand', label: 'Carta 1', title: 'Samarcanda (Gran Bazar)' },
   { cardNum: 2, nodeId: 'samarkand', label: 'Carta 2', title: 'Samarcanda (Molinos de Papel)' },
@@ -24,8 +25,20 @@ const CARAVAN_STAGES = [
   { cardNum: 7, nodeId: 'venice_genoa', label: 'Destino', title: 'Venecia y Puertos de Europa' }
 ];
 
+const CARAVAN_STAGES_SEA = [
+  { cardNum: 0, nodeId: 'china', label: 'Partida', title: "Chang'an (China Imperial)" },
+  { cardNum: 1, nodeId: 'samarkand', label: 'Carta 1', title: 'Samarcanda (Gran Bazar)' },
+  { cardNum: 2, nodeId: 'samarkand', label: 'Carta 2', title: 'Samarcanda (Molinos de Papel)' },
+  { cardNum: 3, nodeId: 'india', label: 'Carta 3', title: 'India (Salto al Océano)' },
+  { cardNum: 4, nodeId: 'india', label: 'Carta 4M', title: 'Océano Índico (Vientos del Monzón)' },
+  { cardNum: 5, nodeId: 'ormuz', label: 'Carta 5M', title: 'Ormuz (Aduana del Golfo)' },
+  { cardNum: 6, nodeId: 'venice_genoa', label: 'Carta 6M', title: 'Puerto de Entrada (Cuarentena)' },
+  { cardNum: 7, nodeId: 'venice_genoa', label: 'Destino', title: 'Venecia y Puertos de Europa' }
+];
+
 export const JourneyMap: React.FC<JourneyMapProps> = ({
   currentCardNumber,
+  branch = 'land',
   className = '',
   onClose,
   isModal = false
@@ -37,20 +50,31 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
   const [showAllNodes, setShowAllNodes] = useState<boolean>(true);
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
-  const currentLocationInfo = CARD_LOCATIONS[currentCardNumber] || CARD_LOCATIONS[1];
+  const stages = branch === 'sea' ? CARAVAN_STAGES_SEA : CARAVAN_STAGES_LAND;
+  const currentLocationInfo = getCardLocation(currentCardNumber, branch);
   const currentNodeId = currentLocationInfo.nodeId;
   const currentNode = MAP_NODES.find((n) => n.id === currentNodeId) || MAP_NODES[3];
 
   // Determine visited nodes up to current card
   const visitedNodeIds = new Set<string>(['china']);
   for (let i = 1; i <= currentCardNumber; i++) {
-    if (CARD_LOCATIONS[i]) {
-      visitedNodeIds.add(CARD_LOCATIONS[i].nodeId);
+    const loc = getCardLocation(i, branch);
+    if (loc) {
+      visitedNodeIds.add(loc.nodeId);
     }
   }
 
   // Caravan route line segments connecting visited stops
-  const journeyTrailPoints = [
+  const journeyTrailPoints = branch === 'sea' ? [
+    { id: 'china', x: 89.5, y: 47.5, passed: true },
+    { id: 'dunhuang', x: 79.0, y: 39.2, passed: true },
+    { id: 'kashgar', x: 64.0, y: 39.2, passed: true },
+    { id: 'samarkand', x: 57.2, y: 41.0, passed: currentCardNumber >= 1 },
+    { id: 'india', x: 61.5, y: 69.5, passed: currentCardNumber >= 3 },
+    { id: 'ormuz', x: 48.0, y: 58.5, passed: currentCardNumber >= 5 },
+    { id: 'alexandria', x: 30.5, y: 54.5, passed: currentCardNumber >= 5 },
+    { id: 'venice_genoa', x: 17.2, y: 30.5, passed: currentCardNumber >= 6 }
+  ] : [
     { id: 'china', x: 89.5, y: 47.5, passed: true },
     { id: 'dunhuang', x: 79.0, y: 39.2, passed: true },
     { id: 'kashgar', x: 64.0, y: 39.2, passed: true },
@@ -67,7 +91,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
     setSelectedNode(node);
   };
 
-  const handleStageClick = (stage: typeof CARAVAN_STAGES[0]) => {
+  const handleStageClick = (stage: (typeof stages)[0]) => {
     sounds.playParchment();
     const node = MAP_NODES.find((n) => n.id === stage.nodeId);
     if (node) {
@@ -241,7 +265,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                         y1={prev.y}
                         x2={pt.x}
                         y2={pt.y}
-                        stroke={isTraversed ? '#ffd573' : '#a4864d'}
+                        stroke={isTraversed ? (branch === 'sea' ? '#5de2ff' : '#ffd573') : (branch === 'sea' ? '#356d84' : '#a4864d')}
                         strokeWidth={isTraversed ? '0.7' : '0.35'}
                         strokeDasharray={isTraversed ? '0.8 0.6' : '0.4 0.4'}
                         strokeOpacity={isTraversed ? '0.9' : '0.4'}
@@ -291,8 +315,8 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                       }`}
                     >
                       {isCurrent ? (
-                        <span className="text-sm select-none animate-bounce" role="img" aria-label="Caravana">
-                          🐪
+                        <span className="text-sm select-none animate-bounce" role="img" aria-label={branch === 'sea' && currentCardNumber >= 4 ? 'Navío' : 'Caravana'}>
+                          {branch === 'sea' && currentCardNumber >= 4 ? '⛵' : '🐪'}
                         </span>
                       ) : isVisited ? (
                         <span className="text-[10px] font-bold text-[#fffcf2]">✓</span>
@@ -320,10 +344,10 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
 
             {/* Current Position Badge pinned in corner */}
             <div className="absolute top-2.5 left-2.5 z-30 bg-[#713c3d]/95 border-2 border-[#ab8841] text-[#fff3cf] px-3 py-1.5 rounded-xl text-xs font-serif shadow-xl flex items-center gap-2 backdrop-blur-xs">
-              <span className="text-base">🐪</span>
+              <span className="text-base">{branch === 'sea' && currentCardNumber >= 4 ? '⛵' : '🐪'}</span>
               <div>
                 <span className="text-[10px] uppercase tracking-wider block text-[#ffd573] font-bold">
-                  Posición de la Caravana:
+                  {branch === 'sea' && currentCardNumber >= 4 ? 'Posición de la Flota Marina:' : 'Posición de la Caravana:'}
                 </span>
                 <strong className="text-xs sm:text-sm font-serif">
                   {currentLocationInfo.title}
@@ -336,7 +360,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
           <div className="rounded-xl border-2 border-[#5b412d]/40 bg-[#eadbb8] p-2.5 shadow-sm">
             <div className="flex items-center justify-between mb-1.5 px-1">
               <span className="text-xs font-serif uppercase tracking-wider font-bold text-[#713c3d] flex items-center gap-1.5">
-                <span>📜</span> Recorrido Cronológico de la Caravana:
+                <span>📜</span> Recorrido Cronológico del Viaje:
               </span>
               <span className="text-[11px] font-serif text-[#5b412d] italic hidden sm:inline">
                 Click en cualquier etapa para inspeccionar el lugar
@@ -344,7 +368,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-1.5">
-              {CARAVAN_STAGES.map((stage) => {
+              {stages.map((stage) => {
                 const isPassed = stage.cardNum <= currentCardNumber;
                 const isCurrentStage =
                   stage.cardNum === currentCardNumber ||

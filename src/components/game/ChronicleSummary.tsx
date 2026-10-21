@@ -79,9 +79,16 @@ export const ChronicleSummary: React.FC<ChronicleSummaryProps> = ({
                   </span>
                   <div className="flex-1">
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
-                      <span className="font-bold text-sm sm:text-base text-[#35271e]">
-                        Carta {decision.cardNumber}: {decision.cardTitle}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-sm sm:text-base text-[#35271e]">
+                          Carta {decision.cardNumber}{decision.branch === 'sea' ? 'M' : ''}: {decision.cardTitle}
+                        </span>
+                        {decision.branch === 'sea' && (
+                          <span className="text-[10px] rounded px-1.5 py-0.5 bg-[#1e5879] text-[#d4f0fc] font-serif font-bold">
+                            ⛵ Marítima
+                          </span>
+                        )}
+                      </div>
                       <span className="text-xs text-[#713c3d] font-semibold italic">
                         Opción {decision.choiceId} — {decision.choiceTitle}
                       </span>

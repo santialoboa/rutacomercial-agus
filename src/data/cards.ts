@@ -298,146 +298,146 @@ export const GAME_CARDS: GameCard[] = [
   {
     id: 'numbers-travel',
     number: 3,
-    title: 'Nuevas formas de contar',
-    theme: 'Circulación y transformación de conocimientos matemáticos',
-    location: 'Casa de comercio y escuela de cálculo',
+    title: 'Nuevas formas de contar: La Encrucijada de las Rutas',
+    theme: 'Conocimientos matemáticos, cálculo de riesgos y la elección de rutas',
+    location: 'Lonja mercantil y escuela de cálculo — Encrucijada entre el paso continental y los puertos del Índico',
     illustrationType: 'math',
-    intro: 'Al llegar a una bulliciosa casa de cambio y escuela mercantil, ven a un escriba resolviendo cálculos con una rapidez asombrosa. Sobre una tabla con arena fina no mueve fichas de ábaco, sino que traza símbolos extraños: los números del 1 al 9 y un pequeño círculo vacío que llama "sifr". Con esas pocas marcas calcula en segundos fletes, comisiones y conversiones de monedas. Los viajeros más tradicionales desconfían de esos trazos.',
-    prompt: 'El maestro calculista se ofrece a explicarles su método. ¿Cómo decide actuar el curso?',
-    teacherPrompt: '¿Un conocimiento sigue siendo exactamente el mismo cuando otras personas lo estudian, lo utilizan y lo desarrollan?',
+    intro: 'La caravana llega a una bulliciosa lonja de comercio y escuela de cálculo en la encrucijada del continente. Sobre tablas de arena y pliegos de papel, los calculistas trazan símbolos asombrosos: los nueve guarismos y el círculo vacío del cero (*sifr*). Con esas pocas marcas resuelven en segundos un debate crucial que divide a los viajeros: calcular los costos, jornadas y provisiones para continuar la marcha por tierra hacia las mesetas de Persia y Bagdad... o calcular los fletes de bodegas, las fechas de los vientos monzones y las ganancias de descender hacia los puertos del sur para cruzar el océano hacia Occidente. Dos destinos se miden sobre la arena.',
+    prompt: 'Frente a las tablas de cálculo y los mapas de la encrucijada, ¿qué decisión toma el curso para el rumbo de la expedición?',
+    teacherPrompt: '¿Cómo influyeron las matemáticas, el cálculo de riesgos y la geografía en la decisión de los viajeros medievales entre atravesar continentes por tierra o surcar los océanos?',
     characterFlavor: {
-      merchant: 'Ves con asombro cómo divide cantidades gigantescas en segundos. Con este método podrías cerrar tratos antes de que el rival saque sus cuentas.',
-      traveler: 'Te cuentan que esos números nacieron en la India, cruzaron Persia y florecieron en Bagdad. Los números también son viajeros.',
-      medic: 'Pensás en las dosis: mezclar venenos curativos en proporciones de milésimas requiere una precisión que los números romanos jamás tuvieron.',
-      scholar: 'Ese círculo vacío, el sifr... ¡representa la nada y a la vez multiplica por diez lo que toca! Es una revolución intelectual absoluta.'
+      merchant: 'Miras las tablas de cálculo en la lonja: los números comparan el costo de cien camellos cruzando la meseta persa contra el flete de un solo navío mercante en el Índico. La matemática revela el dilema entre el camino seguro de tierra o la gran apuesta del mar.',
+      traveler: 'En la posada escuchas dos relatos opuestos: los caravaneros que se preparan para los pasos rocosos hacia Bagdad y los marineros que aguardan el soplo del monzón para zarpar hacia Ormuz. Cada camino exige un coraje distinto.',
+      medic: 'Revisas las raciones calculadas por los escribas: la marcha terrestre expone a la sed del desierto y a las fatigas del polvo; la travesía marina exige racionar el agua en toneles y prevenir el escorbuto en bodegas. La salud de la expedición depende del camino elegido.',
+      scholar: 'Te asombra ver cómo los nuevos guarismos y el cero se usan para medirlo todo: leguas de marcha terrestre, fletes de bodegas y ángulos de estrellas marinas. La ciencia matemática es la brújula que decidirá si nuestro viaje continúa por tierra o por mar.'
     },
     characterChoices: {
       merchant: [
         {
           id: 'A',
           label: 'Alternativa A',
-          title: 'Aprender las cifras arábigas para calcular ventas y comisiones',
-          description: 'Piden al escriba que les enseñe a sumar y multiplicar con los nuevos dígitos en papel para calcular ganancias de forma veloz.',
-          consequence: 'Dominan las cuatro operaciones básicas en pocos días. Comprueban que pueden resolver en minutos balances que antes exigían horas de trabajo con fichas y ábacos de madera.',
-          historicalInsight: 'Los mercaderes italianos fueron los primeros europeos en adoptar las cifras indoarábigas gracias a los manuales comerciales de Fibonacci.',
-          chronicleText: 'Aprendimos las cifras indoarábigas para acelerar nuestros cálculos y balances comerciales.',
-          discoveredGoodsOrIdeas: ['Cálculo algorítmico', 'Multiplicación en papel', 'Eficiencia contable']
+          title: 'Aprender las cifras arábigas para optimizar la caravana terrestre hacia Bagdad',
+          description: 'Piden al escriba que les enseñe a sumar y multiplicar con los nuevos dígitos en papel para calcular costos de peajes y raciones, decidiendo continuar por la ruta continental hacia las ferias de Mesopotamia.',
+          consequence: 'Aceleran los balances comerciales y reducen los costos de marcha terrestre. La caravana avanza organizada hacia Bagdad con registros contables ágiles y precisos.',
+          historicalInsight: 'Los mercaderes que adoptaron el cálculo algorítmico escrito pudieron gestionar caravanas más grandes y complejas con balances detallados de pérdidas y ganancias.',
+          chronicleText: 'Aplicamos las cifras indoarábigas para optimizar los costos de nuestra caravana terrestre rumbo a Bagdad.',
+          discoveredGoodsOrIdeas: ['Cálculo algorítmico', 'Eficiencia contable terrestre', 'Cifras indoarábigas']
         },
         {
           id: 'B',
           label: 'Alternativa B',
-          title: 'Seguir usando el ábaco tradicional en el que los clientes confían',
-          description: 'Deciden mantener el tablero de cuentas griego y romano, argumentando que los clientes campesinos desconfían de garabatos raros en papel.',
-          consequence: 'Sus clientes se sienten seguros porque ven físicamente cómo se mueven las fichas sobre las líneas de madera. Sin embargo, sus cálculos siguen siendo lentos y difíciles de archivar.',
-          historicalInsight: 'Durante siglos hubo una disputa abierta entre los "abacistas" (defensores del ábaco manual) y los "algoristas" (usuarios de cifras escritas).',
-          chronicleText: 'Mantuvimos el ábaco tradicional para inspirar confianza visual en los clientes locales.',
-          discoveredGoodsOrIdeas: ['Ábaco de madera', 'Confianza mercantil tradicional', 'Disputa del cálculo']
+          title: 'Confiar en el ábaco tradicional y mantener la ruta caravanera conocida',
+          description: 'Prefieren no arriesgarse con métodos extraños ni aventurarse al mar: calculan con el ábaco de cuentas tradicional y siguen los senderos terrestres conocidos hacia Persia.',
+          consequence: 'Sus clientes y socios tradicionales confían en las cuentas visibles del ábaco de madera. Aunque el avance por tierra es lento y costoso, el camino resulta previsible.',
+          historicalInsight: 'La resistencia a las nuevas técnicas contables y el apego a las rutas tradicionales de tierra fue muy común entre los gremios mercantiles más conservadores.',
+          chronicleText: 'Mantuvimos el ábaco tradicional y la ruta terrestre de caravanas, priorizando la confianza conocida.',
+          discoveredGoodsOrIdeas: ['Ábaco tradicional', 'Ruta continental segura', 'Conservadurismo mercantil']
         },
         {
           id: 'C',
           label: 'Alternativa C',
-          title: 'Aprender a calcular intereses y reparto proporcional de ganancias',
-          description: 'Piden al maestro que les enseñe las reglas de proporción para dividir las ganancias entre socios de la caravana según el capital invertido.',
-          consequence: 'Descubren la "regla de tres" y el cálculo fraccionario. Resuelven disputas internas en la caravana con justicia matemática impecable, evitando pleitos entre mercaderes.',
-          historicalInsight: 'El desarrollo del álgebra comercial permitió formalizar sociedades mercantiles complejas con múltiples inversores distantes.',
-          chronicleText: 'Aplicamos el álgebra para repartir proporcionalmente las ganancias de la caravana.',
-          discoveredGoodsOrIdeas: ['Regla de tres comercial', 'Reparto proporcional', 'Sociedades mercantiles']
+          title: 'Calcular fletes de ultramar e invertir en la ruta marítima del Índico',
+          description: 'Al comprobar en las tablas que un solo navío mercante en el Índico carga diez veces más que la caravana a menor flete, deciden desviar su capital hacia los puertos costeros y zarpar.',
+          consequence: 'Los números no mienten: la rentabilidad del transporte marítimo supera por completo el límite de los camellos. Abandonan la tierra y embarcan sus mercancías en flotas de dhows hacia Ormuz.',
+          historicalInsight: 'El transporte marítimo en el Índico revolucionó el comercio euroasiático al permitir transportar mercancías a granel que eran inviables a lomo de animales de carga.',
+          chronicleText: 'Los cálculos demostraron la ventaja del mar: desviamos el capital a fletes navales por el Océano Índico.',
+          discoveredGoodsOrIdeas: ['Fletes navales a gran escala', 'Economía marítima', 'Ruta Marítima de la Seda']
         }
       ],
       traveler: [
         {
           id: 'A',
           label: 'Alternativa A',
-          title: 'Indagar cómo viajaron las cifras desde la India hasta Bagdad',
-          description: 'Preguntan a los estudiosos de la escuela cómo esos números cruzaron mares y desiertos y qué pueblos participaron en su desarrollo.',
-          consequence: 'Les relatan cómo sabios indios llevaron tratados astronómicos a Bagdad, donde Al-Jwarizmi los sintetizó y les añadió el álgebra. Los números son fruto de un diálogo continental.',
-          historicalInsight: 'El sistema indoarábigo no fue invento de una sola cultura, sino una construcción colectiva entre la India, el mundo islámico y el Mediterráneo.',
-          chronicleText: 'Reconstruimos el viaje de las cifras desde la India hasta las academias del mundo islámico.',
-          discoveredGoodsOrIdeas: ['Origen indoarábigo', 'Síntesis de Al-Jwarizmi', 'Diálogo intercultural']
+          title: 'Aprender a medir distancias con los números y seguir la ruta terrestre a Bagdad',
+          description: 'Piden a los escribas que les enseñen a calcular leguas diarias y raciones de agua para cruzar las mesetas montañosas hacia Mesopotamia con etapas medidas.',
+          consequence: 'Convierten la marcha de la caravana en una ruta planificada: saben con precisión cuántas leguas restan para cada oasis y caravasar en el camino hacia Bagdad.',
+          historicalInsight: 'La introducción de mediciones de distancia sistemáticas permitió planificar jornadas terrestres con mayor precisión y evitar desastres en pasos desérticos.',
+          chronicleText: 'Calculamos con exactitud las leguas y jornadas para guiar la caravana por tierra hacia Bagdad.',
+          discoveredGoodsOrIdeas: ['Medición de distancias', 'Planificación de jornadas', 'Ruta terrestre a Bagdad']
         },
         {
           id: 'B',
           label: 'Alternativa B',
-          title: 'Aprender a usar los números para medir distancias y latitudes',
-          description: 'Piden que les enseñen a calcular leguas recorridas por día y convertir lecturas del astrolabio en distancias terrestres concretas.',
-          consequence: 'Convierten la marcha de la caravana en datos precisos. Pueden estimar con exactitud cuántos días faltan para llegar a la próxima ciudad y cuánta comida necesitan.',
-          historicalInsight: 'La aplicación de las matemáticas a la geografía y navegación permitió planificar viajes a gran escala con mayor seguridad y previsión.',
-          chronicleText: 'Utilizamos los números para registrar distancias en leguas y anticipar jornadas de marcha.',
-          discoveredGoodsOrIdeas: ['Cálculo de jornadas', 'Medición de distancias', 'Planificación de ruta']
+          title: 'Confiar en la memoria oral de los guías y continuar por los pasos de tierra',
+          description: 'Sostienen que para viajar por tierra vale más la memoria de los accidentes geográficos que números en un papel; deciden seguir a los baqueanos por el camino continental.',
+          consequence: 'Mantienen su comunión con los saberes ancestrales de la ruta terrestre. La experiencia empírica de los viejos caravaneros los conduce sanos y salvos entre los pasos rocosos.',
+          historicalInsight: 'La orientación tradicional mediante accidentes geográficos, estrellas y memoria oral fue durante milenios el soporte de las caravanas de Asia Central.',
+          chronicleText: 'Seguimos la memoria oral de los guías para atravesar los pasos de montaña hacia Mesopotamia.',
+          discoveredGoodsOrIdeas: ['Memoria geográfica oral', 'Saberes ancestrales de ruta', 'Guías caravaneros']
         },
         {
           id: 'C',
           label: 'Alternativa C',
-          title: 'Continuar confiando en las marcas orales y la memoria de los guías',
-          description: 'Consideran que para viajar por desiertos vale más la memoria de los accidentes geográficos que los números abstractos en un papel.',
-          consequence: 'Mantienen su conexión intuitiva con el paisaje y las estrellas. No obstante, reconocen que sin números escritos es difícil transmitir la información a otros grupos que vengan detrás.',
-          historicalInsight: 'El saber empírico tradicional y la ciencia matemática escrita coexistieron y se complementaron en las rutas comerciales.',
-          chronicleText: 'Reafirmamos el valor de la memoria geográfica oral junto a las mediciones formales.',
-          discoveredGoodsOrIdeas: ['Memoria territorial oral', 'Saberes tradicionales', 'Orientación empírica']
+          title: 'Calcular las fechas del monzón y cambiar los camellos por un dhow marino',
+          description: 'Comprueban en las tablas de la lonja que la temporada del monzón está por comenzar; deciden descender a los puertos costeros y embarcarse con los marineros del Índico.',
+          consequence: 'Cambian las pistas de arena por las olas oceánicas. Se integran a tripulaciones políglotas guiadas por constelaciones, iniciando la travesía marina hacia los puertos de Arabia.',
+          historicalInsight: 'El calendario de navegación en el Índico estaba regido inexorablemente por los vientos monzones; calcular la temporada exacta de zarpe era cuestión de vida o muerte.',
+          chronicleText: 'Calculamos el ciclo de los vientos monzones y decidimos surcar el Océano Índico a bordo de dhows.',
+          discoveredGoodsOrIdeas: ['Vientos monzones', 'Navegación oceánica', 'Calendario de zarpe']
         }
       ],
       medic: [
         {
           id: 'A',
           label: 'Alternativa A',
-          title: 'Estudiar cómo dosificar venenos y remedios con precisión matemática',
-          description: 'Piden que les enseñen a usar las fracciones y el cero para calcular dosis de hierbas potentes como la belladona, el opio o el beleño.',
-          consequence: 'Comprueban que una gota de más en un preparado puede matar a un paciente y una de menos lo deja sin alivio. Las nuevas cifras eliminan el margen de error mortal en la botica.',
-          historicalInsight: 'La farmacología islámica medieval fue pionera en cuantificar rigurosamente las dosis de los medicamentos mediante proporciones matemáticas.',
-          chronicleText: 'Perfeccionamos las dosis farmacológicas con precisión numérica para evitar errores fatales.',
-          discoveredGoodsOrIdeas: ['Dosificación matemática', 'Farmacología cuantitativa', 'Cálculo de venenos y remedios']
+          title: 'Cuantificar las dosis botánicas con exactitud y continuar la ruta a Bagdad',
+          description: 'Aprenden a usar las fracciones y el cero para dosificar con precisión matemática los remedios de la caravana antes de internarse hacia los grandes hospitales de Bagdad.',
+          consequence: 'Eliminan los errores fatales en las mezclas de beleño y opio. El botiquín de la caravana se convierte en un modelo de farmacología cuantitativa camino al Bimaristán.',
+          historicalInsight: 'La medicina árabe medieval fue pionera mundial en fijar dosis farmacológicas ponderadas con rigurosa exactitud matemática.',
+          chronicleText: 'Estandarizamos las dosis médicas con precisión numérica para el viaje terrestre hacia Bagdad.',
+          discoveredGoodsOrIdeas: ['Farmacología cuantitativa', 'Dosificación exacta', 'Hacia el Bimaristán']
         },
         {
           id: 'B',
           label: 'Alternativa B',
-          title: 'Armonizar las tablas de pesos de las boticas de distintos reinos',
-          description: 'Utilizan las cifras para establecer equivalencias exactas entre dracmas griegas, granos árabes y onzas latinas.',
-          consequence: 'Elaboran una tabla de conversión universal para el botiquín de la caravana. Ya no habrá peligro de confundir las pesas al comprar ingredientes en ciudades distantes.',
-          historicalInsight: 'La estandarización de pesos y medidas fue una lucha científica central para la seguridad de la medicina y el comercio medieval.',
-          chronicleText: 'Elaboramos tablas de conversión de pesas botánicas para unificar recetas de diferentes países.',
-          discoveredGoodsOrIdeas: ['Estandarización de pesas', 'Tabla de equivalencias', 'Seguridad botánica']
+          title: 'Confiar en el ojo clínico directo y seguir la marcha por el interior continental',
+          description: 'Sostienen que la salud de los viajeros depende de la auscultación directa del pulso y la tez antes que de sumas abstractas; mantienen los cuidados tradicionales por tierra.',
+          consequence: 'Cuidan con devoción humana a los caravaneros fatigados por el polvo del camino. La observación atenta de los humores corporales sostiene el ánimo del grupo en la marcha.',
+          historicalInsight: 'La tradición médica hipocrática clásica priorizaba la observación atenta de los síntomas individuales y el clima frente a las abstracciones matemáticas.',
+          chronicleText: 'Cuidamos la salud de la caravana mediante la observación clínica tradicional a lo largo de la ruta de tierra.',
+          discoveredGoodsOrIdeas: ['Juicio clínico hipocrático', 'Observación sensorial', 'Medicina tradicional de viaje']
         },
         {
           id: 'C',
           label: 'Alternativa C',
-          title: 'Confiar en los sentidos del médico antes que en cifras abstractas',
-          description: 'Sostienen que la verdadera medicina se basa en oler, mirar y palpar al enfermo, no en sumas sobre arena o papel.',
-          consequence: 'Mantienen una atención clínica atenta y humana. Sin embargo, comprenden que sin números no pueden calcular epidemias ni registrar estadísticas de cuántos enfermos sobreviven.',
-          historicalInsight: 'La medicina clínica medieval combinaba la observación sensorial directa de los síntomas con los primeros intentos de cuantificación estadística.',
-          chronicleText: 'Defendimos la observación sensorial del médico frente al cálculo abstracto.',
-          discoveredGoodsOrIdeas: ['Diagnóstico sensorial', 'Juicio clínico directo', 'Medicina hipocrática']
+          title: 'Calcular raciones marítimas y descender a los puertos por las especias de ultramar',
+          description: 'Calculan en la lonja que las bodegas marinas permiten traer resinas de mirra, incienso y alcanfor fresco de las islas lejanas; deciden embarcarse por mar atendiendo a las tripulaciones.',
+          consequence: 'Descienden a los muelles del Índico en busca de los ingredientes más codiciados de la farmacopea oriental, enfrentando el desafío médico del racionamiento de agua dulce en alta mar.',
+          historicalInsight: 'Las materias médicas más selectas y exóticas solo estaban disponibles en estado puro a través de las rutas de ultramar que recalaban en los puertos del Índico y el Mar Rojo.',
+          chronicleText: 'Elegimos la ruta del mar para recolectar especias medicinales frescas de ultramar y estudiar la salud a bordo.',
+          discoveredGoodsOrIdeas: ['Especias frescas de ultramar', 'Medicina naval y estibaje', 'Incienso y alcanfor']
         }
       ],
       scholar: [
         {
           id: 'A',
           label: 'Alternativa A',
-          title: 'Copiar los nueve guarismos y estudiar el poder conceptual del cero',
-          description: 'Piden al maestro que les dicte los tratados de cálculo posicional y debaten sobre el concepto del cero (*sifr*) como espacio de la nada.',
-          consequence: 'Quedan maravillados al comprender cómo un símbolo de la nada permite multiplicar por potencias infinitas según la posición que ocupe. Es una de las cumbres del pensamiento humano.',
-          historicalInsight: 'La noción del cero posicional revolucionó la ciencia global al liberar al cálculo de las ataduras mecánicas del ábaco.',
-          chronicleText: 'Copiamos los nueve dígitos y el símbolo del cero, asimilando la revolución del valor posicional.',
-          discoveredGoodsOrIdeas: ['El concepto del cero (sifr)', 'Valor posicional', 'Tratados de aritmética']
+          title: 'Copiar los tratados de cifras y álgebra para llevarlos a las academias de Bagdad',
+          description: 'Copia con devoción los nueve guarismos y el concepto del cero (*sifr*), decidiendo llevar estos tratados matemáticos a la Casa de la Sabiduría de Bagdad para su traducción.',
+          consequence: 'Comprenden cómo la ciencia viaja en las alforjas de los sabios. El álgebra y el cálculo posicional acompañan a la caravana por tierra hacia la mayor metrópolis intelectual de la época.',
+          historicalInsight: 'Bagdad fue el centro mundial donde se tradujeron, comentaron y ampliaron los textos matemáticos de la India, dando origen al álgebra de Al-Jwarizmi.',
+          chronicleText: 'Copiamos los tratados de numeración y álgebra para llevarlos hacia los círculos académicos de Bagdad.',
+          discoveredGoodsOrIdeas: ['Concepto del cero (sifr)', 'Álgebra de Bagdad', 'Transmisión del saber por tierra']
         },
         {
           id: 'B',
           label: 'Alternativa B',
-          title: 'Debatir con los matemáticos sobre las reglas del álgebra',
-          description: 'Discuten cómo resolver ecuaciones lineales y cuadráticas buscando la "cosa desconocida" (*al-shay*, que luego originó la "x").',
-          consequence: 'El maestro les muestra cómo el álgebra permite encontrar incógnitas comerciales y geométricas mediante equilibrio lógico de ecuaciones. Copian los diagramas con reverencia.',
-          historicalInsight: 'El álgebra (*al-jabr*, restauración) fue desarrollada como rama matemática autónoma en Bagdad para resolver problemas reales de herencias y agrimensura.',
-          chronicleText: 'Debatimos sobre las leyes del álgebra y la resolución de incógnitas desconocidas.',
-          discoveredGoodsOrIdeas: ['Álgebra de Al-Jwarizmi', 'Resolución de incógnitas', 'Lógica matemática']
+          title: 'Defender la lógica del ábaco y debatir con los maestros tradicionales de la ruta',
+          description: 'Prefieren profundizar en el ábaco de líneas y las tablas de cálculo tradicionales griegas, debatiendo con los mercaderes conservadores en las posadas continentales.',
+          consequence: 'Comprueban cómo las tradiciones científicas milenarias resisten el cambio y defienden su eficacia práctica frente a las novedades abstractas a lo largo de las rutas de Asia Central.',
+          historicalInsight: 'La disputa entre abacistas y algoristas duró siglos y reflejó dos visiones opuestas sobre la ciencia, la educación y el valor de la tradición frente a la innovación.',
+          chronicleText: 'Estudiamos la resistencia del ábaco tradicional frente a las nuevas cifras escritas en la ruta continental.',
+          discoveredGoodsOrIdeas: ['Disputa abacistas vs algoristas', 'Debate pedagógico medieval', 'Tradición matemática']
         },
         {
           id: 'C',
           label: 'Alternativa C',
-          title: 'Analizar cómo viajan los libros de cálculo entre Oriente y Occidente',
-          description: 'Investigan qué textos están siendo traducidos en Toledo y Sicilia para llevar estos conocimientos a las escuelas europeas.',
-          consequence: 'Comprueban que sabios judíos, cristianos y musulmanes colaboran en las fronteras del Mediterráneo para verter estas obras del árabe al latín. La ciencia no reconoce fronteras religiosas.',
-          historicalInsight: 'Los centros de traducción medievales en Toledo y Salerno permitieron la llegada del saber matemático árabe a la Europa feudal.',
-          chronicleText: 'Rastreamos las rutas de traducción que llevaron las matemáticas árabes a las universidades europeas.',
-          discoveredGoodsOrIdeas: ['Escuelas de traducción', 'Traducción árabe-latín', 'Conocimiento sin fronteras']
+          title: 'Aplicar las matemáticas a la astronomía náutica y embarcarse hacia el océano',
+          description: 'Al ver cómo los pilotos del Índico usan la geometría y el astrolabio para calcular latitudes en alta mar, deciden abordar un navío para comprobar la ciencia en el océano.',
+          consequence: 'Suben a bordo provistos de tablas estelares y el *kamal*. Comprueban que en medio del océano las matemáticas no son teoría de biblioteca, sino la única guía viva para no naufragar.',
+          historicalInsight: 'La astronomía náutica árabe e india aplicó la trigonometría y el cálculo esférico a la navegación marina mucho antes de su adopción en la Europa medieval.',
+          chronicleText: 'Decidimos embarcarnos para aplicar las matemáticas y la astronomía náutica en las inmensidades del océano.',
+          discoveredGoodsOrIdeas: ['Astronomía náutica', 'El Kamal y astrolabio marino', 'Trigonometría aplicada']
         }
       ]
     }
@@ -445,6 +445,7 @@ export const GAME_CARDS: GameCard[] = [
   {
     id: 'city-books-remedies',
     number: 4,
+    branch: 'land',
     title: 'Curar el cuerpo, ordenar el mundo',
     theme: 'Intercambios científicos, médicos y filosóficos',
     location: 'Bimaristán y Casa de la Sabiduría',
@@ -592,6 +593,7 @@ export const GAME_CARDS: GameCard[] = [
   {
     id: 'port-many-news',
     number: 5,
+    branch: 'land',
     title: 'Un puerto hacia otras orillas',
     theme: 'Rutas marítimas, mercancías e información',
     location: 'Gran puerto marítimo del Mediterráneo oriental',
@@ -739,6 +741,7 @@ export const GAME_CARDS: GameCard[] = [
   {
     id: 'troubling-news',
     number: 6,
+    branch: 'land',
     title: 'Una noticia inquietante',
     theme: 'La Peste Negra y la propagación de enfermedades en las redes',
     location: 'El muelle en alerta al amanecer (1347)',
@@ -879,6 +882,450 @@ export const GAME_CARDS: GameCard[] = [
           historicalInsight: 'El conocimiento histórico de epidemias pasadas permitió a comunidades letradas anticipar la gravedad de la peste y tomar medidas tempranas.',
           chronicleText: 'Guiamos la retirada de la caravana inspirándonos en las lecciones de las epidemias del pasado.',
           discoveredGoodsOrIdeas: ['Lecciones de la historia', 'Memoria de la peste de Justiniano', 'Sabiduría retrospectiva']
+        }
+      ]
+    }
+  },
+  {
+    id: 'monsoon-dhows',
+    number: 4,
+    branch: 'sea',
+    title: 'Los Vientos del Monzón y los Dhows',
+    theme: 'La navegación oceánica y el dominio de los ciclos de la naturaleza',
+    location: 'En alta mar — Océano Índico y Mar de Arabia',
+    illustrationType: 'monsoon',
+    intro: 'A bordo del dhow de casco cosido con fibras de coco y calafateado con resina, la costa de la India ha desaparecido hace días tras el horizonte azul. El viento del monzón del noreste hincha con fuerza las dos grandes velas latinas triangulares, empujando la nave a una velocidad que ninguna caravana terrestre podría igualar jamás. A bordo conviven marineros indios, pilotos árabes y mercaderes persas. Sin embargo, el mar no da tregua: el agua dulce de los barriles comienza a escasear y un cielo plomizo en el horizonte anuncia una posible tempestad tropical.',
+    prompt: 'Una corriente marina empuja el navío hacia bajíos rocosos mientras el agua potable debe racionarse. ¿Cómo decide actuar el curso?',
+    teacherPrompt: '¿Por qué para navegar en el siglo XIV las personas dependían mucho más de los ciclos estacionales de la naturaleza que en los viajes terrestres?',
+    characterFlavor: {
+      merchant: 'Calculás con el corazón en la boca: un solo fardo de seda o especias que se moje con agua salada arruinará meses de trabajo, pero si llegamos intactos a puerto el beneficio multiplicará por diez la inversión.',
+      traveler: 'Escuchás los cánticos de los marineros al tensar las jarcias de la vela latina. En este barco nadie pregunta de qué reino vienes: todos dependen de la misma madera y del mismo viento.',
+      medic: 'Inspeccionás los toneles de agua: el calor y la humedad crían gusanos y verdín con rapidez pasmosa. Debes racionar y purificar el agua antes de que la disentería y el escorbuto abatan a los marineros.',
+      scholar: 'Miras al ma\'allam (piloto) elevar el kamal hacia la estrella polar. Con un trozo de madera y un cordel anudado entre los dientes, determina la latitud exacta en medio de la inmensidad marina.'
+    },
+    characterChoices: {
+      merchant: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Asegurar los fardos secos con lonas enceradas en la bodega inferior',
+          description: 'Ordenan estibar todas las sedas, clavo y canela en el centro del casco y sellarlas con doble lona embadurnada en brea para protegerlas de las olas.',
+          consequence: 'La carga queda a salvo de las salpicaduras de la tormenta. Descubren que el arte del estibaje naval es tan crucial como la navegación misma para evitar que el barco vuelque con el balanceo.',
+          historicalInsight: 'El embalaje impermeable con alquitrán y resinas vegetales era indispensable para proteger las valiosas mercancías orientales durante meses de travesía marina.',
+          chronicleText: 'Aseguramos la carga con lonas enceradas en la bodega, protegiendo las especias de la furia marina.',
+          discoveredGoodsOrIdeas: ['Estibaje naval', 'Embalaje impermeable', 'Seguridad de bodega']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Aligerar peso arrojando al agua lastre y tinajas de mercancía pesada',
+          description: 'Para ganar maniobrabilidad frente a los arrecifes, deciden soltar fardos secundarios y tinajas de cerámica menos costosas.',
+          consequence: 'El navío gana calado y el piloto logra esquivar los escollos rocosos. Aunque pierden parte del cargamento menor, salvan la vida de la tripulación y los bienes más valiosos.',
+          historicalInsight: 'La "echazón" (arrojar carga al mar para salvar el barco) era una práctica regulada por las leyes marítimas medievales, repartiendo las pérdidas equitativamente entre los mercaderes.',
+          chronicleText: 'Decidimos sacrificar lastre y carga menor para sortear los arrecifes y salvar la expedición.',
+          discoveredGoodsOrIdeas: ['Ley de echazón marina', 'Gestión de riesgos náuticos', 'Prioridad de supervivencia']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Negociar un fondo de ayuda mutua con los mercaderes a bordo',
+          description: 'Reúnen a los comerciantes de diversas naciones que viajan en el barco y pactan un fondo común para indemnizar a quien sufra pérdidas por el temporal.',
+          consequence: 'Firman un pacto solidario en pergamino. La cooperación entre rivales comerciales permite mantener la calma y trabajar codo a codo en las bombas de achique durante la tormenta.',
+          historicalInsight: 'Las hermandades mercantiles y acuerdos de avería común marítima fueron los antecesores directos de los seguros modernos en el Océano Índico y el Mediterráneo.',
+          chronicleText: 'Establecimos un pacto de avería común entre mercaderes para respaldarnos ante el temporal.',
+          discoveredGoodsOrIdeas: ['Avería común marítima', 'Solidaridad mercantil', 'Cooperación interregional']
+        }
+      ],
+      traveler: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Ayudar a la marinería a arriar velas y gobernar el timón con temporal',
+          description: 'Se suman a los marineros en cubierta para aferrar las velas latinas bajo la lluvia torrencial y sujetar la caña del timón con cabos.',
+          consequence: 'Ganan el respeto de la tripulación. Comprueban en carne propia la fuerza colosal del monzón y cómo la destreza colectiva de hombres de distintos pueblos salva al barco del desastre.',
+          historicalInsight: 'Las tripulaciones del Índico eran verdaderos mosaicos culturales donde convivían swahilis, árabes, malabares y malayos unidos por la técnica marinera.',
+          chronicleText: 'Luchamos codo a codo con la marinería bajo la tempestad para mantener a flote el navío.',
+          discoveredGoodsOrIdeas: ['Destreza marinera', 'Tripulaciones cosmopolitas', 'Resistencia oceánica']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Aprender las señas de aves y color de las aguas para avistar tierra',
+          description: 'Piden al vigía anciano que les enseñe a identificar la proximidad de islas por el vuelo de los pájaros marinos y el tono verdoso de las corrientes.',
+          consequence: 'Aprenden el saber milenario de la navegación empírica. Divisan fragatas y ramas flotantes que les indican la cercanía de un atolón seguro donde fondear.',
+          historicalInsight: 'Antes de los mapas modernos, los marinos del Índico leían la naturaleza viva: nubes sobre atolones, bandadas de aves y peces voladores señalaban tierra firme.',
+          chronicleText: 'Desciframos las señales vivas del mar (aves y corrientes) para localizar refugio en una isla.',
+          discoveredGoodsOrIdeas: ['Navegación bioindicadora', 'Saberes marítimos orales', 'Lectura de corrientes']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Registrar los relatos de naufragios y monstruos marinos de las tabernas',
+          description: 'Anotan las historias que cuentan los marineros al amparo de la noche sobre torbellinos míticos, islas de canela y peces gigantes.',
+          consequence: 'Comprenden cómo el miedo a lo desconocido modelaba la geografía fantástica medieval, donde el peligro real se transformaba en leyendas morales y mitos de advertencia.',
+          historicalInsight: 'Las crónicas marítimas medievales, como los relatos de Simbad el Marino o los libros de maravillas, mezclaban datos geográficos reales con mitología oceánica.',
+          chronicleText: 'Compilamos los mitos y leyendas de la marinería que explicaban los peligros del océano desconocido.',
+          discoveredGoodsOrIdeas: ['Mitos marinos medievales', 'Geografía fabulosa', 'Imaginario oceánico']
+        }
+      ],
+      medic: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Hervir y filtrar el agua de los toneles con carbón vegetal y clavos de olor',
+          description: 'Preparan un método de desinfección improvisado pasando el agua estancada por lienzos limpios con ceniza y añadiendo clavo para frenar putrefacciones.',
+          consequence: 'El agua pierde su mal olor y se vuelve potable. La tripulación no contrae fiebres estomacales y reconocen la eficacia preventiva de las medidas de higiene.',
+          historicalInsight: 'El control del agua potable fue el mayor desafío de salud en los viajes marítimos de larga distancia antes de la invención de filtros modernos.',
+          chronicleText: 'Purificamos el agua de los barriles con carbón y especias antisépticas, evitando epidemias a bordo.',
+          discoveredGoodsOrIdeas: ['Purificación de agua dulce', 'Higiene de a bordo', 'Antisépticos botánicos']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Distribuir frutos cítricos secos y vinagre para prevenir el escorbuto',
+          description: 'Racionan limones en salmuera, cebollas y vinagre entre los remeros y marineros que muestran encías sangrantes y debilidad extrema.',
+          consequence: 'Los marineros recuperan el vigor. Comprueban empíricamente que la dieta fresca y los alimentos ácidos salvan a los hombres de la misteriosa debilidad de las travesías largas.',
+          historicalInsight: 'Aunque la vitamina C se descubrió en el siglo XX, muchos navegantes tradicionales ya usaban cítricos y encurtidos para combatir el agotamiento de altamar.',
+          chronicleText: 'Combatimos el sangrado de encías y la fatiga administrando cítricos en salazón y vinagres.',
+          discoveredGoodsOrIdeas: ['Prevención del escorbuto', 'Dieta naval', 'Medicina preventiva de mar']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Establecer un área de aislamiento en la proa para los tripulantes febriles',
+          description: 'Separan a dos marineros con delirios y calor corporal excesivo bajo un toldo ventilado en proa para evitar el hacinamiento en bodegas.',
+          consequence: 'Frenan la propagación del malestar al resto del pasaje. Comprueban que el aire fresco del mar y el aislamiento previenen contagios en espacios reducidos.',
+          historicalInsight: 'El hacinamiento en bodegas húmedas y mal ventiladas era el caldo de cultivo habitual para tifus y fiebres en las naves medievales.',
+          chronicleText: 'Aislamos a los enfermos en la cubierta ventilada para impedir el contagio en las bodegas cerradas.',
+          discoveredGoodsOrIdeas: ['Aislamiento en navegación', 'Ventilación sanitaria', 'Control de hacinamiento']
+        }
+      ],
+      scholar: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Calcular la latitud nocturna midiendo la altura de la Estrella Polar con el kamal',
+          description: 'Suben a cubierta en noche despejada para medir la elevación de la estrella con la tablilla de madera y cotejarla con las cartas celestes.',
+          consequence: 'Confirman con precisión matemática que la nave se encuentra en el paralelo de la costa de Omán. El piloto celebra la exactitud del cálculo astronómico.',
+          historicalInsight: 'El kamal fue uno de los inventos astronómicos más sencillos y revolucionarios de la navegación árabe e india para medir distancias angulares en el mar.',
+          chronicleText: 'Calculamos la latitud marina con el kamal astronómico, guiando el rumbo nocturno con precisión.',
+          discoveredGoodsOrIdeas: ['El Kamal astronómico', 'Cálculo de latitud', 'Navegación astronómica del Índico']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Trazar un mapa de vientos estacionales y corrientes del Océano Índico',
+          description: 'Anotan minuciosamente en pliegos de papel la dirección de la brisa, las mareas y el cambio de color del agua durante las distintas lunas.',
+          consequence: 'Crean una guía náutica pionera. Comprenden que el océano no es un desierto caótico, sino un sistema ordenado de ciclos climáticos que la razón humana puede anticipar.',
+          historicalInsight: 'Los manuales náuticos islámicos (*rahmani*) compilaban observaciones empíricas sobre corrientes, bancos de arena y fechas óptimas de zarpe.',
+          chronicleText: 'Elaboramos una guía náutica de vientos monzónicos y corrientes estacionales del Mar de Arabia.',
+          discoveredGoodsOrIdeas: ['Manuales náuticos (Rahmani)', 'Meteorología estacional', 'Cartografía de corrientes']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Comparar la brújula flotante de aguja imantada con los astros celestes',
+          description: 'Examinan un cuenco de agua con una aguja de hierro magnetizada sobre un corcho y observan cómo busca el norte magnético incluso con cielo nublado.',
+          consequence: 'Verifican la asombrosa fidelidad de la brújula cuando las nubes ocultan las estrellas. Es el puente perfecto entre la ciencia terrestre y la supervivencia en alta mar.',
+          historicalInsight: 'La brújula magnética, nacida en China, se difundió rápidamente por el Índico y el Mediterráneo durante los siglos XII al XIV.',
+          chronicleText: 'Comprobamos la orientación de la aguja magnética flotante cuando las tormentas nublan el firmamento.',
+          discoveredGoodsOrIdeas: ['Brújula marina flotante', 'Magnetismo terrestre', 'Orientación a ciegas']
+        }
+      ]
+    }
+  },
+  {
+    id: 'hormuz-customs',
+    number: 5,
+    branch: 'sea',
+    title: 'El emporio de Ormuz y las leyes del mar',
+    theme: 'Aduanas marítimas, monopolios de paso y derecho mercantil',
+    location: 'Isla fortificada de Ormuz — Estrecho del Golfo Pérsico',
+    illustrationType: 'ship-customs',
+    intro: 'El navío entra al fondeadero de Ormuz, una árida isla rocosa que no produce grano ni agua dulce, pero que es la llave dorada del comercio entre Asia y Occidente. En sus muelles de piedra blanca atracan decenas de barcos cargados de perlas del Golfo, sedas de China, especias de Ceilán y caballos árabes de guerra. El diwan o aduana marítima exige rigurosos tributos para permitir el desembarco y la venta. En las tabernas portuarias se murmura que flotas corsarias merodean las aguas del estrecho y que los mercaderes venecianos compran a cualquier precio para llevar las especias hacia el Mar Rojo y Alejandría.',
+    prompt: 'Los oficiales de la aduana exigen un arancel elevado y les ofrecen escolta armada para cruzar hacia el Mar Rojo. ¿Cómo decide actuar el curso?',
+    teacherPrompt: '¿Por qué una pequeña isla que carecía de agua dulce y campos agrícolas llegó a ser uno de los enclaves más ricos y estratégicos del mundo medieval?',
+    characterFlavor: {
+      merchant: 'Ves cómo tasan los fardos de nuez moscada y canela en balanzas oficiales de bronce. Los impuestos son altos, pero las especias aquí valen el triple que en la India y se multiplicarán en Europa.',
+      traveler: 'En los muelles de Ormuz escuchas a genoveses, egipcios, persas y malabares. Esta isla es un teatro flotante donde todos los idiomas del mundo se entienden con monedas y gestos.',
+      medic: 'Observás cómo barcazas traen agua dulce desde el continente para abastecer a la población en aljibes con ceniza. El agua en Ormuz se cotiza casi con el mismo celo que el perfume de rosas.',
+      scholar: 'Te fascina examinar los libros aduaneros y las tablas de arbitraje marítimo. El derecho mercantil de esta isla regula disputas comerciales entre pueblos que no comparten religión ni rey.'
+    },
+    characterChoices: {
+      merchant: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Pagar los aranceles aduaneros y contratar un convoy de escolta naval',
+          description: 'Abonan las tasas oficiales del estrecho y se unen a una flota protegida por galeras armadas para disuadir a piratas del golfo.',
+          consequence: 'Navegan seguros y en formación hasta las bocas del Mar Rojo. Comprueban que pagar por seguridad es un costo comercial necesario para garantizar que el capital llegue a destino.',
+          historicalInsight: 'El cobro de peajes marítimos a cambio de protección armada contra corsarios era el pilar fiscal sobre el que se sostenían los sultanatos costeros.',
+          chronicleText: 'Abonamos los aranceles aduaneros en Ormuz y aseguramos el paso con un convoy de galeras armadas.',
+          discoveredGoodsOrIdeas: ['Fiscalidad marítima', 'Convoyes de protección', 'Seguridad en estrechos estratégicos']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Invertir en perlas naturales del Golfo para diversificar la carga',
+          description: 'Aprovechan los mercados de Ormuz para adquirir perlas finas extraídas por buceadores de Baréin, fáciles de ocultar y de altísimo valor por volumen.',
+          consequence: 'Reducen el volumen de su carga aumentando drásticamente su valor económico. Un pequeño saco de perlas permite afrontar cualquier contratiempo o pago de rescate en el viaje.',
+          historicalInsight: 'Las perlas del Golfo Pérsico fueron el producto de lujo marino por excelencia, demandadas con pasión tanto en las cortes islámicas como europeas.',
+          chronicleText: 'Invertimos en perlas finas del Golfo, compactando nuestra fortuna en un bien de máximo prestigio.',
+          discoveredGoodsOrIdeas: ['Perlas de Baréin', 'Bienes de altísimo valor por volumen', 'Diversificación de activos']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Asociarse con un cambista veneciano mediante una carta de crédito marina',
+          description: 'Pactan con un factor de Venecia en el puerto depositar fondos en Ormuz a cambio de una orden de pago en florines de oro canjeable en el Mediterráneo.',
+          consequence: 'Evitan transportar cofres de plata y oro por mares infestados de asaltantes. Descubren la agilidad de los documentos financieros para mover riqueza sin mover metal pesado.',
+          historicalInsight: 'Las letras de cambio y órdenes de pago internacionales permitieron a los comerciantes mover grandes fortunas sin el riesgo físico del traslado de monedas.',
+          chronicleText: 'Adoptamos cartas de crédito financieras para trasladar capital hacia Occidente sin arriesgar oro físico.',
+          discoveredGoodsOrIdeas: ['Letras de cambio marítimas', 'Crédito financiero medieval', 'Banca internacional']
+        }
+      ],
+      traveler: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Recorrer los aljibes y sistemas de importación de agua dulce',
+          description: 'Investigan cómo sobrevive una ciudad insular sin manantiales propios gracias a flotas diarias de aguadores y aljibes cubiertos de cal.',
+          consequence: 'Se maravillan ante el ingenio humano para sostener una urbe populosa en un desierto de roca y salitre. Entienden que el comercio crea oasis donde la naturaleza no puso nada.',
+          historicalInsight: 'Ormuz dependía por completo del suministro de agua de la costa continental vecina, transportada en flotillas especializadas de barcazas cisternas.',
+          chronicleText: 'Documentamos la impresionante logística hidráulica que abastecía de agua potable al emporio insular.',
+          discoveredGoodsOrIdeas: ['Logística de abastecimiento insular', 'Ingeniería hidráulica de aljibes', 'Ciudades estratégicas']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Conversar con capitanes de África oriental sobre la ruta de Zanzíbar',
+          description: 'Se sientan en los cafetines portuarios con marinos swahilis que navegan hacia Kilwa y Sofala en busca de oro, marfil y madera de mangle.',
+          consequence: 'Descubren que el Océano Índico conectaba no solo a Asia y Europa, sino también las ricas costas del continente africano en una red circular de comercio global.',
+          historicalInsight: 'La costa swahili de África Oriental era un componente fundamental del circuito comercial del Índico, exportando oro, ébano y pieles hacia Asia.',
+          chronicleText: 'Ampliamos nuestro horizonte geográfico al conocer las rutas comerciales marítimas hacia África Oriental.',
+          discoveredGoodsOrIdeas: ['Comercio de la costa swahili', 'Rutas de África Oriental', 'Globalización medieval']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Observar los juicios del tribunal marítimo del puerto',
+          description: 'Asisten a las audiencias donde cónsules y jueces arbitran pleitos entre tripulaciones de distintos credos por abordajes, rotura de mástiles o sueldos impagos.',
+          consequence: 'Presencian cómo el interés común por el comercio crea leyes universales de justicia marítima que están por encima de las diferencias religiosas o fronteras de los reinos.',
+          historicalInsight: 'El derecho marítimo medieval (como las leyes de Rodas, el Consulado del Mar o los usos de Ormuz) fue pionero en establecer normas internacionales compartidas.',
+          chronicleText: 'Presenciamos la aplicación del derecho marítimo internacional que unía a pueblos de distintos credos.',
+          discoveredGoodsOrIdeas: ['Tribunales marítimos', 'Derecho internacional consuetudinario', 'Justicia mercantil']
+        }
+      ],
+      medic: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Adquirir bálsamos de mirra, incienso y resinas aromáticas de Adén',
+          description: 'Compran fardos de resinas secadas al sol procedentes de los valles del sur de Arabia, indispensables para sahumerios purificadores y ungüentos cicatrizantes.',
+          consequence: 'Se aprovisionan de las sustancias medicinales más puras del mundo antiguo. Comprueban que su valor no radica en el lujo decorativo, sino en sus propiedades desinfectantes.',
+          historicalInsight: 'La mítica Ruta del Incienso conectaba el sur de Arabia con los puertos del Golfo y el Mediterráneo para abastecer templos, palacios y boticas.',
+          chronicleText: 'Incorporamos resinas puras de incienso y mirra de Arabia, fundamentales para sahumerios y curaciones.',
+          discoveredGoodsOrIdeas: ['Mirra e incienso de Arabia', 'Resinas antisépticas', 'Ruta del incienso']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Inspeccionar las enfermerías portuarias para marineros heridos',
+          description: 'Visitan las salas de los muelles para estudiar cómo los cirujanos portuarios tratan fracturas por cabrestantes, quemaduras de brea y heridas de arpones.',
+          consequence: 'Aprenden técnicas de cirugía traumatológica naval de alta urgencia, donde la rapidez y la limpieza con alcohol o vinagre salvan extremidades y vidas.',
+          historicalInsight: 'Los médicos de los puertos comerciales desarrollaron una notable pericia en el tratamiento de lesiones traumáticas y quemaduras producidas por la vida en los barcos.',
+          chronicleText: 'Perfeccionamos técnicas de cirugía de urgencia y tratamiento de heridas en las boticas portuarias.',
+          discoveredGoodsOrIdeas: ['Cirugía naval de urgencia', 'Tratamiento de quemaduras de brea', 'Traumatología de muelle']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Examinar los cargamentos de salazones y conservas para la travesía',
+          description: 'Revisan los barriles de pescado seco, dátiles prensados y cecinas que los marineros embarcan para evitar consumir víveres podridos en el mar.',
+          consequence: 'Comprueban que la sal y el prensado en miel o aceite son los mejores aliados contra la putrefacción de los alimentos en climas tórridos.',
+          historicalInsight: 'La conservación de alimentos mediante salado, secado al sol y ahumado era la única tecnología disponible para posibilitar viajes marítimos de meses.',
+          chronicleText: 'Supervisamos los métodos de salazón y secado de víveres que garantizaban la supervivencia en el mar.',
+          discoveredGoodsOrIdeas: ['Tecnología de salazón', 'Conservación de alimentos', 'Seguridad alimentaria']
+        }
+      ],
+      scholar: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Copiar cartas portulanas con rumbos de aguja y fondos marinos',
+          description: 'Pagan a un cartógrafo del puerto para calcar una carta náutica con rumbos radiales, bajos de arena y perfiles de costas del Mar Rojo y Golfo Pérsico.',
+          consequence: 'Obtienen un mapa náutico de precisión asombrosa. Entienden que las cartas portulanas no representan mitos ni leyendas, sino rumbos reales medidos con brújula y compás.',
+          historicalInsight: 'Las cartas portulanas del siglo XIV revolucionaron la navegación al combinar redes de rumbos magnéticos con mediciones empíricas de distancia costera.',
+          chronicleText: 'Copiamos cartas portulanas con redes de vientos y perfiles de sondas marinas para navegar seguros.',
+          discoveredGoodsOrIdeas: ['Cartas portulanas', 'Rumbos magnéticos', 'Toponimia costera']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Analizar los registros aduaneros de tonelaje y procedencia de barcos',
+          description: 'Estudian los libros de aduana donde los oficiales anotan año a año el número de mástiles, el origen de cada carga y el valor recaudado en plata.',
+          consequence: 'Comprenden la magnitud del comercio mundial: miles de toneladas de bienes cruzan los mares cada temporada. La historia de la humanidad está escrita en sus rutas de intercambio.',
+          historicalInsight: 'Los registros aduaneros medievales son los documentos históricos más precisos para cuantificar los flujos comerciales y demográficos de la época.',
+          chronicleText: 'Analizamos los libros de aduanas que documentaban los volúmenes del comercio global de ultramar.',
+          discoveredGoodsOrIdeas: ['Contabilidad fiscal pública', 'Estadísticas mercantiles', 'Flujos de tonelaje naval']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Debatir con pilotos sobre el cálculo de mareas y la influencia de la Luna',
+          description: 'Discuten cómo la gravitación lunar genera pleamares y bajamares en los estrechos angostos y cómo aprovechar la subida del agua para franquear barras de arena.',
+          consequence: 'Relacionan la física celeste con la práctica náutica cotidiana. La ciencia confirma que el cosmos entero influye en el movimiento de los barcos humanos.',
+          historicalInsight: 'El conocimiento de las tablas de mareas fue vital para la navegación en los mares cerrados con grandes fluctuaciones como el Golfo Pérsico.',
+          chronicleText: 'Vinculamos los ciclos de la Luna con el cálculo de mareas para sortear barras arenosas en los puertos.',
+          discoveredGoodsOrIdeas: ['Tablas de mareas', 'Astronomía aplicada', 'Gravitación lunar empírica']
+        }
+      ]
+    }
+  },
+  {
+    id: 'quarantine-sea',
+    number: 6,
+    branch: 'sea',
+    title: 'El navío en cuarentena',
+    theme: 'La Peste Negra por vía marítima y el nacimiento del aislamiento sanitario (1347)',
+    location: 'Bahía exterior del puerto mediterráneo — Octubre de 1347',
+    illustrationType: 'quarantine',
+    intro: 'Tras cruzar el istmo y embarcar en una gran galera mercante que surca el Mediterráneo oriental, divisan al amanecer las torres de su puerto de destino en Europa. Pero la bahía no bulle de fiesta: está en un silencio sepulcral. Varios navíos fondean a distancia con una bandera amarilla izada en el palo mayor. En el muelle de piedra, guardias municipales armados con ballestas y teas humeantes impiden que cualquier bote toque tierra. Desde una chalupa, un oficial del concejo les grita con una bocina de latón: "¡Ningún tripulante pisará la ciudad! Por orden de los magistrados, toda nave procedente de Oriente quedará aislada cuarenta días en la isla del lazareto. ¡La Gran Peste Negra ha llegado en las bodegas de los barcos!"',
+    prompt: 'Las provisiones a bordo escasean y algunos marineros tosen sangre bajo cubierta. La ciudad los condena a cuarenta días de aislamiento flotante. ¿Cómo decide actuar el curso?',
+    teacherPrompt: '¿Cómo cambió la llegada de la Peste Negra por vía marítima la forma en que las ciudades portuarias controlaban el movimiento de personas y mercancías?',
+    characterFlavor: {
+      merchant: 'Tus fardos de especias, perlas y sedas están encerrados en las bodegas del navío fondeado. Si el barco se declara apestado, las autoridades quemarán la nave con toda la fortuna adentro.',
+      traveler: 'Miras la línea de murallas inalcanzables. Viajaste miles de leguas cruzando imperios y océanos, y a cien brazas de la orilla una ordenanza municipal te encierra en una prisión de madera flotante.',
+      medic: 'Escuchás los lamentos bajo cubierta: fiebres ardientes y bultos negros del tamaño de un huevo bajo las axilas. Reconoces la pesadilla. Si no aíslan a los enfermos de inmediato en una barca auxiliar, nadie sobrevivirá a los cuarenta días.',
+      scholar: 'Cuarenta días... "quarantena". Comprendes que estás presenciando una medida sanitaria revolucionaria nacida del terror y la observación empírica: el intento desesperado de cortar el contagio invisible mediante el aislamiento forzoso.'
+    },
+    characterChoices: {
+      merchant: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Negociar el desembarco y desinfección de las mercancías secas en el lazareto insular',
+          description: 'Piden a los magistrados permiso para descargar los fardos de especias y seda en los almacenes de piedra de la isla de cuarentena para ventilarlos y ahumarlos con azufre.',
+          consequence: 'Logran poner a salvo la mercancía sin violar el cerco sanitario. Comprueban que las telas bien ventiladas y secas no transmiten el mal, salvando el capital comercial.',
+          historicalInsight: 'En puertos como Ragusa (Dubrovnik) y Venecia, las mercancías de Oriente eran sometidas a cuarentena y desinfección con humo de hierbas aromáticas en islas lazareto.',
+          chronicleText: 'Negociamos la ventilación y desinfección de nuestras mercancías en el lazareto insular, salvando la inversión.',
+          discoveredGoodsOrIdeas: ['Almacenes de lazareto', 'Desinfección con azufre y humo', 'Supervivencia comercial en crisis']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Financiar víveres frescos desde tierra para sostener a la tripulación en el barco',
+          description: 'Usan parte de sus ganancias para pagar a botes de la ciudad que dejen cestas de pan cocido, verduras y agua potable amarradas a una boya.',
+          consequence: 'Mantienen nutrida a la marinería durante los duros cuarenta días de encierro. Al evitar el hambre y la desesperación, la tripulación mantiene la disciplina y el barco no se amotina.',
+          historicalInsight: 'El aprovisionamiento sin contacto físico (dejando alimentos en barcas intermedias con monedas desinfectadas en vinagre) fue clave durante las cuarentenas portuarias.',
+          chronicleText: 'Financiamos el abastecimiento seguro de víveres para la tripulación aislada, evitando motines y hambre.',
+          discoveredGoodsOrIdeas: ['Abastecimiento sin contacto', 'Monedas lavadas en vinagre', 'Gestión humanitaria de crisis']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Pagar a capitanes para levar anclas y fondear en una cala desierta apartada',
+          description: 'Temiendo que el barco vecino apestado les contagie la peste por el aire, deciden zarpar hacia una bahía deshabitada de la costa para pasar el encierro.',
+          consequence: 'Se alejan del foco infeccioso del puerto atestado. En la cala solitaria pescan y purifican sus ropas al sol, logrando que el virus no prenda entre sus hombres.',
+          historicalInsight: 'El aislamiento geográfico estricto y la dispersión fuera de los puertos infectados fue una de las pocas medidas eficaces de supervivencia frente a la Peste Negra.',
+          chronicleText: 'Nos apartamos a una ensenada solitaria para cumplir el aislamiento lejos de navíos contagiados.',
+          discoveredGoodsOrIdeas: ['Aislamiento geográfico autónomo', 'Dispersión preventiva', 'Evitación de focos de contagio']
+        }
+      ],
+      traveler: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Organizar turnos estrictos en cubierta y quemar las ropas usadas de los enfermos',
+          description: 'Establecen una disciplina férrea a bordo: nadie baja a las bodegas oscuras, se limpian las tablas con agua salada hirviendo y se queman los jergones viejos.',
+          consequence: 'Sin saberlo, destruyen los nidos de pulgas y ratas que anidaban en las telas viejas. La mortandad en su galera se detiene milagrosamente.',
+          historicalInsight: 'Aunque ignoraban que la bacteria de la peste viajaba en pulgas de ratas negras, las medidas empíricas de higiene radical y quema de ropas salvaron vidas.',
+          chronicleText: 'Impusimos estricta limpieza en cubierta y quemamos jergones viejos, frenando el mal en nuestro barco.',
+          discoveredGoodsOrIdeas: ['Destrucción de vectores de contagio', 'Higiene náutica extrema', 'Disciplina colectiva']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Establecer comunicación por señales de banderas con los magistrados del muelle',
+          description: 'Idean un código de gallardetes y antorchas para informar a los médicos de la orilla sobre cuántos hombres permanecen sanos en el navío.',
+          consequence: 'La ciudad comprueba la honestidad y orden del barco. Al cumplir los cuarenta días sin nuevos enfermos, los magistrados les otorgan la patente limpia de sanidad.',
+          historicalInsight: 'Los códigos de señales y las "patentes de sanidad" marítimas nacieron a raíz de la Peste Negra para certificar qué naves venían libres de contagio.',
+          chronicleText: 'Coordinamos patentes de sanidad mediante señales visuales con las autoridades del puerto.',
+          discoveredGoodsOrIdeas: ['Patente limpia de sanidad', 'Señales de cuarentena', 'Certificación sanitaria']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Anotar en un diario de a bordo la agonía y el avance de la plaga en los barcos vecinos',
+          description: 'Registran día a día el humo de los barcos que son quemados por las autoridades y los cantos fúnebres que resuenan en la bahía silenciosa.',
+          consequence: 'Construyen un testimonio histórico desgarrador sobre el colapso del mundo conocido y el coraje de los supervivientes que desafiaron el abismo del contagio.',
+          historicalInsight: 'Los diarios y crónicas escritas por testigos presenciales de 1347 son la mayor fuente histórica para comprender el impacto psicológico y social de la pandemia.',
+          chronicleText: 'Escribimos la crónica de los cuarenta días en la bahía silenciada por la Gran Muerte de 1347.',
+          discoveredGoodsOrIdeas: ['Diario de cuarentena', 'Testimonio testimonial de 1347', 'Memoria de la pandemia']
+        }
+      ],
+      medic: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Trasladar a los marineros con bubones a una chalupa remolcada a popa',
+          description: 'Aíslan de inmediato a los contagiados en un bote amarrado a cincuenta varas de distancia de la nave, atendiéndolos con pértigas y paños con vinagre.',
+          consequence: 'Cortan el contacto directo con los exudados y las pulgas de los enfermos. Salvan a más del ochenta por ciento de la tripulación sana de una muerte segura.',
+          historicalInsight: 'El aislamiento tajante de los enfermos en lazaretos flotantes o botes separados fue la medida clínica más audaz ideada en los puertos medievales.',
+          chronicleText: 'Separamos a los infectados en una chalupa remolcada, cortando la cadena de contagio a bordo.',
+          discoveredGoodsOrIdeas: ['Lazareto flotante', 'Aislamiento tajante', 'Protección de tripulantes sanos']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Sellar las bodegas con humo espeso de azufre para exterminar alimañas',
+          description: 'Queman calderos de azufre y brea en el fondo del casco sellando las escotillas durante dos días para matar las "emanaciones venenosas" y ratas.',
+          consequence: 'El gas tóxico sofoca a todas las ratas negras y pulgas de las bodegas. Al reabrir y ventilar, el foco biológico del barco ha sido aniquilado por completo.',
+          historicalInsight: 'La fumigación con azufre fue uno de los métodos medievales más efectivos, ya que actuaba como insecticida y raticida antes de conocerse la microbiología.',
+          chronicleText: 'Fumigamos las bodegas con azufre y brea, erradicando involuntariamente las pulgas y ratas del barco.',
+          discoveredGoodsOrIdeas: ['Fumigación con azufre', 'Control de alimañas en bodegas', 'Acción insecticida empírica']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Fabricar mascarillas de lino con vinagre y esencias para los cuidadores',
+          description: 'Confeccionan protectores respiratorios empapados en alcanfor y vinagre fuerte para quienes atienden a los convalecientes en el barco.',
+          consequence: 'Brindan una barrera protectora física contra las gotas expulsadas por la tos de los enfermos. Los cuidadores no se infectan de la temible peste neumónica.',
+          historicalInsight: 'Los paños con vinagre aromático fueron los antecesores de las célebres máscaras de pico de ave que usarían los médicos de la peste en siglos posteriores.',
+          chronicleText: 'Protegimos a los cuidadores con mascarillas de vinagre y alcanfor frente a la peste neumónica.',
+          discoveredGoodsOrIdeas: ['Protección respiratoria primitiva', 'Barreras de contacto', 'Profilaxis médica de emergencia']
+        }
+      ],
+      scholar: [
+        {
+          id: 'A',
+          label: 'Alternativa A',
+          title: 'Analizar el origen del término "quarantena" y su fundamento legal y bíblico',
+          description: 'Estudian cómo los magistrados portuarios fijaron el lapso de cuarenta días inspirándose en los cuarenta días del diluvio y la cuaresma como purificación.',
+          consequence: 'Comprenden cómo la ciencia, el derecho cívico y las metáforas religiosas se unieron en un momento de terror para inventar una de las instituciones más duraderas de la salud pública.',
+          historicalInsight: 'El término "cuarentena" nació formalmente en 1377 en Ragusa (hoy Dubrovnik) al fijar un periodo de aislamiento que luego Venecia y los demás puertos adoptaron.',
+          chronicleText: 'Estudiamos el nacimiento de la institución jurídica de la cuarentena como respuesta social a la epidemia.',
+          discoveredGoodsOrIdeas: ['Institución de la cuarentena', 'Derecho sanitario municipal', 'Evolución de la salud pública']
+        },
+        {
+          id: 'B',
+          label: 'Alternativa B',
+          title: 'Cartografiar cómo las rutas comerciales marítimas aceleraron la propagación del mal',
+          description: 'Trazan en un pergamino cómo las galeras genovesas llevaron el brote desde Caffa en Crimea hasta Constantinopla, Sicilia, Génova y Marsella en meses.',
+          consequence: 'Tienen una revelación histórica: la misma velocidad de los barcos que enriqueció a las ciudades convirtió al Mediterráneo en una trampa epidémica interconectada.',
+          historicalInsight: 'La Peste Negra fue la primera pandemia verdaderamente globalizada, donde las naves a vela y galeras multiplicaron la velocidad de difusión del patógeno.',
+          chronicleText: 'Mapeamos la difusión de la peste a través de las rutas marítimas, revelando la vulnerabilidad de un mundo conectado.',
+          discoveredGoodsOrIdeas: ['Cartografía epidemiológica', 'Redes de contagio acelerado', 'Paradoja de la conectividad']
+        },
+        {
+          id: 'C',
+          label: 'Alternativa C',
+          title: 'Redactar un memorial para los rectores de la ciudad con medidas para el futuro',
+          description: 'Escriben una propuesta en latín proponiendo la creación permanente de magistrados de salud pública, cementerios extramuros y lazaretos fijos.',
+          consequence: 'Sientan las bases del pensamiento sanitario moderno. Comprenden que tras la catástrofe demográfica, la sociedad deberá reorganizar su medicina y sus gobiernos.',
+          historicalInsight: 'La devastación de la Peste Negra impulsó la creación de los primeros ministerios y consejos de salud pública permanentes en las ciudades renacentistas.',
+          chronicleText: 'Redactamos un memorial sobre salud pública y prevención que anticipó las reformas sanitarias del Renacimiento.',
+          discoveredGoodsOrIdeas: ['Consejos de salud pública', 'Planificación urbana sanitaria', 'Lecciones para el Renacimiento']
         }
       ]
     }

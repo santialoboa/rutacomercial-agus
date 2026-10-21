@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { sounds } from '../../utils/audio';
 import { GAME_CARDS } from '../../data/cards';
 import { MedievalMusicPlayer } from '../audio/MedievalMusicPlayer';
-import type { GamePhase } from '../../types/game';
+import type { GamePhase, StoryBranch } from '../../types/game';
 
 interface TeacherToolbarProps {
   currentPhase: GamePhase;
   currentCardNumber: number;
-  onJumpToCard: (cardNumber: number) => void;
+  currentBranch?: StoryBranch;
+  onJumpToCard: (cardNumber: number, branch?: StoryBranch) => void;
   onJumpToPhase: (phase: GamePhase) => void;
   onResetAdventure: () => void;
 }
 
 export const TeacherToolbar: React.FC<TeacherToolbarProps> = ({
   currentCardNumber,
+  currentBranch = 'land',
   onJumpToCard,
   onJumpToPhase,
   onResetAdventure
@@ -169,27 +171,95 @@ export const TeacherToolbar: React.FC<TeacherToolbarProps> = ({
             <div className="space-y-4">
               <div>
                 <label className="block text-xs uppercase tracking-wider font-bold text-[#713c3d] mb-1.5">
-                  Saltar a una Carta:
+                  1. Tramo Inicial (Bifurcación en Carta 3):
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {GAME_CARDS.map((card) => (
-                    <button
-                      key={card.number}
-                      onClick={() => {
-                        sounds.playParchment();
-                        onJumpToCard(card.number);
-                        setIsOpen(false);
-                      }}
-                      className={`text-left rounded border p-2 text-xs font-serif transition cursor-pointer ${
-                        card.number === currentCardNumber
-                          ? 'border-[#713c3d] bg-[#713c3d] text-[#fff6df] font-bold'
-                          : 'border-[#5b412d]/50 bg-[#eadbb8] hover:bg-[#d5c298] text-[#35271e]'
-                      }`}
-                    >
-                      <div className="font-bold">Carta {card.number}</div>
-                      <div className="truncate text-[10px] opacity-80">{card.title}</div>
-                    </button>
-                  ))}
+                <div className="grid grid-cols-3 gap-2 mb-3">
+                  {GAME_CARDS.filter((c) => c.number <= 3).map((card) => {
+                    const isActive = card.number === currentCardNumber;
+                    return (
+                      <button
+                        key={card.id}
+                        onClick={() => {
+                          sounds.playParchment();
+                          onJumpToCard(card.number);
+                          setIsOpen(false);
+                        }}
+                        className={`text-left rounded border p-2 text-xs font-serif transition cursor-pointer ${
+                          isActive
+                            ? 'border-[#713c3d] bg-[#713c3d] text-[#fff6df] font-bold shadow'
+                            : 'border-[#5b412d]/50 bg-[#eadbb8] hover:bg-[#d5c298] text-[#35271e]'
+                        }`}
+                      >
+                        <div className="font-bold flex items-center justify-between">
+                          <span>Carta {card.number}</span>
+                          {card.number === 3 && <span className="text-[10px] text-[#ffd573]" title="Bifurcación Elige tu propia aventura">🔀</span>}
+                        </div>
+                        <div className="truncate text-[10px] opacity-80">{card.title}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {/* Land Branch */}
+                  <div className="rounded-xl border border-[#ab8841]/60 bg-[#fffdf7]/80 p-2.5">
+                    <span className="text-[11px] font-serif font-bold uppercase tracking-wider text-[#713c3d] flex items-center gap-1 mb-1.5">
+                      <span>🐪</span> Ruta Terrestre (Bagdad):
+                    </span>
+                    <div className="space-y-1.5">
+                      {GAME_CARDS.filter((c) => c.number >= 4 && c.branch === 'land').map((card) => {
+                        const isActive = card.number === currentCardNumber && currentBranch === 'land';
+                        return (
+                          <button
+                            key={card.id}
+                            onClick={() => {
+                              sounds.playParchment();
+                              onJumpToCard(card.number, 'land');
+                              setIsOpen(false);
+                            }}
+                            className={`w-full text-left rounded border p-1.5 text-xs font-serif transition cursor-pointer ${
+                              isActive
+                                ? 'border-[#713c3d] bg-[#713c3d] text-[#fff6df] font-bold shadow-xs'
+                                : 'border-[#5b412d]/40 bg-[#dfceaa] hover:bg-[#d5c298] text-[#35271e]'
+                            }`}
+                          >
+                            <div className="font-bold text-[11px]">Carta {card.number}: {card.title}</div>
+                            <div className="text-[9px] opacity-75 truncate">{card.location}</div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Sea Branch */}
+                  <div className="rounded-xl border border-[#2d6a8f]/60 bg-[#f0f8fb]/90 p-2.5">
+                    <span className="text-[11px] font-serif font-bold uppercase tracking-wider text-[#1e5879] flex items-center gap-1 mb-1.5">
+                      <span>⛵</span> Ruta Marítima (Índico):
+                    </span>
+                    <div className="space-y-1.5">
+                      {GAME_CARDS.filter((c) => c.number >= 4 && c.branch === 'sea').map((card) => {
+                        const isActive = card.number === currentCardNumber && currentBranch === 'sea';
+                        return (
+                          <button
+                            key={card.id}
+                            onClick={() => {
+                              sounds.playParchment();
+                              onJumpToCard(card.number, 'sea');
+                              setIsOpen(false);
+                            }}
+                            className={`w-full text-left rounded border p-1.5 text-xs font-serif transition cursor-pointer ${
+                              isActive
+                                ? 'border-[#1e5879] bg-[#1e5879] text-[#fff6df] font-bold shadow-xs'
+                                : 'border-[#2d6a8f]/40 bg-[#dbebf3] hover:bg-[#c9e1ed] text-[#1c3848]'
+                            }`}
+                          >
+                            <div className="font-bold text-[11px]">Carta {card.number}M: {card.title}</div>
+                            <div className="text-[9px] opacity-75 truncate">{card.location}</div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
 
