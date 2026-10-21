@@ -8,6 +8,7 @@ import { IntroScreen } from './components/game/IntroScreen';
 import { CharacterSelection } from './components/game/CharacterSelection';
 import { StoryCardView } from './components/game/StoryCardView';
 import { JourneyMap } from './components/game/JourneyMap';
+import { GoldJourneyMap } from './components/game/GoldJourneyMap';
 import { ChronicleSummary } from './components/game/ChronicleSummary';
 import { ReflectionQuestions } from './components/game/ReflectionQuestions';
 import { HistoricalEpilogue } from './components/game/HistoricalEpilogue';
@@ -249,12 +250,20 @@ export function App() {
         {phase === 'map-view' && (
           <div className="min-h-screen py-8 px-4 sm:px-6 flex flex-col items-center justify-center">
             <div className="w-full max-w-5xl">
-              <JourneyMap
-                currentCardNumber={currentCardNumber}
-                branch={activeBranch}
-                storyId={activeStory}
-                className="mb-6"
-              />
+              {isGoldRoad ? (
+                <GoldJourneyMap
+                  currentCardNumber={currentCardNumber}
+                  branch={activeBranch}
+                  className="mb-6"
+                />
+              ) : (
+                <JourneyMap
+                  currentCardNumber={currentCardNumber}
+                  branch={activeBranch}
+                  storyId={activeStory}
+                  className="mb-6"
+                />
+              )}
               <div className="flex justify-center">
                 <button
                   onClick={() => {
@@ -309,13 +318,22 @@ export function App() {
       {showMapModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto">
           <div className="w-full max-w-5xl my-auto animate-fadeIn">
-            <JourneyMap
-              currentCardNumber={currentCardNumber}
-              branch={activeBranch}
-              storyId={activeStory}
-              isModal={true}
-              onClose={() => setShowMapModal(false)}
-            />
+            {isGoldRoad ? (
+              <GoldJourneyMap
+                currentCardNumber={currentCardNumber}
+                branch={activeBranch}
+                isModal={true}
+                onClose={() => setShowMapModal(false)}
+              />
+            ) : (
+              <JourneyMap
+                currentCardNumber={currentCardNumber}
+                branch={activeBranch}
+                storyId={activeStory}
+                isModal={true}
+                onClose={() => setShowMapModal(false)}
+              />
+            )}
           </div>
         </div>
       )}

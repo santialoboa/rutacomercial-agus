@@ -1,5 +1,4 @@
 import React from 'react';
-import { GAME_CARDS } from '../../data/cards';
 import { sounds } from '../../utils/audio';
 
 interface ProgressRibbonProps {

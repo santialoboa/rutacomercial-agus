@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { sounds } from '../../utils/audio';
 import { GAME_CARDS } from '../../data/cards';
-import { GOLD_ROAD_CARDS } from '../../data/goldRoadCards';
 import { MedievalMusicPlayer } from '../audio/MedievalMusicPlayer';
 import type { GamePhase, StoryBranch, StoryId } from '../../types/game';
 

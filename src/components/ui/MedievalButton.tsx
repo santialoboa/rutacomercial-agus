@@ -2,7 +2,7 @@ import React from 'react';
 import { sounds } from '../../utils/audio';
 
 interface MedievalButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'royal' | 'subtle';
+  variant?: 'primary' | 'secondary' | 'royal' | 'subtle' | 'gold';
   size?: 'normal' | 'large' | 'huge';
   icon?: React.ReactNode;
 }
@@ -32,6 +32,8 @@ export const MedievalButton: React.FC<MedievalButtonProps> = ({
       'border-[#5b412d] bg-gradient-to-b from-[#dfceaa] to-[#c9b78e] text-[#2a2118] hover:from-[#eadbb8] hover:to-[#d5c298] hover:border-[#443224] shadow-[#5b412d]/30',
     royal:
       'border-[#5f4618] bg-gradient-to-b from-[#ab8841] to-[#88692c] text-[#fffcf2] hover:from-[#ba974c] hover:to-[#997633] shadow-[#5f4618]/40',
+    gold:
+      'border-[#785412] bg-gradient-to-b from-[#d97706] to-[#b45309] text-[#fffdf5] hover:from-[#f59e0b] hover:to-[#d97706] shadow-[#785412]/50 ring-1 ring-[#fef3c7]/30',
     subtle:
       'border-[#5b412d]/40 bg-[#eadbb8]/60 text-[#35271e] hover:bg-[#eadbb8] hover:border-[#5b412d]'
   }[variant];
